@@ -591,14 +591,90 @@
   .ticker-item span { color: var(--text-muted); margin: 0 0.5rem; }
   @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
+  /* ── SLIDES GALLERY ── */
+  #gallery { background: var(--bg); }
+  .gallery-inner { max-width: 1200px; margin: 0 auto; }
+  .gallery-header { margin-bottom: 4rem; }
+
+  .slide-showcase {
+    display: flex; flex-direction: column; gap: 6rem;
+  }
+  .slide-block {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .slide-block.reverse { direction: rtl; }
+  .slide-block.reverse > * { direction: ltr; }
+
+  .slide-block.full-width {
+    grid-template-columns: 1fr;
+    max-width: 900px; margin: 0 auto;
+  }
+
+  .slide-img-wrap {
+    position: relative;
+  }
+  .slide-img-wrap::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border: 1px solid rgba(0,245,212,0.2);
+    pointer-events: none; z-index: 1;
+  }
+  .slide-img-wrap::after {
+    content: '';
+    position: absolute; top: 8px; left: 8px; right: -8px; bottom: -8px;
+    border: 1px solid rgba(0,245,212,0.07);
+    z-index: 0;
+  }
+  .slide-img-wrap img {
+    width: 100%; display: block;
+    position: relative; z-index: 1;
+    transition: transform 0.4s ease;
+  }
+  .slide-img-wrap:hover img { transform: scale(1.02); }
+
+  .slide-corner {
+    position: absolute; width: 12px; height: 12px;
+    border-color: var(--cyan); border-style: solid; z-index: 2;
+  }
+  .slide-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .slide-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .slide-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .slide-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+  .slide-text {}
+  .slide-num {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.2em; color: var(--cyan);
+    margin-bottom: 0.75rem; display: block;
+  }
+  .slide-title {
+    font-family: var(--font-display); font-size: 1.6rem; font-weight: 800;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .slide-desc {
+    font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .slide-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .slide-tag-item {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid var(--border); color: var(--text-muted);
+    padding: 0.3rem 0.7rem;
+  }
+  .slide-tag-item.accent {
+    border-color: rgba(0,245,212,0.3); color: var(--cyan);
+    background: rgba(0,245,212,0.05);
+  }
+
   /* ── RESPONSIVE ── */
   @media(max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
     section { padding: 5rem 1.5rem; }
-    .engine-inner, .confront-grid, .features-grid, .disc-grid, .levels-track {
-      grid-template-columns: 1fr;
-    }
+    .engine-inner, .confront-grid, .features-grid, .disc-grid, .levels-track,
+    .slide-block { grid-template-columns: 1fr; }
+    .slide-block.reverse { direction: ltr; }
     .confront-card.bad { border-right: none; border-bottom: 1px solid var(--border); }
     .hero-stats { gap: 2rem; flex-wrap: wrap; justify-content: center; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
@@ -615,6 +691,7 @@
     <a href="#engine">Engine</a>
     <a href="#features">Features</a>
     <a href="#levels">Levels</a>
+    <a href="#gallery">Gallery</a>
     <a href="#faq">FAQ</a>
     <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Join the Elite →</a>
   </div>
@@ -894,6 +971,201 @@
   </div>
 </section>
 
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-header">
+      <div class="section-tag">Inside the System</div>
+      <h2 class="section-title">See the engine.<br><span style="color:var(--cyan)">In full detail.</span></h2>
+      <p class="section-desc">Every layer of the Rainbow Matrix, visualized. This is what institutional-grade analysis looks like.</p>
+    </div>
+
+    <div class="slide-showcase">
+
+      <!-- Slide: Thermal Zones -->
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-thermal.png" alt="Cognitive Visual Return — Thermal Zones" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 01</span>
+          <h3 class="slide-title">Cognitive Visual Return: Trading via Thermal Zones.</h3>
+          <p class="slide-desc">The Rainbow Cloud replaces cold, confusing indicator lines with thermal zones. The core pulses when price returns to fair value. Extreme zones (Aqua or Purple) fire at maximum alert — your brain processes the warning in milliseconds, not seconds.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Dynamic VWAP</span>
+            <span class="slide-tag-item accent">Thermal Core</span>
+            <span class="slide-tag-item">Black Swan Detection</span>
+            <span class="slide-tag-item">Fair Value Zones</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: MTF Multiplicator -->
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-mtf.png" alt="Multi-Timeframe Multiplicator" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 02</span>
+          <h3 class="slide-title">The Multi-Timeframe Multiplicator.</h3>
+          <p class="slide-desc">5 monitors × 10 indicators = 50 disconnected variables per second. Rainbow Matrix runs a Compression Funnel — collapsing all 50 variables from 5M, 15M, 1H, 4H, and 1D into a single, unified Global Score probability metric.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">50:1 Compression</span>
+            <span class="slide-tag-item accent">6th Synthetic TF</span>
+            <span class="slide-tag-item">5 Timeframes</span>
+            <span class="slide-tag-item">Global Score</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: SMC Sniper -->
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-sniper.png" alt="Smart Money Concepts & Sniper Logic" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 03</span>
+          <h3 class="slide-title">Automated Smart Money Concepts &amp; Sniper Logic Tree.</h3>
+          <p class="slide-desc">The system auto-draws Order Blocks (OB) and Fair Value Gaps (FVG) — then reads them. When Global Score hits extreme probability AND price touches a validated OB simultaneously, one output fires: <strong style="color:var(--cyan)">SNIPER ALERT. Zero emotional bias.</strong></p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Order Blocks</span>
+            <span class="slide-tag-item accent">Fair Value Gaps</span>
+            <span class="slide-tag-item">AI Logic Flow</span>
+            <span class="slide-tag-item">Zero Emotional Bias</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: MGI Gravity -->
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-gravity.png" alt="Institutional Gravity Engine MGI" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 04</span>
+          <h3 class="slide-title">The Institutional Gravity Engine (MGI).</h3>
+          <p class="slide-desc">Macro levels from Weekly and Daily charts cast their gravitational mass onto micro timeframes. With buyer flow, the wall acts as a magnet. Without it, a concrete ceiling — generating mathematical exhaustion before price even touches it.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Magnetic Attraction</span>
+            <span class="slide-tag-item accent">Concrete Ceiling</span>
+            <span class="slide-tag-item">Weekly POC Weight: 5</span>
+            <span class="slide-tag-item">4H POC Weight: 2</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: Global Oscillator -->
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-oscillator.png" alt="Global Oscillator — Synthetic Heart" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 05</span>
+          <h3 class="slide-title">The Global Oscillator: A synthetic heart that adapts to volatility.</h3>
+          <p class="slide-desc">Unlike traditional RSIs trapped statically between 30 and 70, the Synthetic Timeframe (0–100) dynamically creates its own roof, floor, and central axis in real-time. SNIPER, STRONG, DEFENSE — each signal type classified by strict mathematical rules.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Dynamic Roof/Floor</span>
+            <span class="slide-tag-item accent">Synthetic Axis</span>
+            <span class="slide-tag-item">🎯 Sniper</span>
+            <span class="slide-tag-item">⭐ Strong</span>
+            <span class="slide-tag-item">🛡️ Defense</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: Tactical Command Panel -->
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-panel.png" alt="Tactical Command Panel HUD" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 06</span>
+          <h3 class="slide-title">The Tactical Command Panel.</h3>
+          <p class="slide-desc">Three panels. One cockpit. The MTF Probability Matrix shows the alignment of all 5 timeframes live. The Driver Columns isolate what force is moving price. The AI Tactical Summary translates everything into human language: Entry, Stop Loss, Take Profit.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">MTF Matrix</span>
+            <span class="slide-tag-item accent">AI Tactical Summary</span>
+            <span class="slide-tag-item">Z-Score / RSI / SAR</span>
+            <span class="slide-tag-item">Entry &amp; SL/TP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: Confluence -->
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-confluence.png" alt="Crossing Analytical Disciplines" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 07</span>
+          <h3 class="slide-title">Crossing analytical disciplines to locate structural truth.</h3>
+          <p class="slide-desc">Four distinct analytical schools — Institutional VWAP, Volume Profile, CVD &amp; Squeeze, and Derivatives Tracking — are all fused into one absolute confluence point. No single indicator runs the show. All of them must agree.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">VWAP Institutional</span>
+            <span class="slide-tag-item accent">CVD &amp; Squeeze</span>
+            <span class="slide-tag-item">Volume Profile</span>
+            <span class="slide-tag-item">Open Interest</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: Integration -->
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-integration.png" alt="Seamless Integration and Universal Application" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 08</span>
+          <h3 class="slide-title">Seamless integration and universal application.</h3>
+          <p class="slide-desc">One script. No expensive TradingView plans. Zero repaint — signals are locked on candle close, permanently. The HUD speaks your language natively: English, Portuguese, Spanish, Russian, and Mandarin.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Free Plan Compatible</span>
+            <span class="slide-tag-item accent">Zero Repaint</span>
+            <span class="slide-tag-item">5 Languages</span>
+            <span class="slide-tag-item">Universal Math</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide: Levels -->
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images/slide-levels.png" alt="Built for Levels — Beginner to Predator" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// MODULE 09</span>
+          <h3 class="slide-title">Built for levels: From visual simplicity to profound institutional depth.</h3>
+          <p class="slide-desc">Level 1 uses colors and percentages. Level 2 filters Sniper alerts to mobile. Level 3 dissects the Gravity Engine with surgical precision. The machine grows with you — at every stage, it's already waiting at the next level.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item" style="border-color:var(--cyan);color:var(--cyan)">Level 1: Beginner</span>
+            <span class="slide-tag-item" style="border-color:var(--purple);color:var(--purple)">Level 2: Operator</span>
+            <span class="slide-tag-item" style="border-color:var(--orange);color:var(--orange)">Level 3: Predator</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <div class="faq-inner">
@@ -977,7 +1249,7 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.feat-card, .disc-card, .level-card, .engine-point, .confront-card').forEach(el => {
+  document.querySelectorAll('.feat-card, .disc-card, .level-card, .engine-point, .confront-card, .slide-block').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(24px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
