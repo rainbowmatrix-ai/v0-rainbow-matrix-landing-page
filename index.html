@@ -591,6 +591,58 @@
   .ticker-item span { color: var(--text-muted); margin: 0 0.5rem; }
   @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+  }
+  .lightbox-overlay.active { opacity: 1; pointer-events: all; }
+  .lightbox-img-wrap {
+    position: relative;
+    max-width: 90vw; max-height: 90vh;
+    transform: scale(0.92);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .lightbox-overlay.active .lightbox-img-wrap { transform: scale(1); }
+  .lightbox-img-wrap::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border: 1px solid rgba(0,245,212,0.4);
+    pointer-events: none; z-index: 1;
+  }
+  .lightbox-corner {
+    position: absolute; width: 16px; height: 16px;
+    border-color: var(--cyan); border-style: solid; z-index: 2;
+  }
+  .lightbox-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .lightbox-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .lightbox-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .lightbox-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+  .lightbox-img-wrap img {
+    display: block;
+    max-width: 90vw; max-height: 85vh;
+    object-fit: contain;
+  }
+  .lightbox-close {
+    position: absolute; top: -2.5rem; right: 0;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--text-muted); letter-spacing: 0.1em;
+    cursor: pointer; transition: color 0.2s; user-select: none;
+  }
+  .lightbox-close:hover { color: var(--cyan); }
+  .lightbox-hint {
+    position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--text-dim); letter-spacing: 0.1em; white-space: nowrap;
+  }
+  .slide-img-wrap img { cursor: zoom-in; }
+
   /* ── SLIDES GALLERY ── */
   #gallery { background: var(--bg); }
   .gallery-inner { max-width: 1200px; margin: 0 auto; }
@@ -987,7 +1039,7 @@
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
           <div class="slide-corner bl"></div><div class="slide-corner br"></div>
-          <img src="images/slide-thermal.png" alt="Cognitive Visual Return — Thermal Zones" loading="lazy">
+          <img src="images/slide-thermal-rb.PNG" alt="Cognitive Visual Return — Thermal Zones" loading="lazy">
         </div>
         <div class="slide-text">
           <span class="slide-num">// MODULE 01</span>
@@ -1226,6 +1278,19 @@
   </div>
 </section>
 
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-img-wrap">
+    <div class="lightbox-corner tl"></div>
+    <div class="lightbox-corner tr"></div>
+    <div class="lightbox-corner bl"></div>
+    <div class="lightbox-corner br"></div>
+    <span class="lightbox-close" onclick="closeLightbox()">[ ESC ] CLOSE ✕</span>
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-hint">// CLICK ANYWHERE TO CLOSE</div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">RAINBOW MATRIX</div>
@@ -1233,6 +1298,27 @@
 </footer>
 
 <script>
+  // Lightbox
+  function openLightbox(src, alt) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    img.alt = alt;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e) {
+    if (e && e.target.closest('.lightbox-img-wrap') && !e.target.closest('.lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Make all slide images clickable
+  document.querySelectorAll('.slide-img-wrap img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+
   function toggleFaq(el) {
     const isOpen = el.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
