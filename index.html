@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix — Decision-Support Engine & Institutional Radar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.07);
+    --border-glow: rgba(0,245,212,0.3);
+    --cyan: #00f5d4;
+    --cyan-dim: rgba(0,245,212,0.15);
+    --purple: #9b5de5;
+    --purple-dim: rgba(155,93,229,0.15);
+    --orange: #ff6b35;
+    --text: #e8edf2;
+    --text-muted: #6b7a8d;
+    --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem; font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--text-muted); text-decoration: none;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--bg) !important;
+    background: var(--cyan);
+    padding: 0.55rem 1.4rem;
+    border-radius: 2px;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover {
+    box-shadow: 0 0 24px rgba(0,245,212,0.5) !important;
+    transform: translateY(-1px);
+    color: var(--bg) !important;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,212,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,212,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 900px; height: 500px;
+    background: radial-gradient(ellipse, rgba(0,245,212,0.07) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -60%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(155,93,229,0.06) 0%, transparent 70%);
+    top: 60%; left: 20%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--cyan);
+    border: 1px solid rgba(0,245,212,0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 2.5rem;
+    background: rgba(0,245,212,0.05);
+    animation: fadeInDown 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--cyan);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.9s ease 0.1s both;
+  }
+  .hero-title span {
+    background: linear-gradient(135deg, #00f5d4 0%, #9b5de5 60%, #ff6b35 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-family: var(--font-mono); font-size: 0.85rem;
+    color: var(--text-muted); letter-spacing: 0.06em;
+    max-width: 600px; margin: 0 auto 1.5rem;
+    line-height: 1.8;
+    animation: fadeInUp 0.9s ease 0.2s both;
+  }
+  .hero-tagline {
+    font-family: var(--font-display); font-size: 1.2rem; font-weight: 600;
+    color: var(--text); margin-bottom: 3rem;
+    animation: fadeInUp 0.9s ease 0.3s both;
+  }
+  .hero-tagline em { color: var(--cyan); font-style: normal; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg);
+    background: var(--cyan);
+    padding: 1.1rem 2.8rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 40px rgba(0,245,212,0.3), 0 0 80px rgba(0,245,212,0.1);
+    animation: fadeInUp 0.9s ease 0.4s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 60px rgba(0,245,212,0.5), 0 0 120px rgba(0,245,212,0.2);
+  }
+  .cta-btn:hover::after { opacity: 1; }
+  .cta-arrow { font-size: 1.1rem; transition: transform 0.2s; }
+  .cta-btn:hover .cta-arrow { transform: translateX(4px); }
+
+  .hero-stats {
+    display: flex; gap: 4rem; margin-top: 5rem;
+    animation: fadeInUp 0.9s ease 0.5s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-display); font-size: 2rem; font-weight: 800;
+    color: var(--cyan); display: block;
+  }
+  .stat-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:none} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 4rem; }
+  .section-tag {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-tag::before {
+    content: ''; width: 30px; height: 1px; background: var(--cyan);
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--text-muted); max-width: 560px; line-height: 1.75;
+  }
+
+  /* ── CONFRONTATION ── */
+  #confrontation { background: var(--bg2); }
+  .confront-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    max-width: 1100px; margin: 4rem auto 0;
+    border: 1px solid var(--border);
+  }
+  .confront-card {
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .confront-card.bad {
+    background: rgba(255,60,60,0.04);
+    border-right: 1px solid var(--border);
+  }
+  .confront-card.good {
+    background: rgba(0,245,212,0.04);
+  }
+  .confront-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .confront-card.bad::before { background: linear-gradient(90deg, #ff3c3c, transparent); }
+  .confront-card.good::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .card-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .confront-card.bad .card-label { color: #ff6b6b; }
+  .confront-card.good .card-label { color: var(--cyan); }
+  .card-title {
+    font-family: var(--font-display); font-size: 1.4rem; font-weight: 700;
+    margin-bottom: 2rem; line-height: 1.2;
+  }
+  .confront-card.bad .card-title { color: #ff8888; }
+  .confront-card.good .card-title { color: #fff; }
+  .card-items { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .card-items li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.9rem; line-height: 1.5; color: var(--text-muted);
+  }
+  .card-items li .icon {
+    flex-shrink: 0; margin-top: 2px; font-size: 0.75rem;
+  }
+  .confront-card.bad .icon { color: #ff6b6b; }
+  .confront-card.good .icon { color: var(--cyan); }
+
+  /* ── MTF ENGINE ── */
+  #engine { background: var(--bg); }
+  .engine-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .engine-visual {
+    position: relative; padding: 2.5rem;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .engine-visual::before {
+    content: '[ MTF ENGINE — ACTIVE ]';
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--cyan); letter-spacing: 0.1em;
+    position: absolute; top: -0.6rem; left: 1rem;
+    background: var(--bg3); padding: 0 0.5rem;
+  }
+  .timeframes {
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .tf-row {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .tf-label {
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+    width: 36px; color: var(--text-muted);
+  }
+  .tf-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 1px; }
+  .tf-bar { height: 100%; border-radius: 1px; position: relative; }
+  .tf-pct {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    width: 36px; text-align: right;
+  }
+  .tf-row:nth-child(1) .tf-bar { width: 85%; background: linear-gradient(90deg, var(--cyan), rgba(0,245,212,0.4)); }
+  .tf-row:nth-child(1) .tf-pct { color: var(--cyan); }
+  .tf-row:nth-child(2) .tf-bar { width: 78%; background: linear-gradient(90deg, #52d9f5, rgba(82,217,245,0.4)); }
+  .tf-row:nth-child(2) .tf-pct { color: #52d9f5; }
+  .tf-row:nth-child(3) .tf-bar { width: 52%; background: linear-gradient(90deg, var(--purple), rgba(155,93,229,0.4)); }
+  .tf-row:nth-child(3) .tf-pct { color: var(--purple); }
+  .tf-row:nth-child(4) .tf-bar { width: 32%; background: linear-gradient(90deg, var(--orange), rgba(255,107,53,0.4)); }
+  .tf-row:nth-child(4) .tf-pct { color: var(--orange); }
+  .tf-row:nth-child(5) .tf-bar { width: 25%; background: linear-gradient(90deg, #ff4444, rgba(255,68,68,0.4)); }
+  .tf-row:nth-child(5) .tf-pct { color: #ff4444; }
+  .global-score {
+    margin-top: 1.5rem; padding: 1rem;
+    background: rgba(0,245,212,0.06);
+    border: 1px solid rgba(0,245,212,0.2);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .gs-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; }
+  .gs-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--cyan); }
+  .gs-tag { font-family: var(--font-mono); font-size: 0.6rem; color: var(--orange); letter-spacing: 0.08em; }
+
+  .engine-text .section-title { margin-bottom: 1.5rem; }
+  .engine-points { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .engine-point {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.2rem; border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .engine-point:hover { border-color: rgba(0,245,212,0.2); }
+  .ep-num {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    color: var(--cyan); min-width: 28px;
+  }
+  .ep-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+  .ep-text strong { color: var(--text); font-weight: 500; }
+
+  /* ── FEATURES GRID ── */
+  #features { background: var(--bg2); }
+  .features-header { max-width: 1100px; margin: 0 auto 4rem; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    max-width: 1100px; margin: 0 auto;
+    background: var(--border);
+  }
+  .feat-card {
+    background: var(--bg2); padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .feat-card:hover { background: var(--bg3); }
+  .feat-icon {
+    width: 44px; height: 44px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .feat-icon::before {
+    content: ''; position: absolute; inset: -1px;
+    background: linear-gradient(135deg, var(--cyan), transparent);
+    opacity: 0; transition: opacity 0.3s;
+    border-radius: inherit;
+  }
+  .feat-card:hover .feat-icon::before { opacity: 0.3; }
+  .feat-title {
+    font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.75rem; color: #fff;
+  }
+  .feat-desc { font-size: 0.87rem; color: var(--text-muted); line-height: 1.7; }
+  .feat-tag {
+    display: inline-block; margin-top: 1.2rem;
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--cyan); border: 1px solid rgba(0,245,212,0.25);
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* ── DISCIPLINES ── */
+  #disciplines { background: var(--bg); }
+  .disc-inner { max-width: 1100px; margin: 0 auto; }
+  .disc-header { text-align: center; margin-bottom: 4rem; }
+  .disc-header .section-tag { justify-content: center; }
+  .disc-header .section-tag::before { display: none; }
+  .disc-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--border);
+  }
+  .disc-card {
+    background: var(--bg); padding: 2.5rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    transition: background 0.3s;
+  }
+  .disc-card:hover { background: var(--bg3); }
+  .disc-icon-wrap {
+    width: 52px; height: 52px; flex-shrink: 0;
+    border: 1px solid var(--border-glow);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    background: var(--cyan-dim);
+  }
+  .disc-content {}
+  .disc-title {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .disc-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── LEVELS ── */
+  #levels { background: var(--bg2); }
+  .levels-inner { max-width: 1100px; margin: 0 auto; }
+  .levels-track {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    margin-top: 4rem; background: var(--border);
+  }
+  .level-card {
+    background: var(--bg2); padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .level-card:hover { background: var(--bg3); }
+  .level-stripe {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  }
+  .level-card:nth-child(1) .level-stripe { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .level-card:nth-child(2) .level-stripe { background: var(--purple); box-shadow: 0 0 12px var(--purple); }
+  .level-card:nth-child(3) .level-stripe { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+  .level-num {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 0.4rem;
+  }
+  .level-title {
+    font-family: var(--font-display); font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 0.25rem;
+  }
+  .level-card:nth-child(1) .level-title { color: var(--cyan); }
+  .level-card:nth-child(2) .level-title { color: var(--purple); }
+  .level-card:nth-child(3) .level-title { color: var(--orange); }
+  .level-role {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .level-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── FAQ ── */
+  #faq { background: var(--bg); }
+  .faq-inner { max-width: 800px; margin: 0 auto; }
+  .faq-header { text-align: center; margin-bottom: 4rem; }
+  .faq-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .faq-item {
+    background: var(--bg); padding: 1.8rem 2rem;
+    cursor: pointer; transition: background 0.2s;
+    border-left: 2px solid transparent;
+  }
+  .faq-item:hover, .faq-item.open {
+    background: var(--bg3);
+    border-left-color: var(--cyan);
+  }
+  .faq-q {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    user-select: none;
+  }
+  .faq-chevron { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--cyan); }
+  .faq-a {
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.75;
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding-top 0.2s;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding-top: 1rem; }
+
+  /* ── PRICING ── */
+  #pricing {
+    background: var(--bg2);
+    text-align: center;
+  }
+  .pricing-inner { max-width: 500px; margin: 0 auto; }
+  .pricing-card {
+    margin: 3rem auto 0;
+    border: 1px solid rgba(0,245,212,0.3);
+    background: linear-gradient(135deg, rgba(0,245,212,0.04), rgba(155,93,229,0.04));
+    padding: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+  }
+  .pricing-glow {
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,245,212,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .plan-badge {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--cyan);
+    border: 1px solid rgba(0,245,212,0.3); padding: 0.3rem 0.8rem;
+    margin-bottom: 2rem;
+    background: rgba(0,245,212,0.05);
+  }
+  .plan-price {
+    font-family: var(--font-display); font-size: 5rem; font-weight: 800;
+    line-height: 1; color: #fff; margin-bottom: 0.25rem;
+  }
+  .plan-price sup {
+    font-size: 2rem; vertical-align: super; color: var(--cyan);
+  }
+  .plan-period {
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--text-muted); margin-bottom: 2.5rem;
+  }
+  .plan-features-list {
+    list-style: none; text-align: left; margin-bottom: 2.5rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .plan-features-list li {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem; color: var(--text-muted);
+  }
+  .plan-features-list li::before {
+    content: '✓'; color: var(--cyan); font-weight: 700; font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .cta-btn-lg {
+    display: block; width: 100%;
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg);
+    background: var(--cyan);
+    padding: 1.2rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 40px rgba(0,245,212,0.25);
+  }
+  .cta-btn-lg:hover {
+    box-shadow: 0 0 70px rgba(0,245,212,0.5);
+    transform: translateY(-2px);
+  }
+  .plan-fine {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim); margin-top: 1.2rem; letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg);
+    padding: 2.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: var(--font-display); font-size: 0.9rem; font-weight: 800;
+    letter-spacing: 0.15em; color: var(--cyan);
+  }
+  .footer-copy {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim); letter-spacing: 0.08em;
+  }
+
+  /* ── SNIPER TICKER ── */
+  .ticker-wrap {
+    background: rgba(0,245,212,0.05);
+    border-top: 1px solid rgba(0,245,212,0.15);
+    border-bottom: 1px solid rgba(0,245,212,0.15);
+    overflow: hidden; padding: 0.6rem 0;
+    margin-top: 5rem;
+  }
+  .ticker-inner {
+    display: flex; gap: 4rem;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; color: var(--cyan);
+    flex-shrink: 0;
+  }
+  .ticker-item span { color: var(--text-muted); margin: 0 0.5rem; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .engine-inner, .confront-grid, .features-grid, .disc-grid, .levels-track {
+      grid-template-columns: 1fr;
+    }
+    .confront-card.bad { border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Rainbow Matrix</div>
+  <div class="nav-links">
+    <a href="#confrontation">Philosophy</a>
+    <a href="#engine">Engine</a>
+    <a href="#features">Features</a>
+    <a href="#levels">Levels</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Join the Elite →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-badge">
+    Decision-Support Engine &amp; Institutional Radar
+  </div>
+
+  <h1 class="hero-title">
+    <span>RAINBOW</span><br>MATRIX
+  </h1>
+
+  <p class="hero-subtitle">
+    DECISION-SUPPORT ENGINE &amp; INSTITUTIONAL RADAR<br>
+    THE ELITE OPERATOR'S MANUAL
+  </p>
+
+  <p class="hero-tagline">
+    Upgrading the operator from <em>prey</em> to predator.
+  </p>
+
+  <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn">
+    Join the Elite <span class="cta-arrow">→</span>
+  </a>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">2.5yr</span>
+      <span class="stat-label">R&amp;D Engineering</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">50:1</span>
+      <span class="stat-label">Data Compression</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">Timeframe Layers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">0%</span>
+      <span class="stat-label">Repaint Policy</span>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-item">🎯 SNIPER ALERT<span>//</span>BTC/USDT 5M<span>//</span>GLOBAL SCORE: 91%</div>
+    <div class="ticker-item">⭐ STRONG SIGNAL<span>//</span>EUR/USD 1H<span>//</span>SCORE: 84%</div>
+    <div class="ticker-item">🛡️ DEFENSE ZONE<span>//</span>SPX 4H<span>//</span>POC WALL ACTIVE</div>
+    <div class="ticker-item">🎯 SNIPER ALERT<span>//</span>ETH/USDT 15M<span>//</span>OB + FVG CONFLUENCE</div>
+    <div class="ticker-item">♻️ REPIQUE<span>//</span>GOLD 1H<span>//</span>VWAP INSTITUTIONAL DEFENSE</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item">🎯 SNIPER ALERT<span>//</span>BTC/USDT 5M<span>//</span>GLOBAL SCORE: 91%</div>
+    <div class="ticker-item">⭐ STRONG SIGNAL<span>//</span>EUR/USD 1H<span>//</span>SCORE: 84%</div>
+    <div class="ticker-item">🛡️ DEFENSE ZONE<span>//</span>SPX 4H<span>//</span>POC WALL ACTIVE</div>
+    <div class="ticker-item">🎯 SNIPER ALERT<span>//</span>ETH/USDT 15M<span>//</span>OB + FVG CONFLUENCE</div>
+    <div class="ticker-item">♻️ REPIQUE<span>//</span>GOLD 1H<span>//</span>VWAP INSTITUTIONAL DEFENSE</div>
+  </div>
+</div>
+
+<!-- CONFRONTATION -->
+<section id="confrontation">
+  <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:1rem">
+    <div class="section-tag" style="justify-content:center"><span style="width:30px;height:1px;background:var(--cyan);display:inline-block"></span> The Philosophy</div>
+    <h2 class="section-title">Upgrading the operator<br>from <span style="color:var(--cyan)">prey</span> to predator.</h2>
+    <p class="section-desc" style="margin:0 auto">The market's biggest lie: that automation replaces judgment. We built the tool that amplifies it.</p>
+  </div>
+
+  <div class="confront-grid">
+    <div class="confront-card bad">
+      <div class="card-label">// The Problem</div>
+      <div class="card-title">The Retail Trap:<br>100% Automated Bots</div>
+      <ul class="card-items">
+        <li><span class="icon">✕</span> Rigid, hard-coded parameters blind to market context and regime changes.</li>
+        <li><span class="icon">✕</span> Fails catastrophically during volatility regime changes and Black Swan events.</li>
+        <li><span class="icon">✕</span> Surrenders control, leading to account liquidations and total loss.</li>
+      </ul>
+    </div>
+    <div class="confront-card good">
+      <div class="card-label">// The Solution</div>
+      <div class="card-title">The Paradigm Shift:<br>Analytical Exoskeleton</div>
+      <ul class="card-items">
+        <li><span class="icon">✓</span> 2.5 years of reverse-engineered institutional behavior modeling.</li>
+        <li><span class="icon">✓</span> Provides a real-time mathematical probability HUD with X-ray market vision.</li>
+        <li><span class="icon">✓</span> The human retains absolute control to pull the trigger. Always.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ENGINE -->
+<section id="engine">
+  <div class="engine-inner">
+    <div class="engine-visual">
+      <div class="timeframes">
+        <div class="tf-row">
+          <span class="tf-label">5M</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↑ 85%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">15M</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↑ 78%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">1H</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">→ 52%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">4H</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↓ 32%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">1D</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↓ 25%</span>
+        </div>
+      </div>
+      <div class="global-score">
+        <div>
+          <div class="gs-label">GLOBAL SCORE</div>
+          <div class="gs-tag">MOMENTUM ALERT — SELL</div>
+        </div>
+        <div class="gs-value">85%</div>
+      </div>
+    </div>
+
+    <div class="engine-text">
+      <div class="section-tag">The Core Technology</div>
+      <h2 class="section-title">The Multi-Timeframe<br><span style="color:var(--cyan)">Multiplicator.</span></h2>
+      <p class="section-desc">5 timeframes. 10 indicators each. 50 disconnected variables — compressed into a single master score.</p>
+      <div class="engine-points">
+        <div class="engine-point">
+          <span class="ep-num">01</span>
+          <p class="ep-text"><strong>5 Temporal Dimensions:</strong> Analyzes 5M, 15M, 1H, 4H, and 1D simultaneously, reading the full market structure at once.</p>
+        </div>
+        <div class="engine-point">
+          <span class="ep-num">02</span>
+          <p class="ep-text"><strong>The 6th Synthetic Timeframe:</strong> All 50 variables are mathematically fused into a single Global Score probability metric.</p>
+        </div>
+        <div class="engine-point">
+          <span class="ep-num">03</span>
+          <p class="ep-text"><strong>50:1 Compression Ratio:</strong> What would require 5 monitors and 50 indicators is collapsed into one clean interface.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES GRID -->
+<section id="features">
+  <div class="features-header">
+    <div class="section-tag">Institutional Engineering</div>
+    <h2 class="section-title">Built different.<br>Engineered for precision.</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-title">Zero Repaint Engineering</div>
+      <p class="feat-desc">Absolute historical truth. Signals are only confirmed and plotted on candle close. What you see in the history is permanently locked in — forever.</p>
+      <span class="feat-tag">Signal Confirmation: Locked // Integrity: 100%</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-title">Universal Asset Math</div>
+      <p class="feat-desc">Order flow and standard deviation mathematics apply universally. Adapts flawlessly to Crypto, Forex, Indices, and Equities. Crypto activates an exclusive Open Interest derivative sensor.</p>
+      <span class="feat-tag">Active // No Subscription Required</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌍</div>
+      <div class="feat-title">Native Global Localization</div>
+      <p class="feat-desc">The HUD is natively engineered in 5 languages: English, Portuguese, Spanish, Russian, and Mandarin. Elite intelligence with no language barrier.</p>
+      <span class="feat-tag">EN · PT · ES · RU · 中文</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎯</div>
+      <div class="feat-title">Sniper Alert System</div>
+      <p class="feat-desc">Perfect confluence of an Extreme Global Score + SMC Wall Touch triggers a SNIPER alert. Mobile push notifications filter only the highest-probability setups.</p>
+      <span class="feat-tag">Lethal Probability // Zero Emotional Bias</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🧲</div>
+      <div class="feat-title">Institutional Gravity Engine</div>
+      <p class="feat-desc">Macro levels from Weekly and Daily charts project their gravitational mass onto micro timeframes. POC walls either attract price like a magnet or repel it as solid concrete.</p>
+      <span class="feat-tag">Weekly POC Weight: 5 // 4H POC Weight: 2</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌈</div>
+      <div class="feat-title">Cognitive Visual HUD</div>
+      <p class="feat-desc">Thermal zones replace cold indicator lines. The Rainbow Cloud pulses and glows, alerting your brain in milliseconds — because visual processing is 1000× faster than reading numbers.</p>
+      <span class="feat-tag">Cognitive Load: Minimized // Reaction Speed: Maximized</span>
+    </div>
+  </div>
+</section>
+
+<!-- DISCIPLINES -->
+<section id="disciplines">
+  <div class="disc-inner">
+    <div class="disc-header">
+      <div class="section-tag">Absolute Confluence</div>
+      <h2 class="section-title">Crossing analytical disciplines<br>to locate structural truth.</h2>
+    </div>
+    <div class="disc-grid">
+      <div class="disc-card">
+        <div class="disc-icon-wrap">📊</div>
+        <div class="disc-content">
+          <div class="disc-title">Institutional VWAP</div>
+          <p class="disc-desc">Tracks the exact average price where Big Players are positioned. The line glows with intensity as price approaches an institutional defense zone.</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">📈</div>
+        <div class="disc-content">
+          <div class="disc-title">Volume Profile (POC/VAH/VAL)</div>
+          <p class="disc-desc">Maps Point of Control and Value Areas where real money changes hands. The true map of institutional supply and demand.</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">⚡</div>
+        <div class="disc-content">
+          <div class="disc-title">CVD &amp; Squeeze</div>
+          <p class="disc-desc">Measures order flow aggression via Cumulative Volume Delta — identifying exactly who is hitting the market and with what force.</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">🔗</div>
+        <div class="disc-content">
+          <div class="disc-title">Derivatives Tracking</div>
+          <p class="disc-desc">Monitors Open Interest and Funding Rates to locate trapped retail traders and impending liquidation squeezes before they happen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEVELS -->
+<section id="levels">
+  <div class="levels-inner">
+    <div class="section-tag">Built For Everyone</div>
+    <h2 class="section-title">From visual simplicity<br>to profound institutional depth.</h2>
+    <p class="section-desc">The system speaks to you at your level. When you're ready to go deeper, the machine is already there waiting.</p>
+    <div class="levels-track">
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// LEVEL 01</div>
+        <div class="level-title">Beginner</div>
+        <div class="level-role">The Recruit</div>
+        <p class="level-desc">Follow the thermal color translation and the percentage output of the Tactical Panel. Let the HUD do the heavy lifting. No experience required.</p>
+      </div>
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// LEVEL 02</div>
+        <div class="level-title">Operator</div>
+        <div class="level-role">The Intermediate</div>
+        <p class="level-desc">Filter automated Sniper notifications directly to your mobile device, ignoring market noise. Toggle visual layers to match your specific trading style.</p>
+      </div>
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// LEVEL 03</div>
+        <div class="level-title">Predator</div>
+        <div class="level-role">The Professional</div>
+        <p class="level-desc">Manually adjust timeframe inputs, dissect the Institutional Gravity Engine, and execute trades mapped flawlessly against validated volume blocks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div class="section-tag" style="justify-content:center"><span></span>Frequently Asked</div>
+      <h2 class="section-title">Questions from the field.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Does Rainbow Matrix work on TradingView's free plan? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Yes — with absolute perfection. Because our code consolidates all intelligence inside a single master script, you don't need expensive TradingView premium subscriptions. One script. Full power.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Is it a bot that trades my account automatically? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">No. Rainbow Matrix is a Decision-Support Engine. It processes institutional data and emits precise signals so that you — as the operator — validate the entry. We protect your capital by keeping you in absolute control.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Does it work on assets other than Crypto? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Yes. The mathematics of order flow and standard deviation are universal. The script adapts automatically to Forex, Indices, and Equities. For Crypto specifically, the engine activates an exclusive internal Open Interest derivative sensor.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do the Sniper and Strong signals repaint? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Our engineering policy is Zero Repaint. A signal is only plotted and confirmed on the candle close. What you see in history is exactly what happened in real time. Permanent. Locked. Immutable.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What if I'm a complete beginner? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">The system was built to be read in levels. As a beginner, simply follow the color translation and the Tactical Panel percentage. When you're ready to go deeper, the institutional blocks and gravity engine will already be there waiting for you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-inner">
+    <div class="section-tag" style="justify-content:center"><span></span>Elite Access</div>
+    <h2 class="section-title">One tool.<br>Infinite edge.</h2>
+    <div class="pricing-card">
+      <div class="pricing-glow"></div>
+      <div class="plan-badge">// Elite Access</div>
+      <div class="plan-price"><sup>$</sup>199</div>
+      <div class="plan-period">per quarter · billed every 3 months</div>
+      <ul class="plan-features-list">
+        <li>Full Rainbow Matrix script — all layers unlocked</li>
+        <li>Multi-Timeframe Engine (5 TF → Global Score)</li>
+        <li>Institutional Gravity Engine (MGI)</li>
+        <li>Smart Money Concepts — OB &amp; FVG auto-mapping</li>
+        <li>Sniper Alert System — mobile push notifications</li>
+        <li>Native HUD in 5 languages</li>
+        <li>TradingView free plan compatible</li>
+        <li>Zero Repaint — 100% historical integrity</li>
+      </ul>
+      <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn-lg">
+        Join the Elite →
+      </a>
+      <p class="plan-fine">Cancel anytime. No contracts. No lock-in.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">RAINBOW MATRIX</div>
+  <div class="footer-copy">© 2025 Rainbow Matrix. All rights reserved. Not financial advice.</div>
+</footer>
+
+<script>
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Intersection Observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feat-card, .disc-card, .level-card, .engine-point, .confront-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
