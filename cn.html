@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix — 决策支持引擎与机构雷达</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.07);
+    --border-glow: rgba(0,245,212,0.3);
+    --cyan: #00f5d4;
+    --cyan-dim: rgba(0,245,212,0.15);
+    --purple: #9b5de5;
+    --purple-dim: rgba(155,93,229,0.15);
+    --orange: #ff6b35;
+    --text: #e8edf2;
+    --text-muted: #6b7a8d;
+    --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem; font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--text-muted); text-decoration: none;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--bg) !important;
+    background: var(--cyan);
+    padding: 0.55rem 1.4rem;
+    border-radius: 2px;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover {
+    box-shadow: 0 0 24px rgba(0,245,212,0.5) !important;
+    transform: translateY(-1px);
+    color: var(--bg) !important;
+  }
+  /* ── LANGUAGE SWITCHER ── */
+  .lang-switcher {
+    display: flex; gap: 0.5rem; align-items: center;
+    font-family: var(--font-mono); font-size: 0.65rem;
+    border-left: 1px solid var(--border);
+    padding-left: 1.5rem; margin-left: 0.5rem;
+  }
+  .lang-link {
+    color: var(--text-muted); text-decoration: none;
+    transition: color 0.2s; cursor: pointer;
+  }
+  .lang-link:hover, .lang-link.active {
+    color: var(--cyan); font-weight: 700;
+  }
+  .lang-sep { color: var(--border); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,212,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,212,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 900px; height: 500px;
+    background: radial-gradient(ellipse, rgba(0,245,212,0.07) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -60%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(155,93,229,0.06) 0%, transparent 70%);
+    top: 60%; left: 20%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--cyan);
+    border: 1px solid rgba(0,245,212,0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 2.5rem;
+    background: rgba(0,245,212,0.05);
+    animation: fadeInDown 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--cyan);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.9s ease 0.1s both;
+  }
+  .hero-title span {
+    background: linear-gradient(135deg, #00f5d4 0%, #9b5de5 60%, #ff6b35 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-family: var(--font-mono); font-size: 0.85rem;
+    color: var(--text-muted); letter-spacing: 0.06em;
+    max-width: 600px; margin: 0 auto 1.5rem;
+    line-height: 1.8;
+    animation: fadeInUp 0.9s ease 0.2s both;
+  }
+  
+  .hero-video {
+    width: 100%; max-width: 800px; margin: 2rem auto 3rem;
+    background: var(--bg2); border: 1px solid var(--border-glow);
+    padding: 0.5rem; border-radius: 8px;
+    box-shadow: 0 0 40px rgba(0,245,212,0.1);
+    position: relative; z-index: 10;
+    animation: fadeInUp 0.9s ease 0.3s both;
+  }
+  .hero-video .video-glow {
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  }
+  .hero-video-wrapper {
+    position: relative; padding-bottom: 56.25%; height: 0; border-radius: 4px; overflow: hidden;
+  }
+  .hero-video-wrapper iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-display); font-size: 1.2rem; font-weight: 600;
+    color: var(--text); margin-bottom: 3rem;
+    animation: fadeInUp 0.9s ease 0.4s both;
+  }
+  .hero-tagline em { color: var(--cyan); font-style: normal; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg);
+    background: var(--cyan);
+    padding: 1.1rem 2.8rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 40px rgba(0,245,212,0.3), 0 0 80px rgba(0,245,212,0.1);
+    animation: fadeInUp 0.9s ease 0.5s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 60px rgba(0,245,212,0.5), 0 0 120px rgba(0,245,212,0.2);
+  }
+  .cta-btn:hover::after { opacity: 1; }
+  .cta-arrow { font-size: 1.1rem; transition: transform 0.2s; }
+  .cta-btn:hover .cta-arrow { transform: translateX(4px); }
+
+  .hero-stats {
+    display: flex; gap: 4rem; margin-top: 5rem;
+    animation: fadeInUp 0.9s ease 0.6s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-display); font-size: 2rem; font-weight: 800;
+    color: var(--cyan); display: block;
+  }
+  .stat-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:none} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 4rem; }
+  .section-tag {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-tag::before {
+    content: ''; width: 30px; height: 1px; background: var(--cyan);
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--text-muted); max-width: 560px; line-height: 1.75;
+  }
+
+  /* ── CONFRONTATION ── */
+  #confrontation { background: var(--bg2); }
+  .confront-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    max-width: 1100px; margin: 4rem auto 0;
+    border: 1px solid var(--border);
+  }
+  .confront-card {
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .confront-card.bad {
+    background: rgba(255,60,60,0.04);
+    border-right: 1px solid var(--border);
+  }
+  .confront-card.good {
+    background: rgba(0,245,212,0.04);
+  }
+  .confront-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .confront-card.bad::before { background: linear-gradient(90deg, #ff3c3c, transparent); }
+  .confront-card.good::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .card-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .confront-card.bad .card-label { color: #ff6b6b; }
+  .confront-card.good .card-label { color: var(--cyan); }
+  .card-title {
+    font-family: var(--font-display); font-size: 1.4rem; font-weight: 700;
+    margin-bottom: 2rem; line-height: 1.2;
+  }
+  .confront-card.bad .card-title { color: #ff8888; }
+  .confront-card.good .card-title { color: #fff; }
+  .card-items { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .card-items li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.9rem; line-height: 1.5; color: var(--text-muted);
+  }
+  .card-items li .icon {
+    flex-shrink: 0; margin-top: 2px; font-size: 0.75rem;
+  }
+  .confront-card.bad .icon { color: #ff6b6b; }
+  .confront-card.good .icon { color: var(--cyan); }
+
+  /* ── MTF ENGINE ── */
+  #engine { background: var(--bg); }
+  .engine-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .engine-visual {
+    position: relative; padding: 2.5rem;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .engine-visual::before {
+    content: '[ MTF 引擎 — 已激活 ]';
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--cyan); letter-spacing: 0.1em;
+    position: absolute; top: -0.6rem; left: 1rem;
+    background: var(--bg3); padding: 0 0.5rem;
+  }
+  .timeframes {
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .tf-row {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .tf-label {
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+    width: 36px; color: var(--text-muted);
+  }
+  .tf-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 1px; }
+  .tf-bar { height: 100%; border-radius: 1px; position: relative; }
+  .tf-pct {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    width: 36px; text-align: right;
+  }
+  .tf-row:nth-child(1) .tf-bar { width: 85%; background: linear-gradient(90deg, var(--cyan), rgba(0,245,212,0.4)); }
+  .tf-row:nth-child(1) .tf-pct { color: var(--cyan); }
+  .tf-row:nth-child(2) .tf-bar { width: 78%; background: linear-gradient(90deg, #52d9f5, rgba(82,217,245,0.4)); }
+  .tf-row:nth-child(2) .tf-pct { color: #52d9f5; }
+  .tf-row:nth-child(3) .tf-bar { width: 52%; background: linear-gradient(90deg, var(--purple), rgba(155,93,229,0.4)); }
+  .tf-row:nth-child(3) .tf-pct { color: var(--purple); }
+  .tf-row:nth-child(4) .tf-bar { width: 32%; background: linear-gradient(90deg, var(--orange), rgba(255,107,53,0.4)); }
+  .tf-row:nth-child(4) .tf-pct { color: var(--orange); }
+  .tf-row:nth-child(5) .tf-bar { width: 25%; background: linear-gradient(90deg, #ff4444, rgba(255,68,68,0.4)); }
+  .tf-row:nth-child(5) .tf-pct { color: #ff4444; }
+  .global-score {
+    margin-top: 1.5rem; padding: 1rem;
+    background: rgba(0,245,212,0.06);
+    border: 1px solid rgba(0,245,212,0.2);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .gs-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; }
+  .gs-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--cyan); }
+  .gs-tag { font-family: var(--font-mono); font-size: 0.6rem; color: var(--orange); letter-spacing: 0.08em; }
+
+  .engine-text .section-title { margin-bottom: 1.5rem; }
+  .engine-points { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .engine-point {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.2rem; border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .engine-point:hover { border-color: rgba(0,245,212,0.2); }
+  .ep-num {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    color: var(--cyan); min-width: 28px;
+  }
+  .ep-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+  .ep-text strong { color: var(--text); font-weight: 500; }
+
+  /* ── FEATURES GRID ── */
+  #features { background: var(--bg2); }
+  .features-header { max-width: 1100px; margin: 0 auto 4rem; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    max-width: 1100px; margin: 0 auto;
+    background: var(--border);
+  }
+  .feat-card {
+    background: var(--bg2); padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .feat-card:hover { background: var(--bg3); }
+  .feat-icon {
+    width: 44px; height: 44px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .feat-icon::before {
+    content: ''; position: absolute; inset: -1px;
+    background: linear-gradient(135deg, var(--cyan), transparent);
+    opacity: 0; transition: opacity 0.3s;
+    border-radius: inherit;
+  }
+  .feat-card:hover .feat-icon::before { opacity: 0.3; }
+  .feat-title {
+    font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.75rem; color: #fff;
+  }
+  .feat-desc { font-size: 0.87rem; color: var(--text-muted); line-height: 1.7; }
+  .feat-tag {
+    display: inline-block; margin-top: 1.2rem;
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--cyan); border: 1px solid rgba(0,245,212,0.25);
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* ── DISCIPLINES ── */
+  #disciplines { background: var(--bg); }
+  .disc-inner { max-width: 1100px; margin: 0 auto; }
+  .disc-header { text-align: center; margin-bottom: 4rem; }
+  .disc-header .section-tag { justify-content: center; }
+  .disc-header .section-tag::before { display: none; }
+  .disc-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--border);
+  }
+  .disc-card {
+    background: var(--bg); padding: 2.5rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    transition: background 0.3s;
+  }
+  .disc-card:hover { background: var(--bg3); }
+  .disc-icon-wrap {
+    width: 52px; height: 52px; flex-shrink: 0;
+    border: 1px solid var(--border-glow);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    background: var(--cyan-dim);
+  }
+  .disc-content {}
+  .disc-title {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .disc-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── LEVELS ── */
+  #levels { background: var(--bg2); }
+  .levels-inner { max-width: 1100px; margin: 0 auto; }
+  .levels-track {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    margin-top: 4rem; background: var(--border);
+  }
+  .level-card {
+    background: var(--bg2); padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .level-card:hover { background: var(--bg3); }
+  .level-stripe {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  }
+  .level-card:nth-child(1) .level-stripe { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .level-card:nth-child(2) .level-stripe { background: var(--purple); box-shadow: 0 0 12px var(--purple); }
+  .level-card:nth-child(3) .level-stripe { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+  .level-num {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 0.4rem;
+  }
+  .level-title {
+    font-family: var(--font-display); font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 0.25rem;
+  }
+  .level-card:nth-child(1) .level-title { color: var(--cyan); }
+  .level-card:nth-child(2) .level-title { color: var(--purple); }
+  .level-card:nth-child(3) .level-title { color: var(--orange); }
+  .level-role {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .level-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── FAQ ── */
+  #faq { background: var(--bg); }
+  .faq-inner { max-width: 800px; margin: 0 auto; }
+  .faq-header { text-align: center; margin-bottom: 4rem; }
+  .faq-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .faq-item {
+    background: var(--bg); padding: 1.8rem 2rem;
+    cursor: pointer; transition: background 0.2s;
+    border-left: 2px solid transparent;
+  }
+  .faq-item:hover, .faq-item.open {
+    background: var(--bg3);
+    border-left-color: var(--cyan);
+  }
+  .faq-q {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    user-select: none;
+  }
+  .faq-chevron { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--cyan); }
+  .faq-a {
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.75;
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding-top 0.2s;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding-top: 1rem; }
+
+  /* ── PRICING ── */
+  #pricing {
+    background: var(--bg2);
+    text-align: center;
+  }
+  .pricing-inner { max-width: 500px; margin: 0 auto; }
+  .pricing-card {
+    margin: 3rem auto 0;
+    border: 1px solid rgba(0,245,212,0.3);
+    background: linear-gradient(135deg, rgba(0,245,212,0.04), rgba(155,93,229,0.04));
+    padding: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+  }
+  .pricing-glow {
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,245,212,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .plan-badge {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--cyan);
+    border: 1px solid rgba(0,245,212,0.3); padding: 0.3rem 0.8rem;
+    margin-bottom: 2rem;
+    background: rgba(0,245,212,0.05);
+  }
+  .plan-price {
+    font-family: var(--font-display); font-size: 5rem; font-weight: 800;
+    line-height: 1; color: #fff; margin-bottom: 0.25rem;
+  }
+  .plan-price sup {
+    font-size: 2rem; vertical-align: super; color: var(--cyan);
+  }
+  .plan-period {
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--text-muted); margin-bottom: 2.5rem;
+  }
+  .plan-features-list {
+    list-style: none; text-align: left; margin-bottom: 2.5rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .plan-features-list li {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem; color: var(--text-muted);
+  }
+  .plan-features-list li::before {
+    content: '✓'; color: var(--cyan); font-weight: 700; font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .cta-btn-lg {
+    display: block; width: 100%;
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg);
+    background: var(--cyan);
+    padding: 1.2rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 40px rgba(0,245,212,0.25);
+  }
+  .cta-btn-lg:hover {
+    box-shadow: 0 0 70px rgba(0,245,212,0.5);
+    transform: translateY(-2px);
+  }
+  .plan-fine {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim); margin-top: 1.2rem; letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg);
+    padding: 2.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: var(--font-display); font-size: 0.9rem; font-weight: 800;
+    letter-spacing: 0.15em; color: var(--cyan);
+  }
+  .footer-copy {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim); letter-spacing: 0.08em;
+  }
+
+  /* ── SNIPER TICKER ── */
+  .ticker-wrap {
+    background: rgba(0,245,212,0.05);
+    border-top: 1px solid rgba(0,245,212,0.15);
+    border-bottom: 1px solid rgba(0,245,212,0.15);
+    overflow: hidden; padding: 0.6rem 0;
+    margin-top: 5rem;
+  }
+  .ticker-inner {
+    display: flex; gap: 4rem;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; color: var(--cyan);
+    flex-shrink: 0;
+  }
+  .ticker-item span { color: var(--text-muted); margin: 0 0.5rem; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+  }
+  .lightbox-overlay.active { opacity: 1; pointer-events: all; }
+  .lightbox-img-wrap {
+    position: relative;
+    max-width: 90vw; max-height: 90vh;
+    transform: scale(0.92);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .lightbox-overlay.active .lightbox-img-wrap { transform: scale(1); }
+  .lightbox-img-wrap::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border: 1px solid rgba(0,245,212,0.4);
+    pointer-events: none; z-index: 1;
+  }
+  .lightbox-corner {
+    position: absolute; width: 16px; height: 16px;
+    border-color: var(--cyan); border-style: solid; z-index: 2;
+  }
+  .lightbox-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .lightbox-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .lightbox-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .lightbox-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+  .lightbox-img-wrap img {
+    display: block;
+    max-width: 90vw; max-height: 85vh;
+    object-fit: contain;
+  }
+  .lightbox-close {
+    position: absolute; top: -2.5rem; right: 0;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--text-muted); letter-spacing: 0.1em;
+    cursor: pointer; transition: color 0.2s; user-select: none;
+  }
+  .lightbox-close:hover { color: var(--cyan); }
+  .lightbox-hint {
+    position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--text-dim); letter-spacing: 0.1em; white-space: nowrap;
+  }
+  .slide-img-wrap img { cursor: zoom-in; }
+
+  /* ── SLIDES GALLERY ── */
+  #gallery { background: var(--bg); }
+  .gallery-inner { max-width: 1200px; margin: 0 auto; }
+  .gallery-header { margin-bottom: 4rem; }
+
+  .slide-showcase {
+    display: flex; flex-direction: column; gap: 6rem;
+  }
+  .slide-block {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .slide-block.reverse { direction: rtl; }
+  .slide-block.reverse > * { direction: ltr; }
+
+  .slide-block.full-width {
+    grid-template-columns: 1fr;
+    max-width: 900px; margin: 0 auto;
+  }
+
+  .slide-img-wrap {
+    position: relative;
+  }
+  .slide-img-wrap::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border: 1px solid rgba(0,245,212,0.2);
+    pointer-events: none; z-index: 1;
+  }
+  .slide-img-wrap::after {
+    content: '';
+    position: absolute; top: 8px; left: 8px; right: -8px; bottom: -8px;
+    border: 1px solid rgba(0,245,212,0.07);
+    z-index: 0;
+  }
+  .slide-img-wrap img {
+    width: 100%; display: block;
+    position: relative; z-index: 1;
+    transition: transform 0.4s ease;
+  }
+  .slide-img-wrap:hover img { transform: scale(1.02); }
+
+  .slide-corner {
+    position: absolute; width: 12px; height: 12px;
+    border-color: var(--cyan); border-style: solid; z-index: 2;
+  }
+  .slide-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .slide-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .slide-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .slide-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+  .slide-text {}
+  .slide-num {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.2em; color: var(--cyan);
+    margin-bottom: 0.75rem; display: block;
+  }
+  .slide-title {
+    font-family: var(--font-display); font-size: 1.6rem; font-weight: 800;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .slide-desc {
+    font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .slide-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .slide-tag-item {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid var(--border); color: var(--text-muted);
+    padding: 0.3rem 0.7rem;
+  }
+  .slide-tag-item.accent {
+    border-color: rgba(0,245,212,0.3); color: var(--cyan);
+    background: rgba(0,245,212,0.05);
+  }
+
+  /* ── RESPONSIVE & MOBILE MENU ── */
+  .mobile-toggle { display: none; color: var(--cyan); font-size: 1.8rem; cursor: pointer; user-select: none; }
+  
+  @media(max-width: 900px) {
+    nav { padding: 1rem 1.5rem; flex-wrap: wrap; }
+    .mobile-toggle { display: block; }
+    .nav-links { 
+      display: none; width: 100%; flex-direction: column; 
+      margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+      gap: 1.5rem; align-items: center; 
+    }
+    .nav-links.active { display: flex !important; animation: fadeInDown 0.3s ease; }
+    .lang-switcher { border-left: none; padding-left: 0; margin-left: 0; justify-content: center; width: 100%; }
+    
+    /* Correção de Estouro de Margens no Telemóvel */
+    .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .plan-price { font-size: 3.5rem; }
+    
+    section { padding: 5rem 1.5rem; }
+    .engine-inner, .confront-grid, .features-grid, .disc-grid, .levels-track,
+    .slide-block { grid-template-columns: 1fr; }
+    .slide-block.reverse { direction: ltr; }
+    .confront-card.bad { border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Rainbow Matrix</div>
+  
+  <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
+  
+  <div class="nav-links" id="nav-links">
+    <a href="#confrontation">核心理念</a>
+    <a href="#engine">数据引擎</a>
+    <a href="#features">技术架构</a>
+    <a href="#levels">适用级别</a>
+    <a href="#gallery">系统展示</a>
+    <a href="#faq">常见问题</a>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">免费试用 →</a>
+    
+    <div class="lang-switcher">
+      <a href="index.html" class="lang-link">EN</a><span class="lang-sep">|</span>
+      <a href="pt.html" class="lang-link">PT</a><span class="lang-sep">|</span>
+      <a href="es.html" class="lang-link">ES</a><span class="lang-sep">|</span>
+      <a href="ru.html" class="lang-link">RU</a><span class="lang-sep">|</span>
+      <a href="cn.html" class="lang-link active">中文</a>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-badge">
+    决策支持引擎与机构雷达
+  </div>
+
+  <h1 class="hero-title">
+    <span>RAINBOW</span><br>MATRIX
+  </h1>
+
+  <p class="hero-subtitle">
+    决策支持引擎与机构分析雷达<br>
+    精英交易员操作手册
+  </p>
+
+  <div class="hero-video">
+    <div class="video-glow"></div>
+    <div class="hero-video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/DvnjB8BQHsQ?rel=0" 
+        title="Rainbow Matrix Briefing" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <p class="hero-tagline">
+    将交易员从<em>猎物</em>升级为掠食者。
+  </p>
+
+  <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn">
+    开始7天免费试用 <span class="cta-arrow">→</span>
+  </a>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">2.5年</span>
+      <span class="stat-label">研发工程</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">50:1</span>
+      <span class="stat-label">数据压缩率</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">时间周期层</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">0%</span>
+      <span class="stat-label">零重绘策略</span>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-item">🎯 狙击警报<span>//</span>BTC/USDT 5M<span>//</span>全局评分: 91%</div>
+    <div class="ticker-item">⭐ 强烈信号<span>//</span>EUR/USD 1H<span>//</span>评分: 84%</div>
+    <div class="ticker-item">🛡️ 防御区域<span>//</span>SPX 4H<span>//</span>POC墙已激活</div>
+    <div class="ticker-item">🎯 狙击警报<span>//</span>ETH/USDT 15M<span>//</span>OB + FVG 共振</div>
+    <div class="ticker-item">♻️ 价格回调<span>//</span>GOLD 1H<span>//</span>VWAP 机构防御</div>
+    <div class="ticker-item">🎯 狙击警报<span>//</span>BTC/USDT 5M<span>//</span>全局评分: 91%</div>
+    <div class="ticker-item">⭐ 强烈信号<span>//</span>EUR/USD 1H<span>//</span>评分: 84%</div>
+    <div class="ticker-item">🛡️ 防御区域<span>//</span>SPX 4H<span>//</span>POC墙已激活</div>
+    <div class="ticker-item">🎯 狙击警报<span>//</span>ETH/USDT 15M<span>//</span>OB + FVG 共振</div>
+    <div class="ticker-item">♻️ 价格回调<span>//</span>GOLD 1H<span>//</span>VWAP 机构防御</div>
+  </div>
+</div>
+
+<section id="confrontation">
+  <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:1rem">
+    <div class="section-tag" style="justify-content:center"><span style="width:30px;height:1px;background:var(--cyan);display:inline-block"></span> 核心理念</div>
+    <h2 class="section-title">将交易员<br>从<span style="color:var(--cyan)">猎物</span>进化为掠食者。</h2>
+    <p class="section-desc" style="margin:0 auto">市场最大的谎言：自动化可以取代人的判断。我们打造的是放大你判断力的武器。</p>
+  </div>
+
+  <div class="confront-grid">
+    <div class="confront-card bad">
+      <div class="card-label">// 现存问题</div>
+      <div class="card-title">散户陷阱：<br>100%全自动交易机器人</div>
+      <ul class="card-items">
+        <li><span class="icon">✕</span> 僵化的硬编码参数，对市场背景和体制转变视而不见。</li>
+        <li><span class="icon">✕</span> 在高波动性和“黑天鹅”事件中遭遇灾难性失败。</li>
+        <li><span class="icon">✕</span> 完全交出控制权，最终导致账户爆仓和资金清零。</li>
+      </ul>
+    </div>
+    <div class="confront-card good">
+      <div class="card-label">// 我们的解决方案</div>
+      <div class="card-title">范式转换：<br>分析型外骨骼系统</div>
+      <ul class="card-items">
+        <li><span class="icon">✓</span> 基于2.5年的机构行为逆向工程建模。</li>
+        <li><span class="icon">✓</span> 提供实时数学概率HUD，赋予你X光般的市场透视能力。</li>
+        <li><span class="icon">✓</span> 交易员始终保留扣动扳机的绝对控制权。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="engine">
+  <div class="engine-inner">
+    <div class="engine-visual">
+      <div class="timeframes">
+        <div class="tf-row">
+          <span class="tf-label">5M</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↑ 85%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">15M</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↑ 78%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">1H</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">→ 52%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">4H</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↓ 32%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">1D</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↓ 25%</span>
+        </div>
+      </div>
+      <div class="global-score">
+        <div>
+          <div class="gs-label">全局评分 (GLOBAL SCORE)</div>
+          <div class="gs-tag">动能警报 — 卖出</div>
+        </div>
+        <div class="gs-value">85%</div>
+      </div>
+    </div>
+
+    <div class="engine-text">
+      <div class="section-tag">核心科技</div>
+      <h2 class="section-title">多时间周期<br><span style="color:var(--cyan)">乘数引擎。</span></h2>
+      <p class="section-desc">5个时间周期。每个周期10个指标。50个独立变量 — 全部压缩成一个主评分。</p>
+      <div class="engine-points">
+        <div class="engine-point">
+          <span class="ep-num">01</span>
+          <p class="ep-text"><strong>五维时间分析：</strong> 同时解析 5M、15M、1H、4H 和 1D 周期，一眼看穿完整的市场结构。</p>
+        </div>
+        <div class="engine-point">
+          <span class="ep-num">02</span>
+          <p class="ep-text"><strong>第6个合成时间周期：</strong> 将所有50个变量进行数学融合，输出为单一的 Global Score 概率指标。</p>
+        </div>
+        <div class="engine-point">
+          <span class="ep-num">03</span>
+          <p class="ep-text"><strong>50:1 压缩比率：</strong> 曾经需要5台显示器和50个指标才能完成的分析，现在只需一个干净的界面。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="features-header">
+    <div class="section-tag">机构级工程</div>
+    <h2 class="section-title">与众不同。<br>为极致精准而生。</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-title">零重绘架构 (Zero Repaint)</div>
+      <p class="feat-desc">绝对的历史真相。信号仅在K线收盘时确认并绘制。你在历史记录中看到的内容将被永久锁定。</p>
+      <span class="feat-tag">信号确认: 永久锁定 // 完整性: 100%</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-title">全资产通用算法</div>
+      <p class="feat-desc">订单流和标准差的数学逻辑是通用的。完美适配加密货币、外汇、指数和股票。加密市场将激活专属的持仓量(Open Interest)衍生品传感器。</p>
+      <span class="feat-tag">已激活 // 无需额外订阅</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌍</div>
+      <div class="feat-title">原生全球本地化</div>
+      <p class="feat-desc">系统原生支持5种语言：英语、葡萄牙语、西班牙语、俄语和中文。享受无语言障碍的精英情报。</p>
+      <span class="feat-tag">EN · PT · ES · RU · 中文</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎯</div>
+      <div class="feat-title">狙击警报系统 (Sniper Alert)</div>
+      <p class="feat-desc">极端的全局评分与SMC墙体触碰的完美共振，将触发 SNIPER 警报。手机推送通知仅过滤最高概率的交易机会。</p>
+      <span class="feat-tag">致命概率 // 零情绪偏差</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🧲</div>
+      <div class="feat-title">机构引力引擎 (MGI)</div>
+      <p class="feat-desc">周线和日线图表的宏观水平将其引力质量投射到微观时间周期上。POC墙体要么像磁铁一样吸引价格，要么像混凝土一样将其击退。</p>
+      <span class="feat-tag">周线 POC 权重: 5 // 4H POC 权重: 2</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌈</div>
+      <div class="feat-title">认知视觉 HUD</div>
+      <p class="feat-desc">热力区域取代了冰冷的指标线。Rainbow Cloud (彩虹云) 会脉动发光，在几毫秒内警报你的大脑——因为视觉处理速度比读取数字快1000倍。</p>
+      <span class="feat-tag">认知负荷: 最低 // 反应速度: 极速</span>
+    </div>
+  </div>
+</section>
+
+<section id="disciplines">
+  <div class="disc-inner">
+    <div class="disc-header">
+      <div class="section-tag">绝对共振</div>
+      <h2 class="section-title">跨越四大分析体系，<br>锁定结构性真相。</h2>
+    </div>
+    <div class="disc-grid">
+      <div class="disc-card">
+        <div class="disc-icon-wrap">📊</div>
+        <div class="disc-content">
+          <div class="disc-title">机构 VWAP</div>
+          <p class="disc-desc">追踪大资金建仓的精确平均价格。当价格接近机构防御区域时，该线将发出高亮警报。</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">📈</div>
+        <div class="disc-content">
+          <div class="disc-title">成交量分布 (POC/VAH/VAL)</div>
+          <p class="disc-desc">绘制真实资金换手的控制点(POC)和价值区域。这是机构供需的真实地图。</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">⚡</div>
+        <div class="disc-content">
+          <div class="disc-title">CVD &amp; Squeeze (挤压)</div>
+          <p class="disc-desc">通过累计成交量差(CVD)测量订单流的攻击性——精准识别是谁在攻击市场，以及他们的力度。</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">🔗</div>
+        <div class="disc-content">
+          <div class="disc-title">衍生品追踪</div>
+          <p class="disc-desc">监控持仓量(Open Interest)和资金费率，在清算发生前定位被套牢的散户交易员和即将到来的连环爆仓。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="levels">
+  <div class="levels-inner">
+    <div class="section-tag">为所有人打造</div>
+    <h2 class="section-title">从视觉的极简，<br>到机构级的深度剖析。</h2>
+    <p class="section-desc">系统会以你当前的水平与你对话。当你准备好深入时，引擎已经在那里等你了。</p>
+    <div class="levels-track">
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// 第 01 级</div>
+        <div class="level-title">新手</div>
+        <div class="level-role">新兵</div>
+        <p class="level-desc">只需跟随热力颜色和战术面板输出的百分比。让HUD为你完成繁重的分析。无需任何经验。</p>
+      </div>
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// 第 02 级</div>
+        <div class="level-title">操作员</div>
+        <div class="level-role">进阶</div>
+        <p class="level-desc">将自动化的 Sniper 警报直接过滤到手机上，过滤掉市场噪音。切换视觉图层以匹配你特定的交易风格。</p>
+      </div>
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// 第 03 级</div>
+        <div class="level-title">猎手</div>
+        <div class="level-role">专业人士</div>
+        <p class="level-desc">手动调整时间周期输入，解剖机构引力引擎，并在经过验证的成交量区块上完美执行交易。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-header">
+      <div class="section-tag">系统内部展示</div>
+      <h2 class="section-title">透视引擎。<br><span style="color:var(--cyan)">全细节呈现。</span></h2>
+      <p class="section-desc">Rainbow Matrix的每一层可视化解析。这就是机构级分析工具的真实面貌。</p>
+    </div>
+
+    <div class="slide-showcase">
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-thermal-rb.PNG" alt="认知视觉回报 — 热力区域" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 01</span>
+          <h3 class="slide-title">认知视觉回报：通过热力区域进行交易。</h3>
+          <p class="slide-desc">Rainbow Cloud 将冰冷混乱的指标线替换为热力区域。当价格回归公允价值时，核心会产生脉冲。极端区域（青色或紫色）以最高级别触发警报——你的大脑会在几毫秒内处理警告，而不是几秒钟。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">动态 VWAP</span>
+            <span class="slide-tag-item accent">热力核心</span>
+            <span class="slide-tag-item">黑天鹅检测</span>
+            <span class="slide-tag-item">公允价值区域</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-mtf.png" alt="多时间周期乘数" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 02</span>
+          <h3 class="slide-title">多时间周期乘数 (MTF)。</h3>
+          <p class="slide-desc">5个显示器 × 10个指标 = 每秒50个断开的变量。Rainbow Matrix 运行压缩漏斗——将来自 5M、15M、1H、4H 和 1D 的所有50个变量折叠成单一的统一概率指标：Global Score（全局评分）。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">50:1 数据压缩</span>
+            <span class="slide-tag-item accent">第6个合成周期</span>
+            <span class="slide-tag-item">5个时间周期</span>
+            <span class="slide-tag-item">全局评分</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-sniper.png" alt="聪明钱概念与 Sniper 逻辑" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 03</span>
+          <h3 class="slide-title">自动化聪明钱概念 (SMC) &amp; Sniper 逻辑树。</h3>
+          <p class="slide-desc">系统自动绘制订单块 (OB) 和公允价值缺口 (FVG)——然后读取它们。当全局评分达到极端概率，且价格同时触及经过验证的订单块时，触发唯一输出：<strong style="color:var(--cyan)">狙击警报 (SNIPER ALERT)。零情绪偏差。</strong></p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">订单块 (OB)</span>
+            <span class="slide-tag-item accent">公允价值缺口 (FVG)</span>
+            <span class="slide-tag-item">AI 逻辑流</span>
+            <span class="slide-tag-item">零情绪偏差</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-gravity.png" alt="机构引力引擎 MGI" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 04</span>
+          <h3 class="slide-title">机构引力引擎 (MGI)。</h3>
+          <p class="slide-desc">周线和日线图表的宏观水平将其引力质量投射到微观时间周期上。在买盘资金流的配合下，这堵墙就像磁铁一样。如果没有买盘，它就是混凝土天花板——在价格触及它之前就会产生数学上的动能衰竭。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">磁性吸引</span>
+            <span class="slide-tag-item accent">混凝土天花板</span>
+            <span class="slide-tag-item">周线 POC 权重: 5</span>
+            <span class="slide-tag-item">4H POC 权重: 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-oscillator.png" alt="全局振荡器 — 合成心脏" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 05</span>
+          <h3 class="slide-title">全局振荡器：适应波动率的合成心脏。</h3>
+          <p class="slide-desc">与静态受困于30和70之间的传统RSI不同，合成时间周期 (0–100) 会在实时动态中创建自己的天花板、地板和中心轴。狙击 (SNIPER)、强烈 (STRONG)、防御 (DEFENSE)——每种信号类型都由严格的数学规则分类。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">动态天花板/地板</span>
+            <span class="slide-tag-item accent">合成中心轴</span>
+            <span class="slide-tag-item">🎯 狙击信号</span>
+            <span class="slide-tag-item">⭐ 强烈信号</span>
+            <span class="slide-tag-item">🛡️ 防御信号</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-panel.png" alt="战术命令面板 HUD" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 06</span>
+          <h3 class="slide-title">战术命令面板。</h3>
+          <p class="slide-desc">三个面板，一个驾驶舱。MTF 概率矩阵实时显示所有5个时间周期的对齐情况。驱动力列可隔离出究竟是什么力量在推动价格。AI 战术摘要将一切转化为人类语言：入场位、止损位、止盈位。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">MTF 矩阵</span>
+            <span class="slide-tag-item accent">AI 战术摘要</span>
+            <span class="slide-tag-item">Z-Score / RSI / SAR</span>
+            <span class="slide-tag-item">入场 &amp; 止损/止盈</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-confluence.png" alt="跨越分析体系" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 07</span>
+          <h3 class="slide-title">跨越分析体系，锁定结构性真相。</h3>
+          <p class="slide-desc">四个截然不同的分析流派——机构VWAP、成交量分布、CVD与挤压、衍生品追踪——全部融合为一个绝对的共振点。没有任何单一指标能主导全局，所有指标必须达成一致。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">机构 VWAP</span>
+            <span class="slide-tag-item accent">CVD &amp; Squeeze</span>
+            <span class="slide-tag-item">成交量分布</span>
+            <span class="slide-tag-item">持仓量 (OI)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-integration.png" alt="无缝集成与通用应用" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 08</span>
+          <h3 class="slide-title">无缝集成与全资产通用。</h3>
+          <p class="slide-desc">只需一个脚本，无需昂贵的 TradingView 高级计划。零重绘——信号在K线收盘时被永久锁定。HUD 原生支持你的语言：英语、葡萄牙语、西班牙语、俄语和中文。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">兼容免费计划</span>
+            <span class="slide-tag-item accent">零重绘 (Zero Repaint)</span>
+            <span class="slide-tag-item">5种语言</span>
+            <span class="slide-tag-item">通用算法</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-cn/slide-levels.png" alt="为各个级别打造 — 从新兵到猎手" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// 模块 09</span>
+          <h3 class="slide-title">适用级别：从视觉的极简，到机构级的深度剖析。</h3>
+          <p class="slide-desc">第1级使用颜色和百分比。第2级将狙击警报过滤到手机。第3级以外科手术般的精度解剖引力引擎。机器与你共同成长——在每一个阶段，它都已经在下一个级别等着你了。</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item" style="border-color:var(--cyan);color:var(--cyan)">第1级: 新手</span>
+            <span class="slide-tag-item" style="border-color:var(--purple);color:var(--purple)">第2级: 操作员</span>
+            <span class="slide-tag-item" style="border-color:var(--orange);color:var(--orange)">第3级: 猎手</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div class="section-tag" style="justify-content:center"><span></span>常见问题</div>
+      <h2 class="section-title">来自战场的疑问。</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Rainbow Matrix 可以在 TradingView 免费计划上运行吗？ <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">是的，完美运行。因为我们的代码将所有情报整合到了一个主脚本中，你不需要购买昂贵的 TradingView 高级订阅。一个脚本，全部火力。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">它是自动交易我的账户的机器人吗？ <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">不是。Rainbow Matrix 是一个决策支持引擎。它处理机构数据并发出精准的信号，以便由你（操作员）来验证入场。我们通过让你保持绝对的控制权来保护你的资金安全。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">它能用于加密货币以外的其他资产吗？ <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">可以。订单流和标准差的数学逻辑是通用的。该脚本自动适应外汇、指数和股票市场。专门针对加密货币，引擎会激活独家的持仓量衍生品内部传感器。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Sniper（狙击）和 Strong（强烈）信号会重绘 (Repaint) 吗？ <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">我们的工程策略是绝对零重绘 (Zero Repaint)。信号仅在K线收盘时绘制并确认。你在历史记录中看到的内容与实时发生的情况完全一致。永久、锁定、不可篡改。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">如果我是个完全的新手怎么办？ <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">该系统专为分级读取而构建。作为新手，只需遵循热力颜色转换和战术面板上的百分比即可。当你准备好深入研究时，机构区块和引力引擎已经为你准备就绪。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="pricing-inner">
+    <div class="section-tag" style="justify-content:center"><span></span>精英访问权限</div>
+    <h2 class="section-title">终极雷达。<br>无限优势。</h2>
+    <div class="pricing-card">
+      <div class="pricing-glow"></div>
+      
+      <div style="position: absolute; top: 25px; right: -40px; background: var(--cyan); color: #000; font-family: var(--font-mono); font-weight: bold; padding: 5px 40px; transform: rotate(45deg); font-size: 0.70rem; letter-spacing: 1px; z-index: 10; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+        7 天免费
+      </div>
+
+      <div class="plan-badge">// 机构访问权限</div>
+      <div class="plan-price"><sup>$</sup>39.99</div>
+      <div class="plan-period">每月 · 按月计费</div>
+      <ul class="plan-features-list">
+        <li style="color: var(--cyan); font-weight: 700;">✓ 7天免费试用 (随时可取消)</li>
+        <li>✓ 完整 Rainbow Matrix 脚本 — 解锁所有层级</li>
+        <li>✓ 多时间周期引擎 (5 TF → 全局评分)</li>
+        <li>✓ 机构引力引擎 (MGI)</li>
+        <li>✓ SMC 聪明钱概念 — OB &amp; FVG 自动绘制</li>
+        <li>✓ 狙击警报系统 — 手机推送通知</li>
+        <li>✓ 兼容 TradingView 免费计划</li>
+        <li>✓ 零重绘 (Zero Repaint) — 100% 历史完整性</li>
+      </ul>
+      <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn-lg">
+        开始免费试用 →
+      </a>
+      <p class="plan-fine">// 零承诺。先测试我们的雷达。</p>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-img-wrap">
+    <div class="lightbox-corner tl"></div>
+    <div class="lightbox-corner tr"></div>
+    <div class="lightbox-corner bl"></div>
+    <div class="lightbox-corner br"></div>
+    <span class="lightbox-close" onclick="closeLightbox()">[ ESC ] 关闭 ✕</span>
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-hint">// 点击任意位置关闭</div>
+  </div>
+</div>
+
+<footer style="background: var(--bg); padding: 4rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; border-top: 1px solid var(--border); text-align: center;">
+  
+  <div class="footer-logo">RAINBOW MATRIX</div>
+  
+  <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;">
+    <span style="color: var(--text-dim);">// 机构合作与咨询</span><br>
+    <a href="mailto:contact@rainbowmatrix.ai" style="color: var(--cyan); text-decoration: none; font-weight: 700; font-size: 0.9rem; margin-top: 0.8rem; display: inline-block; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--cyan)'">
+      contact@rainbowmatrix.ai
+    </a>
+  </div>
+
+  <div class="footer-copy">© 2026 Rainbow Matrix. 保留所有权利。精英交易员操作手册。</div>
+</footer>
+
+<script>
+  // Mobile Menu Toggle
+  function toggleMenu() {
+    var menu = document.getElementById('nav-links');
+    if (menu) {
+      menu.classList.toggle('active');
+    }
+  }
+
+  // Lightbox
+  function openLightbox(src, alt) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    img.alt = alt;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e) {
+    if (e && e.target.closest('.lightbox-img-wrap') && !e.target.closest('.lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Make all slide images clickable
+  document.querySelectorAll('.slide-img-wrap img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Intersection Observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feat-card, .disc-card, .level-card, .engine-point, .confront-card, .slide-block').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
