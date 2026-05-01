@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix — Motor de Suporte à Decisão & Radar Institucional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10; --bg2: #0d1117; --bg3: #111820;
+    --surface: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.07);
+    --border-glow: rgba(0,245,212,0.3); --cyan: #00f5d4; --cyan-dim: rgba(0,245,212,0.15);
+    --purple: #9b5de5; --purple-dim: rgba(155,93,229,0.15); --orange: #ff6b35;
+    --text: #e8edf2; --text-muted: #6b7a8d; --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif; --font-mono: 'Space Mono', monospace; --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; line-height: 1.6; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(8,12,16,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta { font-weight: 700; color: var(--bg) !important; background: var(--cyan); padding: 0.55rem 1.4rem; border-radius: 2px; transition: box-shadow 0.2s, transform 0.2s !important; }
+  .nav-cta:hover { box-shadow: 0 0 24px rgba(0,245,212,0.5) !important; transform: translateY(-1px); }
+  .lang-switcher { display: flex; gap: 0.5rem; align-items: center; font-family: var(--font-mono); font-size: 0.65rem; border-left: 1px solid var(--border); padding-left: 1.5rem; margin-left: 0.5rem; }
+  .lang-link { color: var(--text-muted); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+  .lang-link:hover, .lang-link.active { color: var(--cyan); font-weight: 700; }
+  .lang-sep { color: var(--border); }
+
+  /* HERO */
+  #hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 6rem; position: relative; overflow: hidden; }
+  .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,245,212,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,212,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%); }
+  .hero-glow { position: absolute; width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(0,245,212,0.07) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -60%); pointer-events: none; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(0,245,212,0.3); padding: 0.4rem 1rem; border-radius: 2px; margin-bottom: 2.5rem; background: rgba(0,245,212,0.05); animation: fadeInDown 0.8s ease both; }
+  .hero-title { font-family: var(--font-display); font-size: clamp(4rem, 9vw, 8rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 1.5rem; animation: fadeInUp 0.9s ease 0.1s both; }
+  .hero-title span { background: linear-gradient(135deg, #00f5d4 0%, #9b5de5 60%, #ff6b35 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-subtitle { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.06em; max-width: 600px; margin: 0 auto 1.5rem; line-height: 1.8; animation: fadeInUp 0.9s ease 0.2s both; }
+  .hero-video { width: 100%; max-width: 800px; margin: 2rem auto 3rem; background: var(--bg2); border: 1px solid var(--border-glow); padding: 0.5rem; border-radius: 8px; box-shadow: 0 0 40px rgba(0,245,212,0.1); position: relative; z-index: 10; animation: fadeInUp 0.9s ease 0.3s both; }
+  .hero-video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 4px; overflow: hidden; }
+  .hero-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .hero-tagline { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--text); margin-bottom: 3rem; animation: fadeInUp 0.9s ease 0.4s both; }
+  .hero-tagline em { color: var(--cyan); font-style: normal; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bg); background: var(--cyan); padding: 1.1rem 2.8rem; border-radius: 2px; text-decoration: none; transition: all 0.25s; box-shadow: 0 0 40px rgba(0,245,212,0.3); animation: fadeInUp 0.9s ease 0.5s both; }
+  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(0,245,212,0.5); }
+  .hero-stats { display: flex; gap: 4rem; margin-top: 5rem; animation: fadeInUp 0.9s ease 0.6s both; }
+  .stat { text-align: center; }
+  .stat-num { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--cyan); display: block; }
+  .stat-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:none} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+
+  /* SECTIONS */
+  section { padding: 7rem 4rem; }
+  .section-tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-tag::before { content: ''; width: 30px; height: 1px; background: var(--cyan); }
+  .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
+  .section-desc { font-size: 1rem; color: var(--text-muted); max-width: 560px; line-height: 1.75; }
+
+  /* GENERAL CSS (Omitted prefix styles for brevity, assuming standard blocks as in index) */
+  /* Reusing same class structures as index.html */
+  .confront-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; max-width: 1100px; margin: 4rem auto 0; border: 1px solid var(--border); }
+  .confront-card { padding: 3rem; position: relative; overflow: hidden; }
+  .confront-card.bad { background: rgba(255,60,60,0.04); border-right: 1px solid var(--border); }
+  .confront-card.good { background: rgba(0,245,212,0.04); }
+  .card-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .confront-card.bad .card-label { color: #ff6b6b; } .confront-card.good .card-label { color: var(--cyan); }
+  .card-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 2rem; line-height: 1.2; }
+  .confront-card.bad .card-title { color: #ff8888; } .confront-card.good .card-title { color: #fff; }
+  .card-items { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .card-items li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); }
+  .card-items li .icon { flex-shrink: 0; font-size: 0.75rem; }
+  .confront-card.bad .icon { color: #ff6b6b; } .confront-card.good .icon { color: var(--cyan); }
+  
+  .engine-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .engine-visual { position: relative; padding: 2.5rem; border: 1px solid var(--border); background: var(--bg3); }
+  .timeframes { display: flex; flex-direction: column; gap: 0.6rem; }
+  .tf-row { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .tf-label { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; width: 36px; color: var(--text-muted); }
+  .tf-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 1px; }
+  .tf-bar { height: 100%; border-radius: 1px; }
+  .tf-pct { font-family: var(--font-mono); font-size: 0.68rem; width: 36px; text-align: right; }
+  .tf-row:nth-child(1) .tf-bar { width: 85%; background: var(--cyan); } .tf-row:nth-child(1) .tf-pct { color: var(--cyan); }
+  .global-score { margin-top: 1.5rem; padding: 1rem; background: rgba(0,245,212,0.06); border: 1px solid rgba(0,245,212,0.2); display: flex; justify-content: space-between; align-items: center; }
+  .gs-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); }
+  .gs-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--cyan); }
+  .engine-points { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .engine-point { display: flex; gap: 1rem; align-items: flex-start; padding: 1.2rem; border: 1px solid var(--border); background: var(--surface); }
+  .ep-num { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: var(--cyan); }
+  .ep-text { font-size: 0.88rem; color: var(--text-muted); }
+  
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; max-width: 1100px; margin: 0 auto; background: var(--border); }
+  .feat-card { background: var(--bg2); padding: 2.5rem; position: relative; }
+  .feat-icon { width: 44px; height: 44px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 1.5rem; }
+  .feat-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem; color: #fff; }
+  .feat-desc { font-size: 0.87rem; color: var(--text-muted); }
+  .feat-tag { display: inline-block; margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.58rem; color: var(--cyan); border: 1px solid rgba(0,245,212,0.25); padding: 0.25rem 0.6rem; }
+
+  /* Gallery, Lightbox, Pricing structure kept identical to English version but translated */
+  .slide-showcase { display: flex; flex-direction: column; gap: 6rem; max-width: 1200px; margin: 0 auto;}
+  .slide-block { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .slide-block.reverse { direction: rtl; } .slide-block.reverse > * { direction: ltr; }
+  .slide-img-wrap { position: relative; } .slide-img-wrap img { width: 100%; display: block; border: 1px solid rgba(0,245,212,0.2); }
+  .slide-num { font-family: var(--font-mono); font-size: 0.62rem; color: var(--cyan); display: block; margin-bottom: 0.5rem; }
+  .slide-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-bottom: 1rem; }
+  .slide-desc { font-size: 0.9rem; color: var(--text-muted); }
+  
+  .pricing-card { max-width: 500px; margin: 3rem auto; border: 1px solid rgba(0,245,212,0.3); background: var(--bg2); padding: 3.5rem; text-align: center; position: relative; }
+  .plan-price { font-family: var(--font-display); font-size: 5rem; font-weight: 800; color: #fff; }
+  .plan-price sup { font-size: 2rem; color: var(--cyan); }
+  .plan-features-list { list-style: none; text-align: left; margin: 2rem 0; display: flex; flex-direction: column; gap: 1rem; }
+  .plan-features-list li { color: var(--text-muted); font-size: 0.88rem; }
+  .cta-btn-lg { display: block; background: var(--cyan); color: #000; padding: 1.2rem; font-weight: 700; text-decoration: none; border-radius: 2px; }
+
+  @media(max-width: 900px) {
+    nav { padding: 1rem 1.5rem; } .nav-links { display: none; }
+    .engine-inner, .confront-grid, .features-grid, .slide-block { grid-template-columns: 1fr; }
+    .slide-block.reverse { direction: ltr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Rainbow Matrix</div>
+  <div class="nav-links">
+    <a href="#confrontation">Filosofia</a>
+    <a href="#engine">Motor</a>
+    <a href="#features">Tecnologia</a>
+    <a href="#gallery">Galeria</a>
+    <a href="#pricing">Acesso</a>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Iniciar Teste Grátis →</a>
+    
+    <div class="lang-switcher">
+      <a href="index.html" class="lang-link">EN</a><span class="lang-sep">|</span>
+      <a href="pt.html" class="lang-link active">PT</a><span class="lang-sep">|</span>
+      <a href="es.html" class="lang-link">ES</a><span class="lang-sep">|</span>
+      <a href="ru.html" class="lang-link">RU</a><span class="lang-sep">|</span>
+      <a href="cn.html" class="lang-link">中文</a>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-badge">Motor de Suporte à Decisão & Radar Institucional</div>
+  <h1 class="hero-title"><span>RAINBOW</span><br>MATRIX</h1>
+  <p class="hero-subtitle">O MANUAL DO OPERADOR DE ELITE.</p>
+
+  <div class="hero-video">
+    <div class="hero-video-wrapper">
+      <iframe src="https://www.youtube.com/embed/DvnjB8BQHsQ?rel=0" title="Rainbow Matrix Briefing" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <p class="hero-tagline">Elevando o operador de <em>presa</em> a predador.</p>
+
+  <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn">Iniciar Teste de 7 Dias <span class="cta-arrow">→</span></a>
+
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">2.5a</span><span class="stat-label">Engenharia I&D</span></div>
+    <div class="stat"><span class="stat-num">50:1</span><span class="stat-label">Compressão de Dados</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">Camadas Temporais</span></div>
+    <div class="stat"><span class="stat-num">0%</span><span class="stat-label">Política Repaint</span></div>
+  </div>
+</section>
+
+<section id="confrontation">
+  <div style="max-width:1100px;margin:0 auto;text-align:center;">
+    <div class="section-tag" style="justify-content:center">A Filosofia</div>
+    <h2 class="section-title">A maior mentira do mercado:<br>que a automação substitui a <span style="color:var(--cyan)">decisão.</span></h2>
+  </div>
+
+  <div class="confront-grid">
+    <div class="confront-card bad">
+      <div class="card-label">// O Problema</div>
+      <div class="card-title">A Armadilha do Retalho:<br>Bots 100% Automáticos</div>
+      <ul class="card-items">
+        <li><span class="icon">✕</span> Parâmetros rígidos cegos ao contexto do mercado.</li>
+        <li><span class="icon">✕</span> Falha catastroficamente durante eventos de Cisne Negro.</li>
+        <li><span class="icon">✕</span> Perda total de controlo, resultando em contas liquidadas.</li>
+      </ul>
+    </div>
+    <div class="confront-card good">
+      <div class="card-label">// A Solução</div>
+      <div class="card-title">A Mudança de Paradigma:<br>O Exoesqueleto Analítico</div>
+      <ul class="card-items">
+        <li><span class="icon">✓</span> Comportamento institucional decifrado através de matemática reversa.</li>
+        <li><span class="icon">✓</span> HUD probabilístico que concede visão de Raio-X ao operador.</li>
+        <li><span class="icon">✓</span> O humano retém o controlo absoluto do gatilho. Sempre.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="engine">
+  <div class="engine-inner">
+    <div class="engine-visual">
+      <div class="timeframes">
+        <div class="tf-row"><span class="tf-label">5M</span><div class="tf-bar-wrap"><div class="tf-bar" style="width:85%;background:var(--cyan)"></div></div><span class="tf-pct" style="color:var(--cyan)">↑ 85%</span></div>
+        <div class="tf-row"><span class="tf-label">15M</span><div class="tf-bar-wrap"><div class="tf-bar" style="width:78%;background:#52d9f5"></div></div><span class="tf-pct" style="color:#52d9f5">↑ 78%</span></div>
+        <div class="tf-row"><span class="tf-label">1H</span><div class="tf-bar-wrap"><div class="tf-bar" style="width:52%;background:var(--purple)"></div></div><span class="tf-pct" style="color:var(--purple)">→ 52%</span></div>
+        <div class="tf-row"><span class="tf-label">4H</span><div class="tf-bar-wrap"><div class="tf-bar" style="width:32%;background:var(--orange)"></div></div><span class="tf-pct" style="color:var(--orange)">↓ 32%</span></div>
+      </div>
+      <div class="global-score">
+        <div><div class="gs-label">GLOBAL SCORE (PONTUAÇÃO GLOBAL)</div></div>
+        <div class="gs-value">85%</div>
+      </div>
+    </div>
+    <div class="engine-text">
+      <div class="section-tag">A Tecnologia Base</div>
+      <h2 class="section-title">O Multiplicador<br><span style="color:var(--cyan)">Multi-Timeframe.</span></h2>
+      <p class="section-desc">5 dimensões de tempo fundidas num único radar de probabilidade letal.</p>
+      <div class="engine-points">
+        <div class="engine-point"><span class="ep-num">01</span><p class="ep-text"><strong>Rácio 50:1:</strong> 50 indicadores dispersos colapsados num único ecrã limpo.</p></div>
+        <div class="engine-point"><span class="ep-num">02</span><p class="ep-text"><strong>Zero Repaint:</strong> Os sinais só são gravados no fecho da vela. A verdade histórica do mercado é mantida intacta.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div style="text-align:center; margin-bottom:4rem;">
+    <div class="section-tag" style="justify-content:center">Por dentro do Sistema</div>
+    <h2 class="section-title">Visão de Raio-X <span style="color:var(--cyan)">Institucional.</span></h2>
+  </div>
+  <div class="slide-showcase">
+    <div class="slide-block">
+      <div class="slide-img-wrap"><img src="images-pt/slide-thermal-rb.PNG" alt="Zonas Termais"></div>
+      <div class="slide-text">
+        <span class="slide-num">// MÓDULO 01</span>
+        <h3 class="slide-title">Zonas Termais de Decisão.</h3>
+        <p class="slide-desc">A Nuvem substitui as linhas frias por zonas termais. Zonas extremas disparam um alerta visual imediato ao cérebro quando o preço diverge do valor institucional justo.</p>
+      </div>
+    </div>
+    <div class="slide-block reverse">
+      <div class="slide-img-wrap"><img src="images-pt/slide-mtf.png" alt="Motor MTF"></div>
+      <div class="slide-text">
+        <span class="slide-num">// MÓDULO 02</span>
+        <h3 class="slide-title">Conceitos SMC Automatizados.</h3>
+        <p class="slide-desc">O radar mapeia automaticamente *Order Blocks* (OB) e *Fair Value Gaps* (FVG). Quando a probabilidade atinge o extremo junto a um OB validado, o sistema emite o sinal SNIPER.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <h2 class="section-title" style="text-align:center;">Um Radar.<br>Vantagem Infinita.</h2>
+  <div class="pricing-card">
+    <div style="position: absolute; top: 25px; right: -40px; background: var(--cyan); color: #000; font-family: var(--font-mono); font-weight: bold; padding: 5px 40px; transform: rotate(45deg); font-size: 0.70rem; letter-spacing: 1px; z-index: 10;">
+      7 DIAS GRÁTIS
+    </div>
+    <div class="plan-price"><sup>$</sup>39.99</div>
+    <div style="color:var(--text-muted); font-size:0.8rem; margin-bottom:2rem;">por mês · cobrança mensal</div>
+    <ul class="plan-features-list">
+      <li style="color:var(--cyan); font-weight:700;">✓ 7 Dias de Teste Grátis (Cancele quando quiser)</li>
+      <li>✓ Radar MTF + Zonas Termais (MGI)</li>
+      <li>✓ Alertas Sniper no telemóvel</li>
+      <li>✓ Script Zero Repaint</li>
+    </ul>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn-lg">Iniciar Teste Grátis →</a>
+  </div>
+</section>
+
+<footer style="background: var(--bg); padding: 4rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; border-top: 1px solid var(--border); text-align: center;">
+  <div style="font-family: var(--font-display); font-size: 0.9rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan);">RAINBOW MATRIX</div>
+  <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;">
+    <span style="color: var(--text-dim);">// Consultas Institucionais & Parcerias</span><br>
+    <a href="mailto:contact@rainbowmatrix.ai" style="color: var(--cyan); text-decoration: none; font-weight: 700; font-size: 0.9rem; margin-top: 0.8rem; display: inline-block;">contact@rainbowmatrix.ai</a>
+  </div>
+  <div style="font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.08em;">© 2026 Rainbow Matrix. O Manual do Operador de Elite.</div>
+</footer>
+
+</body>
+</html>
