@@ -765,7 +765,7 @@
       margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
       gap: 1.5rem; align-items: center; 
     }
-    .nav-links.active { display: flex; animation: fadeInDown 0.3s ease; }
+    .nav-links.active { display: flex !important; animation: fadeInDown 0.3s ease; }
     .lang-switcher { border-left: none; padding-left: 0; margin-left: 0; justify-content: center; width: 100%; }
     
     /* Correção de Estouro de Margens no Telemóvel */
@@ -786,8 +786,10 @@
 
 <nav>
   <div class="nav-logo">Rainbow Matrix</div>
+  
   <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
-  <div class="nav-links">
+  
+  <div class="nav-links" id="nav-links">
     <a href="#confrontation">Filosofia</a>
     <a href="#engine">Motor</a>
     <a href="#features">Tecnologia</a>
@@ -1360,6 +1362,13 @@
 </footer>
 
 <script>
+  // Motor do Menu Mobile
+  function toggleMenu() {
+    var menu = document.getElementById('nav-links');
+    if (menu) {
+      menu.classList.toggle('active');
+    }
+  }
   // Lightbox
   function openLightbox(src, alt) {
     const lb = document.getElementById('lightbox');
@@ -1396,10 +1405,6 @@
       }
     });
   }, { threshold: 0.1 });
-
-  function toggleMenu() {
-    document.getElementById('nav-links').classList.toggle('active');
-  }
 
   document.querySelectorAll('.feat-card, .disc-card, .level-card, .engine-point, .confront-card, .slide-block').forEach(el => {
     el.style.opacity = '0';
