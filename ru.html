@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix — Движок поддержки принятия решений и Институциональный радар</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.07);
+    --border-glow: rgba(0,245,212,0.3);
+    --cyan: #00f5d4;
+    --cyan-dim: rgba(0,245,212,0.15);
+    --purple: #9b5de5;
+    --purple-dim: rgba(155,93,229,0.15);
+    --orange: #ff6b35;
+    --text: #e8edf2;
+    --text-muted: #6b7a8d;
+    --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem; font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--text-muted); text-decoration: none;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--bg) !important;
+    background: var(--cyan);
+    padding: 0.55rem 1.4rem;
+    border-radius: 2px;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover {
+    box-shadow: 0 0 24px rgba(0,245,212,0.5) !important;
+    transform: translateY(-1px);
+    color: var(--bg) !important;
+  }
+  /* ── LANGUAGE SWITCHER ── */
+  .lang-switcher {
+    display: flex; gap: 0.5rem; align-items: center;
+    font-family: var(--font-mono); font-size: 0.65rem;
+    border-left: 1px solid var(--border);
+    padding-left: 1.5rem; margin-left: 0.5rem;
+  }
+  .lang-link {
+    color: var(--text-muted); text-decoration: none;
+    transition: color 0.2s; cursor: pointer;
+  }
+  .lang-link:hover, .lang-link.active {
+    color: var(--cyan); font-weight: 700;
+  }
+  .lang-sep { color: var(--border); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,212,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,212,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 900px; height: 500px;
+    background: radial-gradient(ellipse, rgba(0,245,212,0.07) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -60%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(155,93,229,0.06) 0%, transparent 70%);
+    top: 60%; left: 20%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--cyan);
+    border: 1px solid rgba(0,245,212,0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 2.5rem;
+    background: rgba(0,245,212,0.05);
+    animation: fadeInDown 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--cyan);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.9s ease 0.1s both;
+  }
+  .hero-title span {
+    background: linear-gradient(135deg, #00f5d4 0%, #9b5de5 60%, #ff6b35 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-family: var(--font-mono); font-size: 0.85rem;
+    color: var(--text-muted); letter-spacing: 0.06em;
+    max-width: 600px; margin: 0 auto 1.5rem;
+    line-height: 1.8;
+    animation: fadeInUp 0.9s ease 0.2s both;
+  }
+  
+  .hero-video {
+    width: 100%; max-width: 800px; margin: 2rem auto 3rem;
+    background: var(--bg2); border: 1px solid var(--border-glow);
+    padding: 0.5rem; border-radius: 8px;
+    box-shadow: 0 0 40px rgba(0,245,212,0.1);
+    position: relative; z-index: 10;
+    animation: fadeInUp 0.9s ease 0.3s both;
+  }
+  .hero-video .video-glow {
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  }
+  .hero-video-wrapper {
+    position: relative; padding-bottom: 56.25%; height: 0; border-radius: 4px; overflow: hidden;
+  }
+  .hero-video-wrapper iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-display); font-size: 1.2rem; font-weight: 600;
+    color: var(--text); margin-bottom: 3rem;
+    animation: fadeInUp 0.9s ease 0.4s both;
+  }
+  .hero-tagline em { color: var(--cyan); font-style: normal; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg);
+    background: var(--cyan);
+    padding: 1.1rem 2.8rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 40px rgba(0,245,212,0.3), 0 0 80px rgba(0,245,212,0.1);
+    animation: fadeInUp 0.9s ease 0.5s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 60px rgba(0,245,212,0.5), 0 0 120px rgba(0,245,212,0.2);
+  }
+  .cta-btn:hover::after { opacity: 1; }
+  .cta-arrow { font-size: 1.1rem; transition: transform 0.2s; }
+  .cta-btn:hover .cta-arrow { transform: translateX(4px); }
+
+  .hero-stats {
+    display: flex; gap: 4rem; margin-top: 5rem;
+    animation: fadeInUp 0.9s ease 0.6s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-display); font-size: 2rem; font-weight: 800;
+    color: var(--cyan); display: block;
+  }
+  .stat-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:none} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 4rem; }
+  .section-tag {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-tag::before {
+    content: ''; width: 30px; height: 1px; background: var(--cyan);
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--text-muted); max-width: 560px; line-height: 1.75;
+  }
+
+  /* ── CONFRONTATION ── */
+  #confrontation { background: var(--bg2); }
+  .confront-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    max-width: 1100px; margin: 4rem auto 0;
+    border: 1px solid var(--border);
+  }
+  .confront-card {
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .confront-card.bad {
+    background: rgba(255,60,60,0.04);
+    border-right: 1px solid var(--border);
+  }
+  .confront-card.good {
+    background: rgba(0,245,212,0.04);
+  }
+  .confront-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .confront-card.bad::before { background: linear-gradient(90deg, #ff3c3c, transparent); }
+  .confront-card.good::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .card-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .confront-card.bad .card-label { color: #ff6b6b; }
+  .confront-card.good .card-label { color: var(--cyan); }
+  .card-title {
+    font-family: var(--font-display); font-size: 1.4rem; font-weight: 700;
+    margin-bottom: 2rem; line-height: 1.2;
+  }
+  .confront-card.bad .card-title { color: #ff8888; }
+  .confront-card.good .card-title { color: #fff; }
+  .card-items { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .card-items li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.9rem; line-height: 1.5; color: var(--text-muted);
+  }
+  .card-items li .icon {
+    flex-shrink: 0; margin-top: 2px; font-size: 0.75rem;
+  }
+  .confront-card.bad .icon { color: #ff6b6b; }
+  .confront-card.good .icon { color: var(--cyan); }
+
+  /* ── MTF ENGINE ── */
+  #engine { background: var(--bg); }
+  .engine-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .engine-visual {
+    position: relative; padding: 2.5rem;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .engine-visual::before {
+    content: '[ ДВИЖОК MTF — АКТИВЕН ]';
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--cyan); letter-spacing: 0.1em;
+    position: absolute; top: -0.6rem; left: 1rem;
+    background: var(--bg3); padding: 0 0.5rem;
+  }
+  .timeframes {
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .tf-row {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .tf-label {
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+    width: 36px; color: var(--text-muted);
+  }
+  .tf-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 1px; }
+  .tf-bar { height: 100%; border-radius: 1px; position: relative; }
+  .tf-pct {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    width: 36px; text-align: right;
+  }
+  .tf-row:nth-child(1) .tf-bar { width: 85%; background: linear-gradient(90deg, var(--cyan), rgba(0,245,212,0.4)); }
+  .tf-row:nth-child(1) .tf-pct { color: var(--cyan); }
+  .tf-row:nth-child(2) .tf-bar { width: 78%; background: linear-gradient(90deg, #52d9f5, rgba(82,217,245,0.4)); }
+  .tf-row:nth-child(2) .tf-pct { color: #52d9f5; }
+  .tf-row:nth-child(3) .tf-bar { width: 52%; background: linear-gradient(90deg, var(--purple), rgba(155,93,229,0.4)); }
+  .tf-row:nth-child(3) .tf-pct { color: var(--purple); }
+  .tf-row:nth-child(4) .tf-bar { width: 32%; background: linear-gradient(90deg, var(--orange), rgba(255,107,53,0.4)); }
+  .tf-row:nth-child(4) .tf-pct { color: var(--orange); }
+  .tf-row:nth-child(5) .tf-bar { width: 25%; background: linear-gradient(90deg, #ff4444, rgba(255,68,68,0.4)); }
+  .tf-row:nth-child(5) .tf-pct { color: #ff4444; }
+  .global-score {
+    margin-top: 1.5rem; padding: 1rem;
+    background: rgba(0,245,212,0.06);
+    border: 1px solid rgba(0,245,212,0.2);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .gs-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; }
+  .gs-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--cyan); }
+  .gs-tag { font-family: var(--font-mono); font-size: 0.6rem; color: var(--orange); letter-spacing: 0.08em; }
+
+  .engine-text .section-title { margin-bottom: 1.5rem; }
+  .engine-points { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .engine-point {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.2rem; border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .engine-point:hover { border-color: rgba(0,245,212,0.2); }
+  .ep-num {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    color: var(--cyan); min-width: 28px;
+  }
+  .ep-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+  .ep-text strong { color: var(--text); font-weight: 500; }
+
+  /* ── FEATURES GRID ── */
+  #features { background: var(--bg2); }
+  .features-header { max-width: 1100px; margin: 0 auto 4rem; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    max-width: 1100px; margin: 0 auto;
+    background: var(--border);
+  }
+  .feat-card {
+    background: var(--bg2); padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .feat-card:hover { background: var(--bg3); }
+  .feat-icon {
+    width: 44px; height: 44px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .feat-icon::before {
+    content: ''; position: absolute; inset: -1px;
+    background: linear-gradient(135deg, var(--cyan), transparent);
+    opacity: 0; transition: opacity 0.3s;
+    border-radius: inherit;
+  }
+  .feat-card:hover .feat-icon::before { opacity: 0.3; }
+  .feat-title {
+    font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.75rem; color: #fff;
+  }
+  .feat-desc { font-size: 0.87rem; color: var(--text-muted); line-height: 1.7; }
+  .feat-tag {
+    display: inline-block; margin-top: 1.2rem;
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--cyan); border: 1px solid rgba(0,245,212,0.25);
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* ── DISCIPLINES ── */
+  #disciplines { background: var(--bg); }
+  .disc-inner { max-width: 1100px; margin: 0 auto; }
+  .disc-header { text-align: center; margin-bottom: 4rem; }
+  .disc-header .section-tag { justify-content: center; }
+  .disc-header .section-tag::before { display: none; }
+  .disc-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--border);
+  }
+  .disc-card {
+    background: var(--bg); padding: 2.5rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    transition: background 0.3s;
+  }
+  .disc-card:hover { background: var(--bg3); }
+  .disc-icon-wrap {
+    width: 52px; height: 52px; flex-shrink: 0;
+    border: 1px solid var(--border-glow);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    background: var(--cyan-dim);
+  }
+  .disc-content {}
+  .disc-title {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .disc-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── LEVELS ── */
+  #levels { background: var(--bg2); }
+  .levels-inner { max-width: 1100px; margin: 0 auto; }
+  .levels-track {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    margin-top: 4rem; background: var(--border);
+  }
+  .level-card {
+    background: var(--bg2); padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .level-card:hover { background: var(--bg3); }
+  .level-stripe {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  }
+  .level-card:nth-child(1) .level-stripe { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+  .level-card:nth-child(2) .level-stripe { background: var(--purple); box-shadow: 0 0 12px var(--purple); }
+  .level-card:nth-child(3) .level-stripe { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+  .level-num {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 0.4rem;
+  }
+  .level-title {
+    font-family: var(--font-display); font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 0.25rem;
+  }
+  .level-card:nth-child(1) .level-title { color: var(--cyan); }
+  .level-card:nth-child(2) .level-title { color: var(--purple); }
+  .level-card:nth-child(3) .level-title { color: var(--orange); }
+  .level-role {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .level-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── FAQ ── */
+  #faq { background: var(--bg); }
+  .faq-inner { max-width: 800px; margin: 0 auto; }
+  .faq-header { text-align: center; margin-bottom: 4rem; }
+  .faq-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .faq-item {
+    background: var(--bg); padding: 1.8rem 2rem;
+    cursor: pointer; transition: background 0.2s;
+    border-left: 2px solid transparent;
+  }
+  .faq-item:hover, .faq-item.open {
+    background: var(--bg3);
+    border-left-color: var(--cyan);
+  }
+  .faq-q {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    user-select: none;
+  }
+  .faq-chevron { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--cyan); }
+  .faq-a {
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.75;
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding-top 0.2s;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding-top: 1rem; }
+
+  /* ── PRICING ── */
+  #pricing {
+    background: var(--bg2);
+    text-align: center;
+  }
+  .pricing-inner { max-width: 500px; margin: 0 auto; }
+  .pricing-card {
+    margin: 3rem auto 0;
+    border: 1px solid rgba(0,245,212,0.3);
+    background: linear-gradient(135deg, rgba(0,245,212,0.04), rgba(155,93,229,0.04));
+    padding: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+  }
+  .pricing-glow {
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,245,212,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .plan-badge {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--cyan);
+    border: 1px solid rgba(0,245,212,0.3); padding: 0.3rem 0.8rem;
+    margin-bottom: 2rem;
+    background: rgba(0,245,212,0.05);
+  }
+  .plan-price {
+    font-family: var(--font-display); font-size: 5rem; font-weight: 800;
+    line-height: 1; color: #fff; margin-bottom: 0.25rem;
+  }
+  .plan-price sup {
+    font-size: 2rem; vertical-align: super; color: var(--cyan);
+  }
+  .plan-period {
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--text-muted); margin-bottom: 2.5rem;
+  }
+  .plan-features-list {
+    list-style: none; text-align: left; margin-bottom: 2.5rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .plan-features-list li {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem; color: var(--text-muted);
+  }
+  .plan-features-list li::before {
+    content: '✓'; color: var(--cyan); font-weight: 700; font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .cta-btn-lg {
+    display: block; width: 100%;
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg);
+    background: var(--cyan);
+    padding: 1.2rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 40px rgba(0,245,212,0.25);
+  }
+  .cta-btn-lg:hover {
+    box-shadow: 0 0 70px rgba(0,245,212,0.5);
+    transform: translateY(-2px);
+  }
+  .plan-fine {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim); margin-top: 1.2rem; letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg);
+    padding: 2.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: var(--font-display); font-size: 0.9rem; font-weight: 800;
+    letter-spacing: 0.15em; color: var(--cyan);
+  }
+  .footer-copy {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim); letter-spacing: 0.08em;
+  }
+
+  /* ── SNIPER TICKER ── */
+  .ticker-wrap {
+    background: rgba(0,245,212,0.05);
+    border-top: 1px solid rgba(0,245,212,0.15);
+    border-bottom: 1px solid rgba(0,245,212,0.15);
+    overflow: hidden; padding: 0.6rem 0;
+    margin-top: 5rem;
+  }
+  .ticker-inner {
+    display: flex; gap: 4rem;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; color: var(--cyan);
+    flex-shrink: 0;
+  }
+  .ticker-item span { color: var(--text-muted); margin: 0 0.5rem; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+  }
+  .lightbox-overlay.active { opacity: 1; pointer-events: all; }
+  .lightbox-img-wrap {
+    position: relative;
+    max-width: 90vw; max-height: 90vh;
+    transform: scale(0.92);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .lightbox-overlay.active .lightbox-img-wrap { transform: scale(1); }
+  .lightbox-img-wrap::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border: 1px solid rgba(0,245,212,0.4);
+    pointer-events: none; z-index: 1;
+  }
+  .lightbox-corner {
+    position: absolute; width: 16px; height: 16px;
+    border-color: var(--cyan); border-style: solid; z-index: 2;
+  }
+  .lightbox-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .lightbox-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .lightbox-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .lightbox-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+  .lightbox-img-wrap img {
+    display: block;
+    max-width: 90vw; max-height: 85vh;
+    object-fit: contain;
+  }
+  .lightbox-close {
+    position: absolute; top: -2.5rem; right: 0;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--text-muted); letter-spacing: 0.1em;
+    cursor: pointer; transition: color 0.2s; user-select: none;
+  }
+  .lightbox-close:hover { color: var(--cyan); }
+  .lightbox-hint {
+    position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--text-dim); letter-spacing: 0.1em; white-space: nowrap;
+  }
+  .slide-img-wrap img { cursor: zoom-in; }
+
+  /* ── SLIDES GALLERY ── */
+  #gallery { background: var(--bg); }
+  .gallery-inner { max-width: 1200px; margin: 0 auto; }
+  .gallery-header { margin-bottom: 4rem; }
+
+  .slide-showcase {
+    display: flex; flex-direction: column; gap: 6rem;
+  }
+  .slide-block {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .slide-block.reverse { direction: rtl; }
+  .slide-block.reverse > * { direction: ltr; }
+
+  .slide-block.full-width {
+    grid-template-columns: 1fr;
+    max-width: 900px; margin: 0 auto;
+  }
+
+  .slide-img-wrap {
+    position: relative;
+  }
+  .slide-img-wrap::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border: 1px solid rgba(0,245,212,0.2);
+    pointer-events: none; z-index: 1;
+  }
+  .slide-img-wrap::after {
+    content: '';
+    position: absolute; top: 8px; left: 8px; right: -8px; bottom: -8px;
+    border: 1px solid rgba(0,245,212,0.07);
+    z-index: 0;
+  }
+  .slide-img-wrap img {
+    width: 100%; display: block;
+    position: relative; z-index: 1;
+    transition: transform 0.4s ease;
+  }
+  .slide-img-wrap:hover img { transform: scale(1.02); }
+
+  .slide-corner {
+    position: absolute; width: 12px; height: 12px;
+    border-color: var(--cyan); border-style: solid; z-index: 2;
+  }
+  .slide-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .slide-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .slide-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .slide-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+  .slide-text {}
+  .slide-num {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.2em; color: var(--cyan);
+    margin-bottom: 0.75rem; display: block;
+  }
+  .slide-title {
+    font-family: var(--font-display); font-size: 1.6rem; font-weight: 800;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .slide-desc {
+    font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .slide-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .slide-tag-item {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid var(--border); color: var(--text-muted);
+    padding: 0.3rem 0.7rem;
+  }
+  .slide-tag-item.accent {
+    border-color: rgba(0,245,212,0.3); color: var(--cyan);
+    background: rgba(0,245,212,0.05);
+  }
+
+  /* ── RESPONSIVE & MOBILE MENU ── */
+  .mobile-toggle { display: none; color: var(--cyan); font-size: 1.8rem; cursor: pointer; user-select: none; }
+  
+  @media(max-width: 900px) {
+    nav { padding: 1rem 1.5rem; flex-wrap: wrap; }
+    .mobile-toggle { display: block; }
+    .nav-links { 
+      display: none; width: 100%; flex-direction: column; 
+      margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+      gap: 1.5rem; align-items: center; 
+    }
+    .nav-links.active { display: flex !important; animation: fadeInDown 0.3s ease; }
+    .lang-switcher { border-left: none; padding-left: 0; margin-left: 0; justify-content: center; width: 100%; }
+    
+    /* Correção de Estouro de Margens no Telemóvel */
+    .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .plan-price { font-size: 3.5rem; }
+    
+    section { padding: 5rem 1.5rem; }
+    .engine-inner, .confront-grid, .features-grid, .disc-grid, .levels-track,
+    .slide-block { grid-template-columns: 1fr; }
+    .slide-block.reverse { direction: ltr; }
+    .confront-card.bad { border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Rainbow Matrix</div>
+  
+  <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
+  
+  <div class="nav-links" id="nav-links">
+    <a href="#confrontation">Философия</a>
+    <a href="#engine">Движок</a>
+    <a href="#features">Технологии</a>
+    <a href="#levels">Уровни</a>
+    <a href="#gallery">Галерея</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Бесплатная версия →</a>
+    
+    <div class="lang-switcher">
+      <a href="index.html" class="lang-link">EN</a><span class="lang-sep">|</span>
+      <a href="pt.html" class="lang-link">PT</a><span class="lang-sep">|</span>
+      <a href="es.html" class="lang-link">ES</a><span class="lang-sep">|</span>
+      <a href="ru.html" class="lang-link active">RU</a><span class="lang-sep">|</span>
+      <a href="cn.html" class="lang-link">中文</a>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-badge">
+    Движок поддержки принятия решений и Институциональный радар
+  </div>
+
+  <h1 class="hero-title">
+    <span>RAINBOW</span><br>MATRIX
+  </h1>
+
+  <p class="hero-subtitle">
+    ДВИЖОК ПОДДЕРЖКИ ПРИНЯТИЯ РЕШЕНИЙ И ИНСТИТУЦИОНАЛЬНЫЙ РАДАР<br>
+    РУКОВОДСТВО ЭЛИТНОГО ОПЕРАТОРА
+  </p>
+
+  <div class="hero-video">
+    <div class="video-glow"></div>
+    <div class="hero-video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/DvnjB8BQHsQ?rel=0" 
+        title="Rainbow Matrix Briefing" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <p class="hero-tagline">
+    Превращение оператора из <em>жертвы</em> в хищника.
+  </p>
+
+  <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn">
+    Начать 7-дневную бесплатную версию <span class="cta-arrow">→</span>
+  </a>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">2.5г</span>
+      <span class="stat-label">Инженерия НИОКР</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">50:1</span>
+      <span class="stat-label">Сжатие данных</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">Временных слоев</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">0%</span>
+      <span class="stat-label">Политика перерисовки</span>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-item">🎯 СНАЙПЕР АЛЕРТ<span>//</span>BTC/USDT 5M<span>//</span>ГЛОБАЛЬНАЯ ОЦЕНКА: 91%</div>
+    <div class="ticker-item">⭐ СИЛЬНЫЙ СИГНАЛ<span>//</span>EUR/USD 1H<span>//</span>ОЦЕНКА: 84%</div>
+    <div class="ticker-item">🛡️ ЗОНА ЗАЩИТЫ<span>//</span>SPX 4H<span>//</span>СТЕНА POC АКТИВНА</div>
+    <div class="ticker-item">🎯 СНАЙПЕР АЛЕРТ<span>//</span>ETH/USDT 15M<span>//</span>СЛИЯНИЕ OB + FVG</div>
+    <div class="ticker-item">♻️ ОТКАТ<span>//</span>ЗОЛОТО 1H<span>//</span>ИНСТИТУЦИОНАЛЬНАЯ ЗАЩИТА VWAP</div>
+    <div class="ticker-item">🎯 СНАЙПЕР АЛЕРТ<span>//</span>BTC/USDT 5M<span>//</span>ГЛОБАЛЬНАЯ ОЦЕНКА: 91%</div>
+    <div class="ticker-item">⭐ СИЛЬНЫЙ СИГНАЛ<span>//</span>EUR/USD 1H<span>//</span>ОЦЕНКА: 84%</div>
+    <div class="ticker-item">🛡️ ЗОНА ЗАЩИТЫ<span>//</span>SPX 4H<span>//</span>СТЕНА POC АКТИВНА</div>
+    <div class="ticker-item">🎯 СНАЙПЕР АЛЕРТ<span>//</span>ETH/USDT 15M<span>//</span>СЛИЯНИЕ OB + FVG</div>
+    <div class="ticker-item">♻️ ОТКАТ<span>//</span>ЗОЛОТО 1H<span>//</span>ИНСТИТУЦИОНАЛЬНАЯ ЗАЩИТА VWAP</div>
+  </div>
+</div>
+
+<section id="confrontation">
+  <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:1rem">
+    <div class="section-tag" style="justify-content:center"><span style="width:30px;height:1px;background:var(--cyan);display:inline-block"></span> Философия</div>
+    <h2 class="section-title">Превращение оператора<br>из <span style="color:var(--cyan)">жертвы</span> в хищника.</h2>
+    <p class="section-desc" style="margin:0 auto">Главная ложь рынка: автоматизация заменяет здравый смысл. Мы создали инструмент, который его усиливает.</p>
+  </div>
+
+  <div class="confront-grid">
+    <div class="confront-card bad">
+      <div class="card-label">// Проблема</div>
+      <div class="card-title">Ловушка для ритейла:<br>100% Автоматические боты</div>
+      <ul class="card-items">
+        <li><span class="icon">✕</span> Жесткие параметры, слепые к контексту рынка и смене режимов.</li>
+        <li><span class="icon">✕</span> Катастрофические сбои во время смены волатильности и «Черных лебедей».</li>
+        <li><span class="icon">✕</span> Потеря контроля, приводящая к ликвидации счетов.</li>
+      </ul>
+    </div>
+    <div class="confront-card good">
+      <div class="card-label">// Решение</div>
+      <div class="card-title">Сдвиг парадигмы:<br>Аналитический экзоскелет</div>
+      <ul class="card-items">
+        <li><span class="icon">✓</span> 2.5 года обратной инженерии институционального поведения.</li>
+        <li><span class="icon">✓</span> Предоставляет HUD математической вероятности с рентгеновским зрением рынка.</li>
+        <li><span class="icon">✓</span> Человек сохраняет абсолютный контроль над нажатием курка. Всегда.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="engine">
+  <div class="engine-inner">
+    <div class="engine-visual">
+      <div class="timeframes">
+        <div class="tf-row">
+          <span class="tf-label">5M</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↑ 85%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">15M</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↑ 78%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">1H</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">→ 52%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">4H</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↓ 32%</span>
+        </div>
+        <div class="tf-row">
+          <span class="tf-label">1D</span>
+          <div class="tf-bar-wrap"><div class="tf-bar"></div></div>
+          <span class="tf-pct">↓ 25%</span>
+        </div>
+      </div>
+      <div class="global-score">
+        <div>
+          <div class="gs-label">ГЛОБАЛЬНАЯ ОЦЕНКА</div>
+          <div class="gs-tag">АЛЕРТ ИМПУЛЬСА — ПРОДАЖА</div>
+        </div>
+        <div class="gs-value">85%</div>
+      </div>
+    </div>
+
+    <div class="engine-text">
+      <div class="section-tag">Базовая Технология</div>
+      <h2 class="section-title">Мультитаймфрейм<br><span style="color:var(--cyan)">Мультипликатор.</span></h2>
+      <p class="section-desc">5 таймфреймов. По 10 индикаторов в каждом. 50 разрозненных переменных — сжатых в единую мастер-оценку.</p>
+      <div class="engine-points">
+        <div class="engine-point">
+          <span class="ep-num">01</span>
+          <p class="ep-text"><strong>5 Временных Измерений:</strong> Анализирует 5M, 15M, 1H, 4H и 1D одновременно, считывая всю структуру рынка за один раз.</p>
+        </div>
+        <div class="engine-point">
+          <span class="ep-num">02</span>
+          <p class="ep-text"><strong>6-й Синтетический Таймфрейм:</strong> Все 50 переменных математически сливаются в единую метрику вероятности Global Score.</p>
+        </div>
+        <div class="engine-point">
+          <span class="ep-num">03</span>
+          <p class="ep-text"><strong>Сжатие 50:1:</strong> То, для чего потребовалось бы 5 мониторов и 50 индикаторов, свернуто в один чистый интерфейс.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="features-header">
+    <div class="section-tag">Институциональная Инженерия</div>
+    <h2 class="section-title">Создан иначе.<br>Спроектирован для точности.</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-title">Инженерия Zero Repaint</div>
+      <p class="feat-desc">Абсолютная историческая правда. Сигналы подтверждаются и строятся только по закрытию свечи. То, что вы видите в истории, заблокировано навсегда.</p>
+      <span class="feat-tag">Подтверждение сигнала: Заблокировано // Целостность: 100%</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-title">Универсальная Математика Активов</div>
+      <p class="feat-desc">Математика потока ордеров и стандартного отклонения применяется универсально. Идеально адаптируется к крипте, форексу, индексам и акциям. В крипте активируется эксклюзивный датчик Открытого Интереса.</p>
+      <span class="feat-tag">Активен // Подписка не требуется</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌍</div>
+      <div class="feat-title">Нативная Глобальная Локализация</div>
+      <p class="feat-desc">HUD изначально спроектирован на 5 языках: английском, португальском, испанском, русском и мандаринском. Элитная разведка без языковых барьеров.</p>
+      <span class="feat-tag">EN · PT · ES · RU · 中文</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎯</div>
+      <div class="feat-title">Система Оповещений Sniper</div>
+      <p class="feat-desc">Идеальное слияние экстремального Global Score + касания Стены SMC вызывает алерт SNIPER. Мобильные push-уведомления фильтруют только самые высоковероятные сетапы.</p>
+      <span class="feat-tag">Смертельная вероятность // Ноль эмоций</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🧲</div>
+      <div class="feat-title">Движок Институциональной Гравитации</div>
+      <p class="feat-desc">Макроуровни с недельных и дневных графиков проецируют свою гравитационную массу на микро-таймфреймы. Стены POC либо притягивают цену как магнит, либо отталкивают ее как бетон.</p>
+      <span class="feat-tag">Вес недельного POC: 5 // Вес 4H POC: 2</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌈</div>
+      <div class="feat-title">Когнитивный Визуальный HUD</div>
+      <p class="feat-desc">Тепловые зоны заменяют холодные линии индикаторов. Облако Rainbow пульсирует и светится, оповещая ваш мозг за миллисекунды — визуальная обработка в 1000 раз быстрее чтения чисел.</p>
+      <span class="feat-tag">Когнитивная нагрузка: Минимизирована // Скорость реакции: Максимизирована</span>
+    </div>
+  </div>
+</section>
+
+<section id="disciplines">
+  <div class="disc-inner">
+    <div class="disc-header">
+      <div class="section-tag">Абсолютное Слияние</div>
+      <h2 class="section-title">Пересечение аналитических дисциплин<br>для поиска структурной истины.</h2>
+    </div>
+    <div class="disc-grid">
+      <div class="disc-card">
+        <div class="disc-icon-wrap">📊</div>
+        <div class="disc-content">
+          <div class="disc-title">Институциональный VWAP</div>
+          <p class="disc-desc">Отслеживает точную среднюю цену, где позиционируются Крупные Игроки. Линия ярко светится по мере приближения цены к зоне институциональной защиты.</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">📈</div>
+        <div class="disc-content">
+          <div class="disc-title">Профиль Объема (POC/VAH/VAL)</div>
+          <p class="disc-desc">Наносит на карту Точку Контроля и Зоны Стоимости, где реальные деньги переходят из рук в руки. Истинная карта институционального спроса и предложения.</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">⚡</div>
+        <div class="disc-content">
+          <div class="disc-title">CVD &amp; Сжатие</div>
+          <p class="disc-desc">Измеряет агрессию потока ордеров через Cumulative Volume Delta — идентифицируя точно, кто атакует рынок и с какой силой.</p>
+        </div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-icon-wrap">🔗</div>
+        <div class="disc-content">
+          <div class="disc-title">Отслеживание Деривативов</div>
+          <p class="disc-desc">Отслеживает Открытый Интерес и Ставки Финансирования для поиска пойманных в ловушку розничных трейдеров и неминуемых сквизов ликвидации до их начала.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="levels">
+  <div class="levels-inner">
+    <div class="section-tag">Создан для Всех</div>
+    <h2 class="section-title">От визуальной простоты<br>до глубокой институциональной глубины.</h2>
+    <p class="section-desc">Система говорит с вами на вашем уровне. Когда вы готовы пойти глубже, машина уже ждет вас там.</p>
+    <div class="levels-track">
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// УРОВЕНЬ 01</div>
+        <div class="level-title">Новичок</div>
+        <div class="level-role">Рекрут</div>
+        <p class="level-desc">Следуйте тепловому цветовому переводу и процентам на Тактической Панели. Позвольте HUD выполнять тяжелую работу. Опыт не требуется.</p>
+      </div>
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// УРОВЕНЬ 02</div>
+        <div class="level-title">Оператор</div>
+        <div class="level-role">Средний</div>
+        <p class="level-desc">Фильтруйте автоматические уведомления Sniper прямо на мобильный телефон, игнорируя рыночный шум. Переключайте визуальные слои под свой стиль торговли.</p>
+      </div>
+      <div class="level-card">
+        <div class="level-stripe"></div>
+        <div class="level-num">// УРОВЕНЬ 03</div>
+        <div class="level-title">Хищник</div>
+        <div class="level-role">Профессионал</div>
+        <p class="level-desc">Вручную настраивайте входы таймфреймов, препарируйте Движок Гравитации и исполняйте сделки, идеально нанесенные на проверенные блоки объемов.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-header">
+      <div class="section-tag">Внутри Системы</div>
+      <h2 class="section-title">Смотрите на движок.<br><span style="color:var(--cyan)">Во всех деталях.</span></h2>
+      <p class="section-desc">Каждый слой Rainbow Matrix визуализирован. Вот как выглядит анализ институционального уровня.</p>
+    </div>
+
+    <div class="slide-showcase">
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-thermal-rb.PNG" alt="Когнитивный Визуальный Возврат — Тепловые Зоны" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 01</span>
+          <h3 class="slide-title">Когнитивный Визуальный Возврат: Торговля через Тепловые Зоны.</h3>
+          <p class="slide-desc">Облако Rainbow заменяет холодные, запутанные линии индикаторов тепловыми зонами. Ядро пульсирует, когда цена возвращается к справедливой стоимости. Экстремальные зоны (Аква или Пурпур) срабатывают на максимальной тревоге — ваш мозг обрабатывает предупреждение за миллисекунды.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Динамический VWAP</span>
+            <span class="slide-tag-item accent">Тепловое Ядро</span>
+            <span class="slide-tag-item">Обнаружение «Черного Лебедя»</span>
+            <span class="slide-tag-item">Зоны Справедливой Стоимости</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-mtf.png" alt="Мультитаймфрейм Мультипликатор" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 02</span>
+          <h3 class="slide-title">Мультитаймфрейм Мультипликатор.</h3>
+          <p class="slide-desc">5 мониторов × 10 индикаторов = 50 разрозненных переменных в секунду. Rainbow Matrix запускает Воронку Сжатия — коллапсируя все 50 переменных с 5M, 15M, 1H, 4H и 1D в единую унифицированную метрику вероятности Global Score.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Сжатие 50:1</span>
+            <span class="slide-tag-item accent">6-й Синтетический TF</span>
+            <span class="slide-tag-item">5 Таймфреймов</span>
+            <span class="slide-tag-item">Global Score</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-sniper.png" alt="Smart Money Concepts & Логика Sniper" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 03</span>
+          <h3 class="slide-title">Автоматизированные Smart Money Concepts &amp; Дерево Логики Sniper.</h3>
+          <p class="slide-desc">Система автоматически отрисовывает Блоки Ордеров (OB) и Имбалансы (FVG) — затем читает их. Когда Global Score достигает экстремальной вероятности И цена одновременно касается подтвержденного OB, выдается один сигнал: <strong style="color:var(--cyan)">СНАЙПЕР АЛЕРТ. Ноль эмоций.</strong></p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Блоки Ордеров</span>
+            <span class="slide-tag-item accent">Имбалансы (FVG)</span>
+            <span class="slide-tag-item">Поток Логики ИИ</span>
+            <span class="slide-tag-item">Без Эмоций</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-gravity.png" alt="Движок Институциональной Гравитации MGI" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 04</span>
+          <h3 class="slide-title">Движок Институциональной Гравитации (MGI).</h3>
+          <p class="slide-desc">Макроуровни с Недельных и Дневных графиков проецируют свою гравитационную массу на микро-таймфреймы. При наличии потока покупателей стена действует как магнит. Без него — как бетонный потолок, генерируя математическое истощение еще до касания цены.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Магнитное Притяжение</span>
+            <span class="slide-tag-item accent">Бетонный Потолок</span>
+            <span class="slide-tag-item">Вес Недельного POC: 5</span>
+            <span class="slide-tag-item">Вес 4H POC: 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-oscillator.png" alt="Глобальный Осциллятор — Синтетическое Сердце" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 05</span>
+          <h3 class="slide-title">Глобальный Осциллятор: Синтетическое сердце, адаптирующееся к волатильности.</h3>
+          <p class="slide-desc">В отличие от традиционных RSI, статично запертых между 30 и 70, Синтетический Таймфрейм (0–100) динамически создает собственную крышу, пол и центральную ось в реальном времени. СНАЙПЕР, СИЛЬНЫЙ, ЗАЩИТА — каждый тип сигнала классифицируется по строгим математическим правилам.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Динамические Крыша/Пол</span>
+            <span class="slide-tag-item accent">Синтетическая Ось</span>
+            <span class="slide-tag-item">🎯 Снайпер</span>
+            <span class="slide-tag-item">⭐ Сильный</span>
+            <span class="slide-tag-item">🛡️ Защита</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-panel.png" alt="Тактическая Командная Панель HUD" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 06</span>
+          <h3 class="slide-title">Тактическая Командная Панель.</h3>
+          <p class="slide-desc">Три панели. Одна кабина. Матрица Вероятности MTF показывает выравнивание всех 5 таймфреймов в реальном времени. Столбцы Движущей Силы изолируют то, что движет цену. Тактическая Сводка ИИ переводит все на человеческий язык: Вход, Стоп-лосс, Тейк-профит.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Матрица MTF</span>
+            <span class="slide-tag-item accent">Тактическая Сводка ИИ</span>
+            <span class="slide-tag-item">Z-Score / RSI / SAR</span>
+            <span class="slide-tag-item">Вход &amp; SL/TP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-confluence.png" alt="Пересечение Аналитических Дисциплин" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 07</span>
+          <h3 class="slide-title">Пересечение аналитических дисциплин для поиска структурной истины.</h3>
+          <p class="slide-desc">Четыре различные аналитические школы — Институциональный VWAP, Профиль Объема, CVD &amp; Сжатие и Отслеживание Деривативов — сливаются в единую точку абсолютного слияния. Ни один индикатор не управляет шоу в одиночку. Все они должны быть согласны.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">VWAP Институциональный</span>
+            <span class="slide-tag-item accent">CVD &amp; Сжатие</span>
+            <span class="slide-tag-item">Профиль Объема</span>
+            <span class="slide-tag-item">Открытый Интерес</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block reverse">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-integration.png" alt="Бесшовная Интеграция и Универсальное Применение" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 08</span>
+          <h3 class="slide-title">Бесшовная интеграция и универсальное применение.</h3>
+          <p class="slide-desc">Один скрипт. Не нужны дорогие подписки TradingView. Zero repaint — сигналы блокируются по закрытию свечи, навсегда. HUD говорит на вашем языке изначально: английский, португальский, испанский, русский и мандаринский.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item accent">Совместим с Бесплатным Планом</span>
+            <span class="slide-tag-item accent">Zero Repaint</span>
+            <span class="slide-tag-item">5 Языков</span>
+            <span class="slide-tag-item">Универсальная Математика</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-block">
+        <div class="slide-img-wrap">
+          <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
+          <div class="slide-corner bl"></div><div class="slide-corner br"></div>
+          <img src="images-ru/slide-levels.png" alt="Создан для Уровней — От Новичка до Хищника" loading="lazy">
+        </div>
+        <div class="slide-text">
+          <span class="slide-num">// МОДУЛЬ 09</span>
+          <h3 class="slide-title">Создан для уровней: От визуальной простоты до глубокой институциональной глубины.</h3>
+          <p class="slide-desc">Уровень 1 использует цвета и проценты. Уровень 2 фильтрует алерты Sniper на мобильный. Уровень 3 препарирует Движок Гравитации с хирургической точностью. Машина растет вместе с вами — на каждом этапе она уже ждет вас на следующем уровне.</p>
+          <div class="slide-tags">
+            <span class="slide-tag-item" style="border-color:var(--cyan);color:var(--cyan)">Уровень 1: Новичок</span>
+            <span class="slide-tag-item" style="border-color:var(--purple);color:var(--purple)">Уровень 2: Оператор</span>
+            <span class="slide-tag-item" style="border-color:var(--orange);color:var(--orange)">Уровень 3: Хищник</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div class="section-tag" style="justify-content:center"><span></span>Часто Задаваемые Вопросы</div>
+      <h2 class="section-title">Вопросы с поля боя.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Работает ли Rainbow Matrix на бесплатном плане TradingView? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Да — с абсолютным совершенством. Поскольку наш код консолидирует всю аналитику внутри одного мастер-скрипта, вам не нужны дорогие премиум-подписки TradingView. Один скрипт. Вся мощь.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Это бот, который торгует на моем счете автоматически? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Нет. Rainbow Matrix — это Движок поддержки принятия решений. Он обрабатывает институциональные данные и выдает точные сигналы, чтобы вы — оператор — подтвердили вход. Мы защищаем ваш капитал, сохраняя за вами абсолютный контроль.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Работает ли он с другими активами, кроме Крипты? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Да. Математика потока ордеров и стандартного отклонения универсальна. Скрипт автоматически адаптируется к Форексу, Индексам и Акциям. Специально для Крипты движок активирует эксклюзивный внутренний датчик деривативов Открытого Интереса.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Перерисовываются ли сигналы Sniper и Сильный сигнал (repaint)? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Наша политика инженерии — Zero Repaint. Сигнал отрисовывается и подтверждается только по закрытию свечи. То, что вы видите в истории, — это именно то, что произошло в реальном времени. Перманентно. Заблокировано. Неизменно.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Что делать, если я полный новичок? <span class="faq-chevron">▼</span></div>
+        <div class="faq-a">Система построена для чтения по уровням. Как новичок, просто следуйте цветовому переводу и процентам Тактической Панели. Когда вы будете готовы копнуть глубже, институциональные блоки и движок гравитации уже будут ждать вас.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="pricing-inner">
+    <div class="section-tag" style="justify-content:center"><span></span>Элитный Доступ</div>
+    <h2 class="section-title">Один инструмент.<br>Бесконечное преимущество.</h2>
+    <div class="pricing-card">
+      <div class="pricing-glow"></div>
+      
+      <div style="position: absolute; top: 25px; right: -40px; background: var(--cyan); color: #000; font-family: var(--font-mono); font-weight: bold; padding: 5px 40px; transform: rotate(45deg); font-size: 0.70rem; letter-spacing: 1px; z-index: 10; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+        7 ДНЕЙ БЕСПЛАТНО
+      </div>
+
+      <div class="plan-badge">// Институциональный Доступ</div>
+      <div class="plan-price"><sup>$</sup>39.99</div>
+      <div class="plan-period">в месяц · ежемесячная оплата</div>
+      <ul class="plan-features-list">
+        <li style="color: var(--cyan); font-weight: 700;">✓ 7-Дневная Бесплатная Версия (Отмена в любое время)</li>
+        <li>✓ Полный скрипт Rainbow Matrix — все слои разблокированы</li>
+        <li>✓ Мультитаймфрейм Движок (5 TF → Global Score)</li>
+        <li>✓ Движок Институциональной Гравитации (MGI)</li>
+        <li>✓ Smart Money Concepts — авторазметка OB и FVG</li>
+        <li>✓ Система Оповещений Sniper — мобильные push-уведомления</li>
+        <li>✓ Совместимость с бесплатным планом TradingView</li>
+        <li>✓ Zero Repaint — 100% историческая целостность</li>
+      </ul>
+      <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn-lg">
+        Начать Бесплатную Версию →
+      </a>
+      <p class="plan-fine">// БЕЗ ОБЯЗАТЕЛЬСТВ. СНАЧАЛА ПРОТЕСТИРУЙТЕ РАДАР.</p>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-img-wrap">
+    <div class="lightbox-corner tl"></div>
+    <div class="lightbox-corner tr"></div>
+    <div class="lightbox-corner bl"></div>
+    <div class="lightbox-corner br"></div>
+    <span class="lightbox-close" onclick="closeLightbox()">[ ESC ] ЗАКРЫТЬ ✕</span>
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-hint">// НАЖМИТЕ В ЛЮБОМ МЕСТЕ ДЛЯ ЗАКРЫТИЯ</div>
+  </div>
+</div>
+
+<footer style="background: var(--bg); padding: 4rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; border-top: 1px solid var(--border); text-align: center;">
+  
+  <div class="footer-logo">RAINBOW MATRIX</div>
+  
+  <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;">
+    <span style="color: var(--text-dim);">// ИНСТИТУЦИОНАЛЬНЫЕ ЗАПРОСЫ И ПАРТНЕРСТВО</span><br>
+    <a href="mailto:contact@rainbowmatrix.ai" style="color: var(--cyan); text-decoration: none; font-weight: 700; font-size: 0.9rem; margin-top: 0.8rem; display: inline-block; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--cyan)'">
+      contact@rainbowmatrix.ai
+    </a>
+  </div>
+
+  <div class="footer-copy">© 2026 Rainbow Matrix. Все права защищены. Руководство Элитного Оператора.</div>
+</footer>
+
+<script>
+  // Mobile Menu Toggle
+  function toggleMenu() {
+    var menu = document.getElementById('nav-links');
+    if (menu) {
+      menu.classList.toggle('active');
+    }
+  }
+
+  // Lightbox
+  function openLightbox(src, alt) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    img.alt = alt;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e) {
+    if (e && e.target.closest('.lightbox-img-wrap') && !e.target.closest('.lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Make all slide images clickable
+  document.querySelectorAll('.slide-img-wrap img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Intersection Observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feat-card, .disc-card, .level-card, .engine-point, .confront-card, .slide-block').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
