@@ -77,6 +77,21 @@
     transform: translateY(-1px);
     color: var(--bg) !important;
   }
+  /* ── LANGUAGE SWITCHER ── */
+  .lang-switcher {
+    display: flex; gap: 0.5rem; align-items: center;
+    font-family: var(--font-mono); font-size: 0.65rem;
+    border-left: 1px solid var(--border);
+    padding-left: 1.5rem; margin-left: 0.5rem;
+  }
+  .lang-link {
+    color: var(--text-muted); text-decoration: none;
+    transition: color 0.2s; cursor: pointer;
+  }
+  .lang-link:hover, .lang-link.active {
+    color: var(--cyan); font-weight: 700;
+  }
+  .lang-sep { color: var(--border); }
 
   /* ── HERO ── */
   #hero {
@@ -766,6 +781,14 @@
     <a href="#gallery">Gallery</a>
     <a href="#faq">FAQ</a>
     <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Start Free Trial →</a>
+    
+    <div class="lang-switcher">
+      <a href="index.html" class="lang-link active">EN</a><span class="lang-sep">|</span>
+      <a href="pt.html" class="lang-link">PT</a><span class="lang-sep">|</span>
+      <a href="es.html" class="lang-link">ES</a><span class="lang-sep">|</span>
+      <a href="ru.html" class="lang-link">RU</a><span class="lang-sep">|</span>
+      <a href="cn.html" class="lang-link">中文</a>
+    </div>
   </div>
 </nav>
 
