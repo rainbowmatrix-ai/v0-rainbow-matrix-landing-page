@@ -754,10 +754,24 @@
     background: rgba(0,245,212,0.05);
   }
 
-  /* ── RESPONSIVE ── */
+  /* ── RESPONSIVE & MOBILE MENU ── */
+  .mobile-toggle { display: none; color: var(--cyan); font-size: 1.8rem; cursor: pointer; user-select: none; }
+  
   @media(max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
+    nav { padding: 1rem 1.5rem; flex-wrap: wrap; }
+    .mobile-toggle { display: block; }
+    .nav-links { 
+      display: none; width: 100%; flex-direction: column; 
+      margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+      gap: 1.5rem; align-items: center; 
+    }
+    .nav-links.active { display: flex !important; animation: fadeInDown 0.3s ease; }
+    .lang-switcher { border-left: none; padding-left: 0; margin-left: 0; justify-content: center; width: 100%; }
+    
+    /* Correção de Estouro de Margens no Telemóvel */
+    .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .plan-price { font-size: 3.5rem; }
+    
     section { padding: 5rem 1.5rem; }
     .engine-inner, .confront-grid, .features-grid, .disc-grid, .levels-track,
     .slide-block { grid-template-columns: 1fr; }
@@ -772,7 +786,10 @@
 
 <nav>
   <div class="nav-logo">Rainbow Matrix</div>
-  <div class="nav-links">
+  
+  <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
+  
+  <div class="nav-links" id="nav-links">
     <a href="#confrontation">Filosofía</a>
     <a href="#engine">Motor</a>
     <a href="#features">Tecnología</a>
@@ -1345,6 +1362,14 @@
 </footer>
 
 <script>
+  // Motor do Menu Mobile
+  function toggleMenu() {
+    var menu = document.getElementById('nav-links');
+    if (menu) {
+      menu.classList.toggle('active');
+    }
+  }
+  
   // Lightbox
   function openLightbox(src, alt) {
     const lb = document.getElementById('lightbox');
