@@ -150,10 +150,31 @@
     line-height: 1.8;
     animation: fadeInUp 0.9s ease 0.2s both;
   }
+  
+  /* YOUTUBE VIDEO ADDED HERE */
+  .hero-video {
+    width: 100%; max-width: 800px; margin: 2rem auto 3rem;
+    background: var(--bg2); border: 1px solid var(--border-glow);
+    padding: 0.5rem; border-radius: 8px;
+    box-shadow: 0 0 40px rgba(0,245,212,0.1);
+    position: relative; z-index: 10;
+    animation: fadeInUp 0.9s ease 0.3s both;
+  }
+  .hero-video .video-glow {
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  }
+  .hero-video-wrapper {
+    position: relative; padding-bottom: 56.25%; height: 0; border-radius: 4px; overflow: hidden;
+  }
+  .hero-video-wrapper iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+
   .hero-tagline {
     font-family: var(--font-display); font-size: 1.2rem; font-weight: 600;
     color: var(--text); margin-bottom: 3rem;
-    animation: fadeInUp 0.9s ease 0.3s both;
+    animation: fadeInUp 0.9s ease 0.4s both;
   }
   .hero-tagline em { color: var(--cyan); font-style: normal; }
   .cta-btn {
@@ -167,7 +188,7 @@
     text-decoration: none;
     transition: all 0.25s;
     box-shadow: 0 0 40px rgba(0,245,212,0.3), 0 0 80px rgba(0,245,212,0.1);
-    animation: fadeInUp 0.9s ease 0.4s both;
+    animation: fadeInUp 0.9s ease 0.5s both;
     position: relative;
     overflow: hidden;
   }
@@ -187,7 +208,7 @@
 
   .hero-stats {
     display: flex; gap: 4rem; margin-top: 5rem;
-    animation: fadeInUp 0.9s ease 0.5s both;
+    animation: fadeInUp 0.9s ease 0.6s both;
   }
   .stat { text-align: center; }
   .stat-num {
@@ -735,7 +756,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo">Rainbow Matrix</div>
   <div class="nav-links">
@@ -745,11 +765,10 @@
     <a href="#levels">Levels</a>
     <a href="#gallery">Gallery</a>
     <a href="#faq">FAQ</a>
-    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Join the Elite →</a>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Start Free Trial →</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
@@ -768,12 +787,25 @@
     THE ELITE OPERATOR'S MANUAL
   </p>
 
+  <div class="hero-video">
+    <div class="video-glow"></div>
+    <div class="hero-video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/DvnjB8BQHsQ?rel=0" 
+        title="Rainbow Matrix Briefing" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
   <p class="hero-tagline">
     Upgrading the operator from <em>prey</em> to predator.
   </p>
 
   <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn">
-    Join the Elite <span class="cta-arrow">→</span>
+    Start 7-Day Free Trial <span class="cta-arrow">→</span>
   </a>
 
   <div class="hero-stats">
@@ -796,7 +828,6 @@
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-inner">
     <div class="ticker-item">🎯 SNIPER ALERT<span>//</span>BTC/USDT 5M<span>//</span>GLOBAL SCORE: 91%</div>
@@ -804,7 +835,6 @@
     <div class="ticker-item">🛡️ DEFENSE ZONE<span>//</span>SPX 4H<span>//</span>POC WALL ACTIVE</div>
     <div class="ticker-item">🎯 SNIPER ALERT<span>//</span>ETH/USDT 15M<span>//</span>OB + FVG CONFLUENCE</div>
     <div class="ticker-item">♻️ REPIQUE<span>//</span>GOLD 1H<span>//</span>VWAP INSTITUTIONAL DEFENSE</div>
-    <!-- duplicate for seamless loop -->
     <div class="ticker-item">🎯 SNIPER ALERT<span>//</span>BTC/USDT 5M<span>//</span>GLOBAL SCORE: 91%</div>
     <div class="ticker-item">⭐ STRONG SIGNAL<span>//</span>EUR/USD 1H<span>//</span>SCORE: 84%</div>
     <div class="ticker-item">🛡️ DEFENSE ZONE<span>//</span>SPX 4H<span>//</span>POC WALL ACTIVE</div>
@@ -813,7 +843,6 @@
   </div>
 </div>
 
-<!-- CONFRONTATION -->
 <section id="confrontation">
   <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:1rem">
     <div class="section-tag" style="justify-content:center"><span style="width:30px;height:1px;background:var(--cyan);display:inline-block"></span> The Philosophy</div>
@@ -843,7 +872,6 @@
   </div>
 </section>
 
-<!-- ENGINE -->
 <section id="engine">
   <div class="engine-inner">
     <div class="engine-visual">
@@ -905,7 +933,6 @@
   </div>
 </section>
 
-<!-- FEATURES GRID -->
 <section id="features">
   <div class="features-header">
     <div class="section-tag">Institutional Engineering</div>
@@ -951,7 +978,6 @@
   </div>
 </section>
 
-<!-- DISCIPLINES -->
 <section id="disciplines">
   <div class="disc-inner">
     <div class="disc-header">
@@ -991,7 +1017,6 @@
   </div>
 </section>
 
-<!-- LEVELS -->
 <section id="levels">
   <div class="levels-inner">
     <div class="section-tag">Built For Everyone</div>
@@ -1023,7 +1048,6 @@
   </div>
 </section>
 
-<!-- GALLERY -->
 <section id="gallery">
   <div class="gallery-inner">
     <div class="gallery-header">
@@ -1034,7 +1058,6 @@
 
     <div class="slide-showcase">
 
-      <!-- Slide: Thermal Zones -->
       <div class="slide-block">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1054,7 +1077,6 @@
         </div>
       </div>
 
-      <!-- Slide: MTF Multiplicator -->
       <div class="slide-block reverse">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1074,7 +1096,6 @@
         </div>
       </div>
 
-      <!-- Slide: SMC Sniper -->
       <div class="slide-block">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1094,7 +1115,6 @@
         </div>
       </div>
 
-      <!-- Slide: MGI Gravity -->
       <div class="slide-block reverse">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1114,7 +1134,6 @@
         </div>
       </div>
 
-      <!-- Slide: Global Oscillator -->
       <div class="slide-block">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1135,7 +1154,6 @@
         </div>
       </div>
 
-      <!-- Slide: Tactical Command Panel -->
       <div class="slide-block reverse">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1155,7 +1173,6 @@
         </div>
       </div>
 
-      <!-- Slide: Confluence -->
       <div class="slide-block">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1175,7 +1192,6 @@
         </div>
       </div>
 
-      <!-- Slide: Integration -->
       <div class="slide-block reverse">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1195,7 +1211,6 @@
         </div>
       </div>
 
-      <!-- Slide: Levels -->
       <div class="slide-block">
         <div class="slide-img-wrap">
           <div class="slide-corner tl"></div><div class="slide-corner tr"></div>
@@ -1218,7 +1233,6 @@
   </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq">
   <div class="faq-inner">
     <div class="faq-header">
@@ -1250,35 +1264,38 @@
   </div>
 </section>
 
-<!-- PRICING -->
 <section id="pricing">
   <div class="pricing-inner">
     <div class="section-tag" style="justify-content:center"><span></span>Elite Access</div>
     <h2 class="section-title">One tool.<br>Infinite edge.</h2>
     <div class="pricing-card">
       <div class="pricing-glow"></div>
-      <div class="plan-badge">// Elite Access</div>
-      <div class="plan-price"><sup>$</sup>199</div>
-      <div class="plan-period">per quarter · billed every 3 months</div>
+      
+      <div style="position: absolute; top: 25px; right: -40px; background: var(--cyan); color: #000; font-family: var(--font-mono); font-weight: bold; padding: 5px 40px; transform: rotate(45deg); font-size: 0.70rem; letter-spacing: 1px; z-index: 10; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+        7 DAYS FREE
+      </div>
+
+      <div class="plan-badge">// Institutional Access</div>
+      <div class="plan-price"><sup>$</sup>39.99</div>
+      <div class="plan-period">per month · billed monthly</div>
       <ul class="plan-features-list">
-        <li>Full Rainbow Matrix script — all layers unlocked</li>
-        <li>Multi-Timeframe Engine (5 TF → Global Score)</li>
-        <li>Institutional Gravity Engine (MGI)</li>
-        <li>Smart Money Concepts — OB &amp; FVG auto-mapping</li>
-        <li>Sniper Alert System — mobile push notifications</li>
-        <li>Native HUD in 5 languages</li>
-        <li>TradingView free plan compatible</li>
-        <li>Zero Repaint — 100% historical integrity</li>
+        <li style="color: var(--cyan); font-weight: 700;">✓ 7-Day Free Trial (Cancel anytime)</li>
+        <li>✓ Full Rainbow Matrix script — all layers unlocked</li>
+        <li>✓ Multi-Timeframe Engine (5 TF → Global Score)</li>
+        <li>✓ Institutional Gravity Engine (MGI)</li>
+        <li>✓ Smart Money Concepts — OB &amp; FVG auto-mapping</li>
+        <li>✓ Sniper Alert System — mobile push notifications</li>
+        <li>✓ TradingView free plan compatible</li>
+        <li>✓ Zero Repaint — 100% historical integrity</li>
       </ul>
       <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn-lg">
-        Join the Elite →
+        Start Free Trial →
       </a>
-      <p class="plan-fine">Cancel anytime. No contracts. No lock-in.</p>
+      <p class="plan-fine">// ZERO COMMITMENT. TEST THE RADAR FIRST.</p>
     </div>
   </div>
 </section>
 
-<!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
   <div class="lightbox-img-wrap">
     <div class="lightbox-corner tl"></div>
@@ -1291,7 +1308,6 @@
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">RAINBOW MATRIX</div>
   <div class="footer-copy">© 2025 Rainbow Matrix. All rights reserved. Not financial advice.</div>
