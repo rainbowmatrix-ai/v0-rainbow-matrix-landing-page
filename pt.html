@@ -6,6 +6,11 @@
 <title>Rainbow Matrix — Motor de Suporte à Decisão & Radar Institucional</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/index.html">
+<link rel="alternate" hreflang="pt" href="https://rainbowmatrix.ai/pt.html">
+<link rel="alternate" hreflang="es" href="https://rainbowmatrix.ai/es.html">
+<link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/ru.html">
+<link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/cn.html">
 <style>
   :root {
     --bg: #080c10;
@@ -1412,6 +1417,160 @@
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(el);
   });
+</script>
+<!-- ── CHATBOT ── -->
+<div id="chat-btn" onclick="toggleChat()" title="Suporte Rainbow Matrix">
+  <span id="chat-btn-icon">🤖</span>
+</div>
+
+<div id="chat-window">
+  <div id="chat-header">
+    <div>
+      <div id="chat-title">🌈 Rainbow Matrix AI</div>
+      <div id="chat-subtitle">// Operador de Suporte Tático</div>
+    </div>
+    <button onclick="toggleChat()" id="chat-close">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="msg bot">
+      <span>Operador online. Como posso te ajudar com o Rainbow Matrix AI hoje?</span>
+    </div>
+  </div>
+  <div id="chat-input-wrap">
+    <input id="chat-input" type="text" placeholder="Pergunte qualquer coisa sobre o Rainbow Matrix..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()" id="chat-send">→</button>
+  </div>
+</div>
+
+<style>
+  #chat-btn {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    width: 56px; height: 56px; border-radius: 2px;
+    background: var(--cyan); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 30px rgba(0,245,212,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  #chat-btn:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,245,212,0.6); }
+
+  #chat-window {
+    position: fixed; bottom: 6rem; right: 2rem; z-index: 998;
+    width: 360px; height: 520px;
+    background: #0d1117;
+    border: 1px solid rgba(0,245,212,0.3);
+    display: none; flex-direction: column;
+    box-shadow: 0 0 60px rgba(0,0,0,0.6);
+  }
+  #chat-window.open { display: flex; }
+
+  #chat-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    background: rgba(0,245,212,0.05);
+  }
+  #chat-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; color: #00f5d4; }
+  #chat-subtitle { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #6b7a8d; letter-spacing: 0.1em; margin-top: 2px; }
+  #chat-close { background: none; border: none; color: #6b7a8d; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+  #chat-close:hover { color: #00f5d4; }
+
+  #chat-messages {
+    flex: 1; overflow-y: auto; padding: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.85rem;
+  }
+  #chat-messages::-webkit-scrollbar { width: 3px; }
+  #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); }
+
+  .msg { display: flex; max-width: 88%; }
+  .msg.bot { align-self: flex-start; }
+  .msg.user { align-self: flex-end; }
+  .msg span {
+    font-family: 'DM Sans', sans-serif; font-size: 0.84rem; line-height: 1.6;
+    padding: 0.7rem 1rem; border-radius: 2px;
+    white-space: pre-wrap;
+  }
+  .msg.bot span { background: rgba(255,255,255,0.04); color: #e8edf2; border-left: 2px solid #00f5d4; }
+  .msg.user span { background: rgba(0,245,212,0.1); color: #e8edf2; border-right: 2px solid #9b5de5; }
+  .msg.typing span { color: #6b7a8d; font-style: italic; }
+
+  #chat-input-wrap {
+    display: flex; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  #chat-input {
+    flex: 1; background: rgba(255,255,255,0.03); border: none; outline: none;
+    color: #e8edf2; font-family: 'DM Sans', sans-serif; font-size: 0.84rem;
+    padding: 0.9rem 1.1rem;
+  }
+  #chat-input::placeholder { color: #3d4a57; }
+  #chat-send {
+    background: #00f5d4; border: none; color: #080c10;
+    font-weight: 700; font-size: 1rem;
+    padding: 0 1.2rem; cursor: pointer; transition: background 0.2s;
+  }
+  #chat-send:hover { background: #00d4b8; }
+
+  @media(max-width: 480px) {
+    #chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
+    #chat-btn { right: 1rem; bottom: 1rem; }
+  }
+</style>
+
+<script>
+  const chatHistory = [];
+
+  function toggleChat() {
+    const win = document.getElementById('chat-window');
+    win.classList.toggle('open');
+    if (win.classList.contains('open')) {
+      document.getElementById('chat-input').focus();
+    }
+  }
+
+  function addMessage(text, role) {
+    const msgs = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    const span = document.createElement('span');
+    span.textContent = text;
+    div.appendChild(span);
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    addMessage(text, 'user');
+    chatHistory.push({ role: 'user', content: text });
+
+    // Typing indicator
+    const typing = addMessage('Analyzing...', 'bot typing');
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory })
+      });
+
+      const data = await res.json();
+      typing.remove();
+
+      const reply = data.response || 'Tactical error. Please try again.';
+      addMessage(reply, 'bot');
+      chatHistory.push({ role: 'assistant', content: reply });
+
+    } catch (err) {
+      typing.remove();
+      addMessage('Connection lost. Try again or contact contact@rainbowmatrix.ai', 'bot');
+    }
+  }
 </script>
 </body>
 </html>
