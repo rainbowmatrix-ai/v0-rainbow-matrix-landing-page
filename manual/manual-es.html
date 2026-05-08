@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix AI — Manual del Operador Elite</title>
+<meta name="description" content="Manual oficial del operador elite de Rainbow Matrix AI — El motor de probabilidad multi-timeframe más avanzado del mercado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/manual.html">
+<link rel="alternate" hreflang="pt" href="https://rainbowmatrix.ai/manual-pt.html">
+<link rel="alternate" hreflang="es" href="https://rainbowmatrix.ai/manual-es.html">
+<link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/manual-ru.html">
+<link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/manual-cn.html">
+<style>
+  :root {
+    --bg: #080c10; --bg2: #0d1117; --bg3: #111820;
+    --surface: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.07);
+    --border-glow: rgba(0,245,212,0.3); --cyan: #00f5d4; --cyan-dim: rgba(0,245,212,0.1);
+    --purple: #9b5de5; --orange: #ff6b35; --yellow: #f9c74f; --red: #ff4444;
+    --text: #e8edf2; --text-muted: #6b7a8d; --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif; --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif; --sidebar-w: 280px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; line-height: 1.7; }
+
+  .topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; background: rgba(8,12,16,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .topnav-logo { font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; letter-spacing: 0.12em; color: var(--cyan); text-transform: uppercase; text-decoration: none; }
+  .topnav-right { display: flex; align-items: center; gap: 1.5rem; }
+  .topnav-tag { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--cyan); border: 1px solid rgba(0,245,212,0.3); padding: 0.25rem 0.7rem; text-transform: uppercase; }
+  .topnav-link { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--text-muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .topnav-link:hover { color: var(--cyan); }
+  .menu-btn { display: none; background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.2rem; padding: 0.25rem; }
+
+  .sidebar { position: fixed; top: 56px; left: 0; bottom: 0; width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border); overflow-y: auto; z-index: 100; padding: 1.5rem 0 2rem; transition: transform 0.3s ease; }
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+  .sidebar-section-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); padding: 0.5rem 1.5rem; margin-top: 1rem; }
+  .sidebar-link { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 1.5rem; font-family: var(--font-body); font-size: 0.8rem; color: var(--text-muted); text-decoration: none; transition: all 0.15s; border-left: 2px solid transparent; line-height: 1.4; }
+  .sidebar-link:hover { color: var(--text); background: var(--surface); }
+  .sidebar-link.active { color: var(--cyan); border-left-color: var(--cyan); background: var(--cyan-dim); }
+  .sidebar-link .ch-num { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); min-width: 22px; margin-top: 1px; flex-shrink: 0; }
+  .sidebar-link.active .ch-num { color: var(--cyan); opacity: 0.7; }
+
+  .main { margin-left: var(--sidebar-w); padding-top: 56px; min-height: 100vh; }
+
+  .manual-hero { background: var(--bg); padding: 5rem 5rem 4rem; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .manual-hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,245,212,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,212,0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%); }
+  .manual-hero-glow { position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(155,93,229,0.07) 0%, transparent 70%); }
+  .manual-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em; color: var(--cyan); border: 1px solid rgba(0,245,212,0.25); padding: 0.35rem 0.85rem; margin-bottom: 1.8rem; background: rgba(0,245,212,0.05); }
+  .manual-badge::before { content: ''; width: 5px; height: 5px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 6px var(--cyan); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .manual-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+  .manual-title span { background: linear-gradient(135deg, #00f5d4, #9b5de5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .manual-subtitle { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 2rem; line-height: 1.8; max-width: 580px; }
+  .manual-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .meta-item { display: flex; align-items: center; gap: 0.5rem; }
+  .meta-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; }
+  .meta-value { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+  .progress-bar { display: flex; gap: 3px; margin-top: 2rem; }
+  .pb-seg { height: 3px; flex: 1; border-radius: 1px; }
+
+  .chapter { padding: 4rem 5rem; border-bottom: 1px solid var(--border); scroll-margin-top: 72px; }
+  .chapter:nth-child(even) { background: var(--bg2); }
+  .chapter-header { margin-bottom: 2.5rem; }
+  .chapter-num { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.2em; color: var(--cyan); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.75rem; }
+  .chapter-num::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--cyan); opacity: 0.4; }
+  .chapter-title { font-family: var(--font-display); font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; line-height: 1.15; margin-bottom: 0.75rem; }
+  .chapter-desc { font-size: 0.9rem; color: var(--text-muted); max-width: 620px; line-height: 1.75; }
+
+  .prose { max-width: 780px; }
+  .prose p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 1.25rem; }
+  .prose p strong { color: var(--text); font-weight: 600; }
+  .prose p em { color: var(--cyan); font-style: normal; }
+
+  .section-heading { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 2.5rem 0 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-heading::before { content: ''; width: 4px; height: 1.1em; background: var(--cyan); flex-shrink: 0; }
+  .subsection-heading { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--cyan); margin: 2rem 0 0.75rem; font-style: italic; }
+
+  .callout { border-left: 3px solid var(--cyan); background: rgba(0,245,212,0.05); padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 2px 2px 0; }
+  .callout.warning { border-left-color: var(--orange); background: rgba(255,107,53,0.05); }
+  .callout.danger { border-left-color: var(--red); background: rgba(255,68,68,0.05); }
+  .callout.purple { border-left-color: var(--purple); background: rgba(155,93,229,0.05); }
+  .callout-title { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; color: var(--cyan); }
+  .callout.warning .callout-title { color: var(--orange); }
+  .callout.danger .callout-title { color: var(--red); }
+  .callout.purple .callout-title { color: var(--purple); }
+  .callout p { font-size: 0.87rem; color: var(--text-muted); margin-bottom: 0; line-height: 1.75; }
+  .callout p strong { color: var(--text); }
+
+  .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin: 1rem 0 1.5rem; }
+  .bullet-list li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+  .bullet-list li::before { content: '→'; color: var(--cyan); flex-shrink: 0; margin-top: 1px; font-family: var(--font-mono); font-size: 0.75rem; }
+  .bullet-list li strong { color: var(--text); }
+
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+  .check-list li { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; }
+  .check-list li.yes::before { content: '✅'; font-size: 0.8rem; flex-shrink: 0; }
+  .check-list li.no::before { content: '❌'; font-size: 0.8rem; flex-shrink: 0; }
+  .check-list li.warn::before { content: '⚠️'; font-size: 0.8rem; flex-shrink: 0; }
+
+  .step-list { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
+  .step-item { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 1.25rem; border: 1px solid var(--border); border-top: none; transition: background 0.2s; }
+  .step-item:first-child { border-top: 1px solid var(--border); }
+  .step-item:hover { background: var(--surface); }
+  .step-num { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: var(--cyan); min-width: 24px; margin-top: 2px; flex-shrink: 0; }
+  .step-text { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; }
+  .step-text strong { color: var(--text); }
+
+  .data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.83rem; }
+  .data-table th { background: rgba(0,245,212,0.07); color: var(--cyan); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid rgba(0,245,212,0.2); }
+  .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; line-height: 1.6; }
+  .data-table td strong { color: var(--text); }
+  .data-table tr:hover td { background: var(--surface); }
+
+  .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 1.5rem 0; }
+  .tier-card { background: var(--bg); padding: 1.5rem; position: relative; overflow: hidden; }
+  .tier-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .tier-card:nth-child(1)::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .tier-card:nth-child(2)::before { background: linear-gradient(90deg, var(--purple), transparent); }
+  .tier-card:nth-child(3)::before { background: linear-gradient(90deg, var(--orange), transparent); }
+  .tier-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .tier-card:nth-child(1) .tier-label { color: var(--cyan); }
+  .tier-card:nth-child(2) .tier-label { color: var(--purple); }
+  .tier-card:nth-child(3) .tier-label { color: var(--orange); }
+  .tier-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .tier-items { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .tier-items li { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; }
+  .tier-items li::before { content: '·'; color: var(--text-dim); }
+
+  .signal-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); margin: 1.5rem 0; }
+  .signal-card { background: var(--bg2); padding: 1.5rem 1.75rem; display: flex; gap: 1.5rem; align-items: flex-start; transition: background 0.2s; }
+  .signal-card:hover { background: var(--bg3); }
+  .signal-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .signal-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem; }
+  .signal-card:nth-child(1) .signal-name { color: var(--yellow); }
+  .signal-card:nth-child(2) .signal-name { color: var(--purple); }
+  .signal-card:nth-child(3) .signal-name { color: var(--red); }
+  .signal-card:nth-child(4) .signal-name { color: var(--orange); }
+  .signal-card:nth-child(5) .signal-name { color: var(--cyan); }
+  .signal-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.65; }
+  .signal-tag { display: inline-block; margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--text-dim); border: 1px solid var(--border); padding: 0.2rem 0.55rem; }
+
+  .zone-row { display: flex; align-items: center; gap: 0; margin-bottom: 2px; }
+  .zone-color { width: 6px; height: 48px; flex-shrink: 0; }
+  .zone-content { flex: 1; padding: 0.65rem 1rem; background: var(--bg3); border: 1px solid var(--border); margin-left: 2px; }
+  .zone-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .zone-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+  .formula { background: rgba(155,93,229,0.06); border: 1px solid rgba(155,93,229,0.2); padding: 1.5rem; margin: 1.5rem 0; text-align: center; }
+  .formula-eq { font-family: var(--font-mono); font-size: 1.1rem; color: var(--text); margin-bottom: 0.5rem; }
+  .formula-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; }
+
+  .toc-box { background: var(--bg3); border: 1px solid var(--border); padding: 2rem; margin-bottom: 3rem; }
+  .toc-box-title { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1.25rem; }
+  .toc-entries { display: flex; flex-direction: column; gap: 0.4rem; }
+  .toc-entry { display: flex; gap: 0.75rem; text-decoration: none; color: var(--text-muted); font-size: 0.83rem; transition: color 0.15s; }
+  .toc-entry:hover { color: var(--cyan); }
+  .toc-entry-num { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); min-width: 28px; }
+
+  .manual-footer { padding: 2.5rem 5rem; background: var(--bg); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.06em; }
+
+  @media(max-width: 900px) {
+    :root { --sidebar-w: 0px; }
+    .sidebar { transform: translateX(-280px); width: 280px; }
+    .sidebar.open { transform: translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.6); }
+    .main { margin-left: 0; }
+    .chapter, .manual-hero, .manual-footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .tier-grid { grid-template-columns: 1fr; }
+    .menu-btn { display: block; }
+    .topnav-tag { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="https://rainbowmatrix.ai/es.html" class="topnav-logo">🌈 Rainbow Matrix AI</a>
+  <div class="topnav-right">
+    <span class="topnav-tag">💎 Manual del Operador Elite</span>
+    <a href="https://rainbowmatrix.ai/es.html" class="topnav-link">← Sitio Principal</a>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="topnav-link" style="color:var(--cyan)">Acceso Elite →</a>
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+</nav>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section-label">// Navegación</div>
+  <a href="#intro" class="sidebar-link active"><span class="ch-num">00</span>Introducción</a>
+  <div class="sidebar-section-label">// Capítulos</div>
+  <a href="#ch1" class="sidebar-link"><span class="ch-num">01</span>Filosofía & El Despertar</a>
+  <a href="#ch2" class="sidebar-link"><span class="ch-num">02</span>Implementación en TradingView</a>
+  <a href="#ch3" class="sidebar-link"><span class="ch-num">03</span>Menú de Configuración</a>
+  <a href="#ch4" class="sidebar-link"><span class="ch-num">04</span>Protocolo de los 223 Minutos</a>
+  <a href="#ch5" class="sidebar-link"><span class="ch-num">05</span>Arquitectura Multi-Fractal</a>
+  <a href="#ch6" class="sidebar-link"><span class="ch-num">06</span>Nube Rainbow & VWAPs</a>
+  <a href="#ch7" class="sidebar-link"><span class="ch-num">07</span>Radar Institucional & MGI</a>
+  <a href="#ch8" class="sidebar-link"><span class="ch-num">08</span>FAQ & Compromisos Tácticos</a>
+  <a href="#ch9" class="sidebar-link"><span class="ch-num">09</span>Preservación de Capital</a>
+  <a href="#ch10" class="sidebar-link"><span class="ch-num">10</span>Diagnóstico del Sistema</a>
+  <a href="#ch11" class="sidebar-link"><span class="ch-num">11</span>Riesgos & Directrices Legales</a>
+  <div class="sidebar-section-label" style="margin-top:2rem">// Soporte</div>
+  <a href="mailto:contact@rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">✉</span>contact@rainbowmatrix.ai</a>
+  <a href="https://rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
+</aside>
+
+<main class="main">
+
+  <div class="manual-hero" id="intro">
+    <div class="manual-hero-grid"></div>
+    <div class="manual-hero-glow"></div>
+    <div class="manual-badge">Manual Oficial del Operador Elite — v4</div>
+    <h1 class="manual-title"><span>Rainbow Matrix AI</span><br>Manual del Operador Elite.</h1>
+    <p class="manual-subtitle">🌈 Motor de Probabilidad MTF · 💎 Acceso Elite<br>El motor de análisis multi-timeframe más avanzado disponible en el mercado para el operador privado.</p>
+    <div class="manual-meta">
+      <div class="meta-item"><span class="meta-label">Portal</span><span class="meta-value">rainbowmatrix.ai</span></div>
+      <div class="meta-item"><span class="meta-label">Soporte</span><span class="meta-value">contact@rainbowmatrix.ai</span></div>
+      <div class="meta-item"><span class="meta-label">Capítulos</span><span class="meta-value">11 Módulos</span></div>
+      <div class="meta-item"><span class="meta-label">Acceso</span><span class="meta-value" style="color:var(--cyan)">💎 Solo Elite</span></div>
+    </div>
+    <div class="progress-bar">
+      <div class="pb-seg" style="background:var(--cyan)"></div>
+      <div class="pb-seg" style="background:#00c8ff"></div>
+      <div class="pb-seg" style="background:var(--purple)"></div>
+      <div class="pb-seg" style="background:#f72585"></div>
+      <div class="pb-seg" style="background:var(--orange)"></div>
+      <div class="pb-seg" style="background:var(--yellow)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+    </div>
+    <div class="toc-box" style="margin-top:3rem; max-width:780px">
+      <div class="toc-box-title">// Tabla de Contenidos</div>
+      <div class="toc-entries">
+        <a href="#ch1" class="toc-entry"><span class="toc-entry-num">Cap.01</span>Filosofía: El Despertar del Operador Institucional</a>
+        <a href="#ch2" class="toc-entry"><span class="toc-entry-num">Cap.02</span>Implementación en TradingView</a>
+        <a href="#ch3" class="toc-entry"><span class="toc-entry-num">Cap.03</span>Menú de Configuración — Los 15 Parámetros</a>
+        <a href="#ch4" class="toc-entry"><span class="toc-entry-num">Cap.04</span>Asimetría Cuantitativa: El Protocolo de 223 Minutos</a>
+        <a href="#ch5" class="toc-entry"><span class="toc-entry-num">Cap.05</span>Arquitectura Multi-Fractal: La Asimetría Cuantitativa</a>
+        <a href="#ch6" class="toc-entry"><span class="toc-entry-num">Cap.06</span>El Ecosistema Gravitacional: Nube Rainbow & VWAPs Institucionales</a>
+        <a href="#ch7" class="toc-entry"><span class="toc-entry-num">Cap.07</span>El Radar Institucional: MGI y Muros de Liquidez Algorítmica</a>
+        <a href="#ch8" class="toc-entry"><span class="toc-entry-num">Cap.08</span>Compromisos Tácticos & Preguntas Frecuentes</a>
+        <a href="#ch9" class="toc-entry"><span class="toc-entry-num">Cap.09</span>Arquitectura de Preservación de Capital</a>
+        <a href="#ch10" class="toc-entry"><span class="toc-entry-num">Cap.10</span>Diagnóstico del Sistema & Solución de Problemas</a>
+        <a href="#ch11" class="toc-entry"><span class="toc-entry-num">Cap.11</span>Divulgaciones de Riesgo & Directrices Legales Absolutas</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CAPÍTULO 1 ═══ -->
+  <section class="chapter" id="ch1">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 01</div>
+      <h2 class="chapter-title">Filosofía: El Despertar del Operador Institucional</h2>
+      <p class="chapter-desc">De las mismas noches sin dormir. De las mismas entradas mal cronometradas. Este sistema fue forjado del mismo dolor que probablemente estás sintiendo ahora mismo.</p>
+    </div>
+    <div class="prose">
+      <p>Existe una estadística que nadie te dice cuando empiezas: <strong>el 95% de las personas que se aventuran en este mercado pierden dinero.</strong> No es mala suerte. No es falta de inteligencia. Es un sistema diseñado para hacer exactamente eso. Somos sardinas en un océano lleno de tiburones y ballenas. Nuestro dinero no desaparece — se transfiere.</p>
+      <p>Con más de <strong>dos años y medio de desarrollo intensivo</strong>, cientos de horas de pruebas en mercados en vivo, y la colaboración de los mejores agentes de IA disponibles, se tomaron los indicadores centrales del mercado, se aplicaron simultáneamente en 5 marcos temporales distintos y configurables, y a través de algoritmos matemáticos basados en Fibonacci, estadísticas log-normales y física gravitacional institucional, los 50 parámetros se transformaron en un único número: <em>el Score de Probabilidad Global.</em></p>
+
+      <div class="callout">
+        <div class="callout-title">⚡ La Diferencia Fundamental</div>
+        <p>Mientras los bots ordinarios <strong>reaccionan</strong> al mercado, el <strong>Rainbow Matrix AI lo anticipa.</strong> Mientras los traders minoristas solo ven una pantalla, tú ves cinco dimensiones temporales fusionadas en una única señal de probabilidad.</p>
+      </div>
+
+      <div class="section-heading">1.1 Por Qué No Somos un "Robot de Trading"</div>
+      <p>Los bots genéricos operan con parámetros fijos, codificados para condiciones específicas del mercado. Cuando el régimen de volatilidad cambia — o cuando ocurre un evento "Cisne Negro" — el bot, incapaz de adaptarse estructuralmente, a menudo liquida la cuenta del usuario en cuestión de horas.</p>
+      <p>Rainbow Matrix AI fue forjado a partir de años de investigación e ingeniería inversa del comportamiento institucional. No construimos un bot para operar por ti; <strong>construimos un exoesqueleto analítico para tu cerebro.</strong></p>
+      <ul class="bullet-list">
+        <li><strong>Bots:</strong> Reaccionan al mercado con parámetros fijos y rígidos, ciegos al contexto.</li>
+        <li><strong>Rainbow Matrix AI:</strong> Anticipa el mercado vía HUD de probabilidad matemática en tiempo real con visión de rayos X.</li>
+        <li><strong>Resultado:</strong> El humano retiene control absoluto. Ya no eres la presa. Eres el depredador.</li>
+      </ul>
+
+      <div class="section-heading">1.2 La Base Matemática: Fibonacci, Log-Normal & Quantum HFT</div>
+      <ul class="bullet-list">
+        <li><strong>Secuencia de Fibonacci:</strong> Define los parámetros temporales y pesos de los marcos temporales. El mercado institucional está construido sobre esta secuencia — entenderla es hablar el idioma de los grandes jugadores.</li>
+        <li><strong>Distribución Log-Normal:</strong> A diferencia de las Bandas de Bollinger convencionales (distribución lineal), las zonas de agotamiento se calculan usando logaritmos naturales — capturando la realidad geométrica y asimétrica de los movimientos de precios.</li>
+        <li><strong>Volatilidad Quantum HFT (GK + EWMA):</strong> Fusiona Garman-Klass con RiskMetrics EWMA (estándar de J.P. Morgan para clustering de volatilidad). La nube se comprime durante los squeezes de liquidez y explota durante los breakouts genuinos.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 2 ═══ -->
+  <section class="chapter" id="ch2">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 02</div>
+      <h2 class="chapter-title">Implementación en TradingView</h2>
+      <p class="chapter-desc">Instalación paso a paso, configuración del workspace y el protocolo táctico crítico de Heikin Ashi.</p>
+    </div>
+    <div class="prose">
+      <div class="callout">
+        <div class="callout-title">✅ Compatibilidad con Planes de TradingView</div>
+        <p>El indicador opera perfectamente en <strong>todos los planes de TradingView: GRATUITO, Basic, Essential, Plus y Premium.</strong> Al consolidar toda la inteligencia de mercado en un único script de alta densidad, eliminas la necesidad de múltiples indicadores simultáneos.</p>
+      </div>
+
+      <div class="section-heading">2.2 Instalación Paso a Paso</div>
+      <div class="step-list">
+        <div class="step-item"><span class="step-num">01</span><span class="step-text">Abre TradingView en tu navegador o aplicación Desktop (<strong>app.tradingview.com</strong>).</span></div>
+        <div class="step-item"><span class="step-num">02</span><span class="step-text">Carga el gráfico del activo que deseas analizar (Cripto, Forex, Índices o Acciones).</span></div>
+        <div class="step-item"><span class="step-num">03</span><span class="step-text">En la barra de herramientas superior, haz clic en <strong>"Indicadores"</strong>.</span></div>
+        <div class="step-item"><span class="step-num">04</span><span class="step-text">En el menú, busca la pestaña <strong>"Scripts solo por invitación"</strong> — aparece únicamente después de que se otorgue el acceso Elite.</span></div>
+        <div class="step-item"><span class="step-num">05</span><span class="step-text">Localiza <strong>🌈 Rainbow Matrix AI: 🎯 MTF Probability Engine [💎 ELITE ACCESS]</strong> y haz clic una vez para añadirlo.</span></div>
+        <div class="step-item"><span class="step-num">06</span><span class="step-text">Espera unos segundos. El algoritmo compila todos los cálculos log-normales y tu gráfico se transforma en un terminal cuantitativo completo.</span></div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">💡 Consejo Pro — Claridad Visual</div>
+        <p>Para ocultar los valores de entrada: clic derecho en el gráfico → <strong>"Configuración"</strong> → pestaña <strong>"Línea de estado"</strong> → desmarca <strong>"Argumentos"</strong>. Tu workspace permanece limpio, enfocado y profesional.</p>
+      </div>
+
+      <div class="section-heading">2.4 Candlesticks vs Heikin Ashi — La Trampa del Trader Novato</div>
+      <div class="subsection-heading">2.4.1 La Alternativa: Heikin Ashi</div>
+      <p>Heikin Ashi calcula un promedio de las velas actual y anterior, suavizando visualmente la acción del precio. El resultado: largas ragas del mismo color incluso en mercados volátiles.</p>
+      <div class="callout purple">
+        <div class="callout-title">⚡ La Sinergia Táctica</div>
+        <p><strong>Heikin Ashi</strong> → Lectura macro de tendencia y contexto.<br>
+        <strong>Candlesticks Tradicionales</strong> → Ejecución precisa de entradas y salidas.<br>
+        <strong>Rainbow Matrix AI</strong> → Score de Probabilidad en tiempo real.<br><br>
+        Tres confirmaciones complementarias. Una decisión de alta probabilidad.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 3 ═══ -->
+  <section class="chapter" id="ch3">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 03</div>
+      <h2 class="chapter-title">Menú de Configuración</h2>
+      <p class="chapter-desc">Los 15 parámetros del Rainbow Matrix AI — del Motor de Volatilidad al Motor de Sincronización MTF.</p>
+    </div>
+    <div class="prose">
+      <div class="section-heading">3.1 Motor de Volatilidad — El Upgrade Quantum HFT</div>
+      <table class="data-table">
+        <tr><th>Modo</th><th>Descripción</th><th>Mejor Para</th></tr>
+        <tr><td><strong>Clásico (StdDev)</strong></td><td>Desviación estándar académica tradicional. Confiable y estable.</td><td>Mercados macro y de movimiento lento</td></tr>
+        <tr><td><strong>Quantum HFT (GK+EWMA)</strong></td><td>Fusiona Garman-Klass con RiskMetrics EWMA. La nube respira en tiempo real.</td><td>Cripto, Índices ⭐ Recomendado</td></tr>
+      </table>
+
+      <div class="section-heading">3.12 Filtros de Labels — Telemetría de Ejecución Algorítmica</div>
+      <div class="signal-grid">
+        <div class="signal-card">
+          <div class="signal-icon">🎯</div>
+          <div class="signal-body">
+            <div class="signal-name">SNIPER — Confluencia Institucional Máxima</div>
+            <div class="signal-desc">Score Global superó el extremo absoluto (&gt;85%) + Precio mitigó la Banda de Desviación + Estructura SMC activa validada. El gatillo apex. Tres capas simultáneas de confluencia cuantitativa pesada. Estadísticamente raro.</div>
+            <span class="signal-tag">PREDETERMINADO: ✅ ACTIVO — NUNCA DESACTIVES</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">🎯</div>
+          <div class="signal-body">
+            <div class="signal-name">EXTREMO — Anomalía Estadística Pura</div>
+            <div class="signal-desc">Score Global &gt;85% + Banda de Desviación mitigada — pero SIN confluencia SMC detectada. Precio en territorio de anomalía severa. Altamente confiable.</div>
+            <span class="signal-tag">PREDETERMINADO: ✅ ACTIVO — NUNCA DESACTIVES</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">⭐</div>
+          <div class="signal-body">
+            <div class="signal-name">FUERTE — Agotamiento Cinético Estructural</div>
+            <div class="signal-desc">Score Global superó el umbral de agotamiento (&gt;71%) + mitigación de la Banda de Desviación. El gatillo secundario de confiabilidad de ejecución. El gatillo fundamental para la mayoría de los setups de alta probabilidad.</div>
+            <span class="signal-tag">PREDETERMINADO: ✅ ACTIVO — Mantén Armado</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">📊</div>
+          <div class="signal-body">
+            <div class="signal-name">PROBABLE — Emergencia del Equilibrio Algorítmico</div>
+            <div class="signal-desc">Score Global desplazado de la zona neutral (Pico &gt;53% / Valle &lt;47%) pero el precio NO mitigó las bandas extremas. Probabilidad moderada. Mejor como alerta situacional de etapa inicial.</div>
+            <span class="signal-tag">PREDETERMINADO: ✅ ACTIVO — Recomendado</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">🛡️</div>
+          <div class="signal-body">
+            <div class="signal-name">SOPORTE — Rebote Cinético de Baja Convicción</div>
+            <div class="signal-desc">Ciclo de momentum débil o fallo en la continuación de 3 velas. Representa ruido algorítmico del mercado. Fuerza direccional insignificante.</div>
+            <span class="signal-tag">PREDETERMINADO: ❌ DESACTIVADO — Mantén Desactivado</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-heading">Calibración por Perfil de Operador</div>
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-label">// Nivel 1</div>
+          <div class="tier-name" style="color:var(--cyan)">Operador Estricto</div>
+          <ul class="tier-items">
+            <li>Labels en Gráfico: ✅ ACTIVO</li>
+            <li>Labels del Oscilador: ❌ OFF</li>
+            <li>Fuerte/Snipers: ✅ ACTIVO</li>
+            <li>Probable: ✅ (Con Cautela)</li>
+            <li>Soporte: ❌ OFF</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// Nivel 2</div>
+          <div class="tier-name" style="color:var(--purple)">Operador Táctico</div>
+          <ul class="tier-items">
+            <li>Labels en Gráfico: ✅ ACTIVO</li>
+            <li>Labels del Oscilador: ✅ ACTIVO</li>
+            <li>Fuerte/Snipers: ✅ ACTIVO</li>
+            <li>Probable: ✅ ACTIVO</li>
+            <li>Soporte: ❌ OFF</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// Nivel 3</div>
+          <div class="tier-name" style="color:var(--orange)">Analista Cuantitativo</div>
+          <ul class="tier-items">
+            <li>Labels en Gráfico: ✅ ACTIVO</li>
+            <li>Labels del Oscilador: ✅ ACTIVO</li>
+            <li>Fuerte/Snipers: ✅ ACTIVO</li>
+            <li>Probable: ✅ ACTIVO</li>
+            <li>Soporte: ✅ ACTIVO</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-heading">3.13 Filtros de Alertas — Telemetría Táctica Remota</div>
+      <div class="callout">
+        <div class="callout-title">// Protocolo de Despliegue: Inicializando el Enlace de Telemetría</div>
+        <p>Haz clic en el ícono de Alerta 🔔 → "Crear Alerta" → Condición: <strong>Cualquier llamada de función alert()</strong> (CRÍTICO — NO selecciones condiciones específicas de precio) → Disparador: <strong>Una vez por cierre de barra</strong> → Activa las notificaciones (App + Email + Webhook) → Haz clic en "Crear".</p>
+      </div>
+      <table class="data-table">
+        <tr><th>Alerta</th><th>Predeterminado</th><th>Directriz</th></tr>
+        <tr><td>🎯 Snipers & Extremos</td><td style="color:var(--cyan)">✅ ACTIVO</td><td><strong>NUNCA DESACTIVES.</strong> Ventanas de ejecución más raras y asimétricas.</td></tr>
+        <tr><td>⭐ Reversiones Estructurales Fuertes</td><td style="color:var(--cyan)">✅ ACTIVO</td><td>Mantén Armado. Gatillo fundamental para setups de alta probabilidad.</td></tr>
+        <tr><td>📊 Reversiones Probables</td><td style="color:var(--cyan)">✅ ACTIVO</td><td>Activa con expectativas calibradas. Radar de pre-aviso.</td></tr>
+        <tr><td>🛡️ Mitigaciones de Soporte</td><td style="color:var(--red)">❌ OFF</td><td>Mantén Desactivado. Alto ruido, confiabilidad insignificante.</td></tr>
+        <tr><td>⚓ Colisiones con Macro VWAP</td><td style="color:var(--cyan)">✅ ACTIVO</td><td>Mantén Armado. Eventos masivos de liquidez institucional.</td></tr>
+        <tr><td>🧨 Anomalías de Squeeze Cinético</td><td style="color:var(--cyan)">✅ ACTIVO</td><td><strong>NUNCA DESACTIVES.</strong> Las alertas sistémicas más urgentes.</td></tr>
+        <tr><td>⚙️ Alertas Sistémicas Macro</td><td style="color:var(--cyan)">✅ ACTIVO</td><td>Mantén Armado. Extremos estadísticos en todos los fractales.</td></tr>
+        <tr><td>🌩️ Confluencia Macro Absoluta</td><td style="color:var(--cyan)">✅ ACTIVO</td><td><strong>NUNCA DESACTIVES.</strong> Los eventos más raros y definidores de tendencia.</td></tr>
+      </table>
+
+      <div class="section-heading">3.14 Motor de Gravedad Institucional (MGI)</div>
+      <table class="data-table">
+        <tr><th>Parámetro</th><th>Predeterminado</th><th>Rango</th><th>Efecto</th></tr>
+        <tr><td><strong>Radio Magnético (%)</strong></td><td>0,25%</td><td>0,15% – 0,50%</td><td>Distancia del muro donde el MGI se activa. Mayor = más anticipación.</td></tr>
+        <tr><td><strong>Fuerza Gravitacional</strong></td><td>6</td><td>3 – 10</td><td>Puntos inyectados en el Score por muro. Techo máximo: ±30 puntos en total.</td></tr>
+        <tr><td><strong>Polaridad MGI</strong></td><td>Magnético 🧲</td><td>Magnético / Fricción</td><td>Magnético = protocolo de caza de stops (Cripto). Fricción = absorción (Forex/Acciones).</td></tr>
+      </table>
+
+      <div class="section-heading">3.15 Motor de Sincronización MTF</div>
+      <table class="data-table">
+        <tr><th>Fractal</th><th>Predeterminado</th><th>Peso</th><th>Función</th></tr>
+        <tr><td><strong>TF1 — Gatillo Cinético</strong></td><td>5 minutos</td><td>15%</td><td>El Sniper. Detecta el milisegundo exacto para el despliegue de capital.</td></tr>
+        <tr><td><strong>TF2 — Filtro Intradía</strong></td><td>13 minutos</td><td>20%</td><td>El Líder de Escuadra. Elimina algorítmicamente señales falsas del TF1.</td></tr>
+        <tr><td><strong>TF3 — Macro Nivel I</strong></td><td>55 minutos</td><td>25%</td><td>El Comandante de Campo. Define la tendencia estructural intradía dominante.</td></tr>
+        <tr><td><strong>TF4 — Macro Nivel II</strong></td><td>233 minutos</td><td>25%</td><td>El Comandante de Teatro. Posicionamiento institucional de mediano plazo.</td></tr>
+        <tr><td><strong>TF5 — Ancla Base</strong></td><td>987 minutos</td><td>15%</td><td>El Satélite. Contexto macro de largo plazo. Ancla definidora de semanas.</td></tr>
+      </table>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ Directriz Absoluta</div>
+        <p><strong>TF1 &lt; TF2 &lt; TF3 &lt; TF4 &lt; TF5</strong> — La jerarquía cronológica ascendente es matemáticamente obligatoria. Inyectar marcos temporales fuera de orden romperá estructuralmente el motor de sincronización y generará telemetría críticamente corrupta.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 4 ═══ -->
+  <section class="chapter" id="ch4">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 04</div>
+      <h2 class="chapter-title">Asimetría Cuantitativa: El Protocolo de Front-Running de 223 Minutos</h2>
+      <p class="chapter-desc">Cómo anticipar matemáticamente el reloj institucional HFT exactamente 10 minutos antes.</p>
+    </div>
+    <div class="prose">
+      <p>El rebaño minorista ejecuta universalmente en una cuadrícula temporal altamente predecible: 5m, 15m, 1H, 4H. El capital institucional de Nivel 1 opera explícitamente en el <em>fractal temporal de 233 minutos</em> — una coordenada pura de Fibonacci.</p>
+      <table class="data-table">
+        <tr><th>Minorista Estándar</th><th>Institucional HFT</th><th>Elite Rainbow Matrix</th></tr>
+        <tr>
+          <td>4H (240 min)<br><span style="color:var(--text-dim);font-size:0.78rem">Ve el pasado</span></td>
+          <td>233 min (Fibonacci)<br><span style="color:var(--text-dim);font-size:0.78rem">Ejecuta en masa</span></td>
+          <td style="color:var(--cyan)"><strong>223 min (Front-Running)</strong><br><span style="font-size:0.78rem">10 minutos de ventaja</span></td>
+        </tr>
+      </table>
+      <div class="callout">
+        <div class="callout-title">⚙️ Protocolo de Configuración: Desplegando el Fractal de 223m</div>
+        <p>Haz clic en el menú de resolución temporal activo (ej: "1H") en la barra principal de TradingView → Escribe directamente <strong>223</strong> en el campo de entrada numérica → Selecciona <strong>Minutos</strong> en el menú desplegable → Presiona Enter.<br><br>
+        <em>Resultado: Tu terminal está ahora algorítmicamente sincronizado para anticipar el reloj institucional.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 5 ═══ -->
+  <section class="chapter" id="ch5">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 05</div>
+      <h2 class="chapter-title">Arquitectura Multi-Fractal: La Asimetría Cuantitativa</h2>
+      <p class="chapter-desc">La matriz temporal de 5 dimensiones y el Fractal Maestro Sintético — el Score Global.</p>
+    </div>
+    <div class="prose">
+      <div class="callout warning">
+        <div class="callout-title">// El Defecto Fatal de la Miopía de Fractal Único</div>
+        <p>Auditar un único fractal temporal es el equivalente táctico de navegar un campo de batalla mirando exclusivamente a través de una mira de sniper. Los operadores minoristas atrapados en el gráfico de 5 minutos son sistemáticamente liquidados diariamente por el vector macro dominante de los algoritmos de Marco Temporal Superior.</p>
+      </div>
+
+      <div class="section-heading">5.2 La Matriz Temporal de 5 Dimensiones</div>
+      <ul class="bullet-list">
+        <li><strong>Z-Score Log-Normal:</strong> Desviación cinética exacta del precio relativa al equilibrio algorítmico, en desviaciones estándar terminales.</li>
+        <li><strong>VWAP Institucional & Perfil de Volumen (POC/VAH/VAL):</strong> Nodos estructurales precisos donde se absorbió o desplegó liquidez institucional masiva.</li>
+        <li><strong>RSI Cinético:</strong> Momentum algorítmico calibrado para cada horizonte temporal específico.</li>
+        <li><strong>SAR Adaptativo:</strong> Vector direccional estructural absoluto.</li>
+        <li><strong>Score Fractal:</strong> Síntesis matemática de todos los datos cuantitativos localizados dentro de ese nivel.</li>
+      </ul>
+
+      <div class="callout">
+        <div class="callout-title">⚙️ Compresión Algorítmica de Datos</div>
+        <p>Para replicar físicamente este nivel de telemetría, un operador necesitaría un <strong>array de 5 monitores, ejecutando 10 indicadores distintos por pantalla</strong>, intentando computar manualmente 50 variables independientes por milisegundo. Rainbow Matrix AI comprime todo esto en <strong>una única métrica de probabilidad matemática absoluta.</strong></p>
+      </div>
+
+      <div class="section-heading">5.4 Motor NLP Multi-Idioma</div>
+      <table class="data-table">
+        <tr><th>🇺🇸 Inglés</th><th>🇧🇷 Portugués</th><th>🇪🇸 Español</th><th>🇷🇺 Ruso</th><th>🇨🇳 Mandarín</th></tr>
+        <tr><td>Nativo</td><td>Nativo</td><td>Nativo</td><td>Nativo</td><td>Nativo</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 6 ═══ -->
+  <section class="chapter" id="ch6">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 06</div>
+      <h2 class="chapter-title">El Ecosistema Gravitacional: Nube Rainbow & VWAPs Institucionales</h2>
+      <p class="chapter-desc">Telemetría óptica de alta fidelidad — zonas térmicas, desviación log-normal y fosforescencia de Cisne Negro.</p>
+    </div>
+    <div class="prose">
+      <div class="section-heading">6.1 La Nube de Volatilidad Log-Normal Rainbow</div>
+      <p>Esto no es categóricamente una Banda de Bollinger primitiva del mercado minorista. Es una matriz altamente avanzada de Desviación Estándar Log-Normal que genera umbrales térmicos algorítmicos que mapean la probabilidad matemática exacta de una reversión estructural con fidelidad estadística quirúrgica.</p>
+
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--cyan),#00a896)"></div><div class="zone-content"><div class="zone-title" style="color:var(--cyan)">Equilibrio Basal (0σ) — Verde Core</div><div class="zone-desc">El eje gravitacional absoluto. El punto cero matemático donde el Smart Money ancla los límites de acumulación y distribución.</div></div></div>
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--yellow),#c9a000)"></div><div class="zone-content"><div class="zone-title" style="color:var(--yellow)">Mitigación Estructural (±1,5σ) — Amarillo / Teal</div><div class="zone-desc">Retrocesos algorítmicos saludables. Coordenadas estructurales precisas donde el capital institucional re-acumula para ejecución pro-tendencia.</div></div></div>
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--orange),#cc4400)"></div><div class="zone-content"><div class="zone-title" style="color:var(--orange)">Alerta de Pre-Agotamiento (±1,85σ) — Naranja / Azul</div><div class="zone-desc">Degradación inicial del momentum cinético. Tensión estructural severa acumulándose. Alta probabilidad de pullback algorítmico inminente.</div></div></div>
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--red),#990000)"></div><div class="zone-content"><div class="zone-title" style="color:var(--red)">Agotamiento Absoluto (±2,75σ) — Rojo / Azul Profundo</div><div class="zone-desc">El extremo matemático. El rebaño minorista inyecta capital FOMO aquí, sirviendo exclusivamente como liquidez de salida para la descarga algorítmica de Nivel 1.</div></div></div>
+
+      <div class="section-heading">6.2 La Fosforescencia del Cisne Negro</div>
+      <div class="callout danger">
+        <div class="callout-title">⚡ Protocolos Tácticos del Cisne Negro (4º σ — ±3,85σ)</div>
+        <p>Cuando el precio cinético viola la 4ª desviación estándar logarítmica (menos del 1% del tiempo), dos resultados hiper-violentos son posibles:<br><br>
+        <strong>1. Reversión a la Media Explosiva (Probabilidad Primaria):</strong> El capital de Nivel 1 weaponiza el pánico, ingeniando acumulación agresiva de contra-vector. El snapback es instantáneo, asimétrico y altamente violento.<br><br>
+        <strong>2. Evento de Liquidación en Cascada:</strong> El precio desafía temporalmente la gravedad — una cascada de margin calls destruyendo sistemáticamente a los operadores contra-tendencia prematuros.<br><br>
+        ⚠️ <strong>Directriz Absoluta:</strong> Nunca operes ciegamente contra el vector cinético en este umbral sin autorización matemática absoluta del Score Global Sintético.</p>
+      </div>
+
+      <div class="section-heading">6.3 La Arquitectura Macro VWAP</div>
+      <ul class="bullet-list">
+        <li><strong>VWAP Macro Dinámico:</strong> Se intensifica visualmente y "se calienta" a medida que el precio cinético se aproxima.</li>
+        <li><strong>VWAP Diario (D):</strong> Reiniciado al inicio exacto de la sesión de 24H. Imán primario para barridas algorítmicas intradía.</li>
+        <li><strong>VWAP Semanal (S):</strong> Centro de gravedad absoluto para el capital de Nivel 1 de toda la semana.</li>
+        <li><strong>VWAP Mensual (M):</strong> El ancla institucional apex. Un cruce confirma que una inversión de tendencia multi-fractal masiva está en curso.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 7 ═══ -->
+  <section class="chapter" id="ch7">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 07</div>
+      <h2 class="chapter-title">El Radar Institucional: MGI y Muros de Liquidez Algorítmica</h2>
+      <p class="chapter-desc">Muros de Perfil de Volumen, física gravitacional del Smart Money, Order Blocks y Fair Value Gaps.</p>
+    </div>
+    <div class="prose">
+      <div class="section-heading">7.1 La Anatomía de los Muros Institucionales</div>
+      <table class="data-table">
+        <tr><th>Nivel</th><th>Descripción</th><th>Comportamiento</th></tr>
+        <tr><td><strong>POC</strong> — Punto de Control</td><td>Coordenada de mayor densidad de volumen. Centro de gravedad algorítmico absoluto.</td><td>El precio exhibe tendencia severa a revertir al POC después de desviaciones extremas.</td></tr>
+        <tr><td><strong>VAH</strong> — Techo del Área de Valor</td><td>Límite superior del 70% del volumen institucional aceptado.</td><td>Vacíos de liquidez finos sobre el VAH — rechazo algorítmico violento frecuente.</td></tr>
+        <tr><td><strong>VAL</strong> — Piso del Área de Valor</td><td>Límite inferior del Área de Valor del 70%.</td><td>El precio es sistemáticamente rechazado y forzado de regreso dentro de la matriz de volumen aceptado.</td></tr>
+        <tr><td><strong>VWAP Histórico D/S/M</strong></td><td>Anclajes de largo plazo ponderados por volumen.</td><td>Densidad gravitacional estrictamente proporcional a la longitud temporal (Mensual &gt; Semanal &gt; Diario).</td></tr>
+      </table>
+
+      <div class="section-heading">7.3 Las Dos Polaridades Físicas del MGI</div>
+      <div class="tier-grid" style="grid-template-columns:1fr 1fr">
+        <div class="tier-card">
+          <div class="tier-label" style="color:var(--text-muted)">// Modo Fricción 🧱</div>
+          <div class="tier-name" style="color:var(--text)">Absorción Algorítmica</div>
+          <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem">El muro actúa como una barrera de absorción. El MGI desacelera el Score AI a medida que el precio se aproxima.</p>
+          <p style="font-size:0.75rem;color:var(--cyan);margin-top:0.75rem">📌 Forex · Acciones · Índices</p>
+        </div>
+        <div class="tier-card" style="background:rgba(0,245,212,0.03)">
+          <div class="tier-label" style="color:var(--cyan)">// Modo Magnético 🧲</div>
+          <div class="tier-name" style="color:var(--cyan)">Barrido Predatorio de Liquidez</div>
+          <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem">El muro actúa como un agujero negro. El MGI acelera agresivamente el vector de probabilidad al extremo — anticipando que los motores de Nivel 1 jalará violentamente el precio para purgar los stops minoristas.</p>
+          <p style="font-size:0.75rem;color:var(--cyan);margin-top:0.75rem">📌 Derivados Cripto · BTC · Altcoins ⭐</p>
+        </div>
+      </div>
+
+      <div class="section-heading">7.4 Arquitectura SMC Automatizada</div>
+      <ul class="bullet-list">
+        <li><strong>Order Blocks (OB):</strong> Estrictamente validados por inyección anormal de volumen cinético. Coordenadas donde los algoritmos de Nivel 1 han apilado órdenes límite masivas.</li>
+        <li><strong>Fair Value Gaps (FVG):</strong> Vacíos estructurales translúcidos que mapean ineficiencias severas de precio ingeniadas por órdenes institucionales agresivas.</li>
+      </ul>
+      <div class="callout">
+        <div class="callout-title">🎯 El Protocolo de Convergencia — Alerta SNIPER</div>
+        <p>Cuando el Score Global Sintético viola un extremo absoluto (<strong>&gt;90% de agotamiento sistémico</strong>) en el exacto milisegundo en que el precio cinético mitiga físicamente un Order Block validado, el motor fusiona dinámicamente estos dos flujos de datos y despliega una <strong>alerta SNIPER</strong> — la convergencia cuantitativa máxima absoluta alcanzable dentro del sistema.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 8 ═══ -->
+  <section class="chapter" id="ch8">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 08</div>
+      <h2 class="chapter-title">Compromisos Tácticos & Preguntas Frecuentes</h2>
+      <p class="chapter-desc">Respuestas directas a las preguntas operacionales más críticas de operadores Elite verificados.</p>
+    </div>
+    <div class="prose">
+      <div class="step-list">
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>¿La arquitectura es compatible con el plan Gratuito de TradingView?</strong><br>✅ Afirmativo. La arquitectura maestra comprime todo su array cuantitativo en un único script de ejecución. Solo necesitas una cuenta básica gratuita y autorización Elite activa.</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>¿Es Rainbow Matrix un bot de ejecución autónoma?</strong><br>✅ Negativo. La Matrix es una Arquitectura Avanzada de Telemetría Táctica y Soporte a la Decisión. Tú, el operador táctico, retienes autoridad ejecutiva absoluta sobre el despliegue de capital.</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>¿La arquitectura está restringida exclusivamente a mercados de criptomonedas?</strong><br>✅ Negativo. La física del flujo algorítmico de órdenes y varianza log-normal son matemáticamente universales. El motor se calibra para Cripto, FX, Acciones, Índices y Commodities.</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>¿Los labels de ejecución (Sniper, Fuerte, etc.) repintan datos históricos?</strong><br>✅ Negativo. Protocolo Absoluto de Cero Repintado. Un gatillo se renderiza permanentemente estrictamente en el cierre de vela. Lo que auditas en el backtesting histórico es la realidad matemática exacta e inmutable que fue transmitida durante la ejecución en vivo.</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>¿Cuál es el fractal temporal ideal para el despliegue táctico?</strong><br>✅ El Fractal de 223 Minutos (Consulta el Capítulo 4). Sin embargo, el motor funciona con máxima fidelidad en cualquier resolución temporal.</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>¿Cuál es la directriz táctica cuando el Score Global viola &gt;90%?</strong><br>✅ Espera la confirmación estricta de un Gatillo de Reversión Estructural (label Sniper / Fuerte). Ejecuta inmediatamente, anclando tu Stop-Loss detrás de las coordenadas proporcionadas por el Setup Táctico. Nunca operes ciegamente sin confirmación de telemetría estructural.</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>¿Cómo contacto al equipo de soporte táctico?</strong><br>✅ <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">contact@rainbowmatrix.ai</a> — estrictamente reservado para operadores Elite verificados.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 9 ═══ -->
+  <section class="chapter" id="ch9">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 09</div>
+      <h2 class="chapter-title">Arquitectura de Preservación de Capital: La Regla Absoluta de Supervivencia</h2>
+      <p class="chapter-desc">Las matemáticas de la supervivencia. La Directriz Terminal del 1–2% que separa operadores de apostadores.</p>
+    </div>
+    <div class="prose">
+      <p>Un operador que arriesga <strong>10% del patrimonio total por ejecución</strong> y encuentra varianza estadística estándar (5 drawdowns consecutivos — una certeza matemática incluso con telemetría apex) pierde instantáneamente <strong>41% de su terminal completo</strong>. Por el contrario, un operador que limita rígidamente el riesgo al <strong>1% por ejecución</strong> a lo largo de la secuencia idéntica de 5 drawdowns sufre un impacto insignificante de <strong>5% en el patrimonio.</strong></p>
+
+      <div class="section-heading">La Directriz Terminal del 1% al 2%</div>
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-label">// Nivel 1</div>
+          <div class="tier-name" style="color:var(--cyan)">Iniciados</div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem">Limita rigurosamente la exposición al máximo de <strong style="color:var(--cyan)">1%</strong> del patrimonio total por ejecución. Sin excepciones.</p>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// Nivel 2</div>
+          <div class="tier-name" style="color:var(--purple)">Avanzados</div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem">Autorizado hasta <strong style="color:var(--purple)">2%</strong> de exposición al patrimonio, estrictamente confinado a gatillos apex FUERTE o SNIPER confirmados.</p>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// Límite Absoluto</div>
+          <div class="tier-name" style="color:var(--red)">Techo Máximo</div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem"><strong style="color:var(--red)">Nunca excedas el 2%</strong> de riesgo de patrimonio en un único vector de ejecución, independientemente de la convicción estructural o confluencia.</p>
+        </div>
+      </div>
+
+      <div class="section-heading">Fórmula Cuantitativa de Dimensionamiento de Posición</div>
+      <div class="formula">
+        <div class="formula-eq">Tamaño de Posición = Riesgo Autorizado ($) ÷ Distancia del Stop-Loss ($)</div>
+        <div class="formula-label">// Ejemplo: $10.000 patrimonio × 1% riesgo = $100 ÷ $200 distancia SL = 0,5 Unidades</div>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">⚠️ Directriz Absoluta</div>
+        <p>La consistencia implacable en la preservación de capital es la línea divisoria absoluta entre operadores de Nivel 1 que <strong>extraen liquidez</strong> y operadores minoristas que <strong>sirven como liquidez.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 10 ═══ -->
+  <section class="chapter" id="ch10">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 10</div>
+      <h2 class="chapter-title">Diagnóstico del Sistema & Solución de Problemas Tácticos</h2>
+      <p class="chapter-desc">Resuelve las anomalías sistémicas más frecuentes sin necesidad de escalar al soporte de ingeniería.</p>
+    </div>
+    <div class="prose">
+      <div class="section-heading">1. Desconexión de Payload de Telemetría (Alertas Fallando)</div>
+      <ul class="check-list">
+        <li class="warn">Auditoría de Expiración: Verifica que el hook de telemetría no haya expirado. Los perfiles Gratuitos imponen expiración estricta de 30 días.</li>
+        <li class="warn">Auditoría de Condición: Asegúrate de que la condición de gatillo esté estrictamente anclada en <strong>Cualquier llamada de función alert()</strong>.</li>
+        <li class="warn">Auditoría Móvil: iOS/Android Configuración → Notificaciones → TradingView → asegúrate de que la telemetría push esté autorizada.</li>
+        <li class="yes">Reset del Sistema: Elimina completamente el hook de alerta corrupto y re-inicializa siguiendo el protocolo del Capítulo 3.</li>
+      </ul>
+
+      <div class="section-heading">2. Fallo de Renderización del Terminal NLP (HUD Ausente)</div>
+      <ul class="check-list">
+        <li class="warn">Auditoría de Parámetros: Verifica que la directriz <strong>Mostrar Terminal Rainbow AI</strong> esté activamente marcada en la configuración.</li>
+        <li class="warn">Auditoría de Posicionamiento: Verifica que el punto de anclaje del terminal esté correctamente asignado al Gráfico Principal o Panel del Oscilador.</li>
+        <li class="warn">Conflicto de Z-Index: Altera la esquina anclada del Terminal a un sector limpio de la pantalla.</li>
+      </ul>
+
+      <div class="section-heading">3. Latencia Algorítmica o Sobrecarga del Terminal</div>
+      <ul class="check-list">
+        <li class="yes">Navegador: Usa arquitectura basada en Chromium actualizada (Chrome, Brave, Edge). Firefox no está optimizado para renderización pesada de PineScript.</li>
+        <li class="yes">Recursos: Desactiva temporalmente Mostrar Radar Institucional y Mostrar Cajas SMC — los procesadores gráficos más pesados.</li>
+        <li class="yes">Datos: Clic derecho en el gráfico → Configuración del Gráfico → Datos → restringe la cantidad de barras históricas renderizadas.</li>
+      </ul>
+
+      <div class="section-heading">4. Gatillo Ejecutado pero Sin Líneas de Entrada/SL/TP</div>
+      <ul class="check-list">
+        <li class="warn">El Setup Táctico requiere 4 condiciones matemáticas simultáneas. Restricción más frecuente: el Score Global estaba por debajo del <strong>70%</strong> en el momento de la señal.</li>
+        <li class="warn">Un Squeeze de Volatilidad puede estar activo. El motor se niega a renderizar líneas tácticas dentro de zonas de liquidez comprimida.</li>
+        <li class="yes">Confirma que Mostrar Setup Táctico esté activamente autorizado en la configuración del indicador.</li>
+      </ul>
+
+      <div class="section-heading">5. Acceso al Terminal Revocado / Fallo de Autorización</div>
+      <ul class="check-list">
+        <li class="warn">Verifica el estado de suscripción activa directamente en <strong>rainbowmatrix.ai</strong>.</li>
+        <li class="warn">Asegúrate de que tu ID preciso de TradingView esté correctamente registrado en el portal. Los tokens de acceso están vinculados a Usernames de TradingView, no a direcciones de correo electrónico.</li>
+        <li class="yes">Transmite tu username exacto de TradingView y logs de error a <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">contact@rainbowmatrix.ai</a> para override manual de ingeniería.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ CAPÍTULO 11 ═══ -->
+  <section class="chapter" id="ch11">
+    <div class="chapter-header">
+      <div class="chapter-num">// Capítulo 11</div>
+      <h2 class="chapter-title">Divulgaciones de Riesgo Sistémico & Directrices Legales Absolutas</h2>
+      <p class="chapter-desc">Directriz obligatoria de riesgo estadístico y restricciones de propiedad intelectual de la arquitectura propietaria.</p>
+    </div>
+    <div class="prose">
+      <div class="callout danger">
+        <div class="callout-title">⚠️ DIRECTRIZ OBLIGATORIA DE RIESGO ESTADÍSTICO</div>
+        <p>Rainbow Matrix AI es una arquitectura altamente avanzada de telemetría cuantitativa y detección de anomalías log-normales. Cualquier métrica de "Precisión Histórica" renderizada dentro del HUD Maestro audita matemáticamente la varianza cinética pasada vía enrutamiento de amplitud ATR. Estos datos cuantitativos estrictamente <strong>NO</strong> constituyen asesoramiento financiero, recomendaciones de inversión, o ninguna garantía matemática de resultados cinéticos futuros.<br><br>
+        El campo de batalla algorítmico es hiper-letal y conlleva riesgos severos y siempre presentes de liquidación total del capital. La ejecución táctica es responsabilidad absoluta y exclusiva del operador.</p>
+      </div>
+
+      <div class="section-heading">La Directriz de Invalidación Absoluta (Protocolo de Stop-Loss)</div>
+      <p>El despliegue físico de las coordenadas de Stop-Loss algorítmico calculadas por el Setup Táctico de la Matrix es un <strong>requisito arquitectónico rígido y no negociable.</strong> Ignorar estos niveles de invalidación matemática viola la filosofía cuantitativa central del motor, degradando instantáneamente tu operación de ejecución táctica de Nivel 1 a apuestas primitivas del mercado minorista.</p>
+
+      <div class="section-heading">Arquitectura Propietaria & Restricciones de PI</div>
+      <p>Este manual táctico y sus frameworks matemáticos subyacentes están altamente clasificados para el despliegue exclusivo de operadores Elite Rainbow Matrix AI verificados. Toda la arquitectura propietaria, metodologías cuantitativas e inteligencia estructural aquí contenidas están estrictamente protegidas por la ley internacional de propiedad intelectual. La replicación no autorizada, ingeniería inversa o distribución externa no autorizada está estrictamente prohibida y resultará en bloqueo algorítmico inmediato y compromiso legal activo.</p>
+
+      <div class="callout" style="margin-top:3rem; text-align:center">
+        <div class="callout-title" style="text-align:center">🌈 RAINBOW MATRIX AI · 🤖 Motor de Probabilidad MTF [💎 ACCESO ELITE]</div>
+        <p style="text-align:center">
+          <a href="https://rainbowmatrix.ai" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
+          <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">✉️ contact@rainbowmatrix.ai</a>
+        </p>
+        <p style="text-align:center; margin-top:0.5rem; font-size:0.8rem">© Rainbow Matrix AI · Todos los derechos reservados · Documento Confidencial para Miembros Elite</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="manual-footer">
+    <div class="footer-logo">🌈 RAINBOW MATRIX AI</div>
+    <div class="footer-copy">© Rainbow Matrix AI · Manual del Operador Elite v4 · Confidencial — Solo Miembros Elite</div>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--bg);background:var(--cyan);padding:0.55rem 1.2rem;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;" onmouseover="this.style.boxShadow='0 0 24px rgba(0,245,212,0.5)'" onmouseout="this.style.boxShadow='none'">Acceso Elite →</a>
+  </footer>
+
+</main>
+
+<!-- CHATBOT -->
+<div id="chat-btn" onclick="toggleChat()" title="Soporte Rainbow Matrix">
+  <span id="chat-btn-icon">🤖</span>
+</div>
+<div id="chat-window">
+  <div id="chat-header">
+    <div>
+      <div id="chat-title">🌈 Rainbow Matrix AI</div>
+      <div id="chat-subtitle">// Operador de Soporte Táctico</div>
+    </div>
+    <button onclick="toggleChat()" id="chat-close">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="msg bot"><span>Operador en línea. ¿Cómo puedo ayudarte con Rainbow Matrix AI hoy?</span></div>
+  </div>
+  <div id="chat-input-wrap">
+    <input id="chat-input" type="text" placeholder="Pregunta cualquier cosa sobre Rainbow Matrix..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()" id="chat-send">→</button>
+  </div>
+</div>
+
+<style>
+  #chat-btn { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; width: 56px; height: 56px; border-radius: 2px; background: var(--cyan); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 0 30px rgba(0,245,212,0.4); transition: transform 0.2s, box-shadow 0.2s; }
+  #chat-btn:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,245,212,0.6); }
+  #chat-window { position: fixed; bottom: 6rem; right: 2rem; z-index: 998; width: 420px; height: 620px; background: #0d1117; border: 1px solid rgba(0,245,212,0.3); display: none; flex-direction: column; box-shadow: 0 0 60px rgba(0,0,0,0.6); }
+  #chat-window.open { display: flex; }
+  #chat-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(0,245,212,0.05); }
+  #chat-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; color: #00f5d4; }
+  #chat-subtitle { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #6b7a8d; letter-spacing: 0.1em; margin-top: 2px; }
+  #chat-close { background: none; border: none; color: #6b7a8d; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+  #chat-close:hover { color: #00f5d4; }
+  #chat-messages { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.85rem; }
+  #chat-messages::-webkit-scrollbar { width: 3px; }
+  #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); }
+  .msg { display: flex; max-width: 88%; }
+  .msg.bot { align-self: flex-start; }
+  .msg.user { align-self: flex-end; }
+  .msg span { font-family: 'DM Sans', sans-serif; font-size: 0.84rem; line-height: 1.6; padding: 0.7rem 1rem; border-radius: 2px; white-space: pre-wrap; }
+  .msg.bot span { background: rgba(255,255,255,0.04); color: #e8edf2; border-left: 2px solid #00f5d4; }
+  .msg.user span { background: rgba(0,245,212,0.1); color: #e8edf2; border-right: 2px solid #9b5de5; }
+  .msg.typing span { color: #6b7a8d; font-style: italic; }
+  #chat-input-wrap { display: flex; border-top: 1px solid rgba(255,255,255,0.07); }
+  #chat-input { flex: 1; background: rgba(255,255,255,0.03); border: none; outline: none; color: #e8edf2; font-family: 'DM Sans', sans-serif; font-size: 0.84rem; padding: 0.9rem 1.1rem; }
+  #chat-input::placeholder { color: #3d4a57; }
+  #chat-send { background: #00f5d4; border: none; color: #080c10; font-weight: 700; font-size: 1rem; padding: 0 1.2rem; cursor: pointer; transition: background 0.2s; }
+  #chat-send:hover { background: #00d4b8; }
+  @media(max-width: 480px) { #chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; } #chat-btn { right: 1rem; bottom: 1rem; } }
+</style>
+
+<script>
+  const chatHistory = [];
+  function toggleChat() {
+    const win = document.getElementById('chat-window');
+    win.classList.toggle('open');
+    if (win.classList.contains('open')) document.getElementById('chat-input').focus();
+  }
+  function addMessage(text, role) {
+    const msgs = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    const span = document.createElement('span');
+    span.textContent = text;
+    div.appendChild(span);
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMessage(text, 'user');
+    chatHistory.push({ role: 'user', content: text });
+    const typing = addMessage('Analizando...', 'bot typing');
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory })
+      });
+      const data = await res.json();
+      typing.remove();
+      const reply = data.response || 'Error táctico. Intenta de nuevo.';
+      addMessage(reply, 'bot');
+      chatHistory.push({ role: 'assistant', content: reply });
+    } catch (err) {
+      typing.remove();
+      addMessage('Conexión perdida. Intenta de nuevo o contacta contact@rainbowmatrix.ai', 'bot');
+    }
+  }
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+  const chapters = document.querySelectorAll('[id]');
+  const sideLinks = document.querySelectorAll('.sidebar-link');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        sideLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  chapters.forEach(ch => obs.observe(ch));
+  sideLinks.forEach(l => l.addEventListener('click', () => document.getElementById('sidebar').classList.remove('open')));
+</script>
+</body>
+</html>
