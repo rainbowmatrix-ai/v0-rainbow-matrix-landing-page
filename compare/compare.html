@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix AI — Free vs Elite Comparison</title>
+<meta name="description" content="Compare Rainbow Matrix AI Free scripts vs Elite Access. See exactly what you unlock with the full institutional engine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10; --bg2: #0d1117; --bg3: #111820;
+    --surface: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.07);
+    --cyan: #00f5d4; --cyan-dim: rgba(0,245,212,0.1);
+    --purple: #9b5de5; --orange: #ff6b35; --yellow: #f9c74f; --red: #ff4444;
+    --text: #e8edf2; --text-muted: #6b7a8d; --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif; --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; line-height: 1.7; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(8,12,16,0.95); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 1rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); text-decoration: none; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta { color: var(--bg) !important; background: var(--cyan); padding: 0.5rem 1.2rem; transition: box-shadow 0.2s !important; }
+  .nav-cta:hover { box-shadow: 0 0 24px rgba(0,245,212,0.5) !important; }
+
+  /* HERO */
+  .hero {
+    padding: 10rem 4rem 6rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,245,212,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,212,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em;
+    color: var(--cyan); border: 1px solid rgba(0,245,212,0.25);
+    padding: 0.35rem 0.85rem; margin-bottom: 2rem; background: rgba(0,245,212,0.05);
+  }
+  .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
+  .hero-title span { background: linear-gradient(135deg, #00f5d4, #9b5de5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-desc { font-size: 1rem; color: var(--text-muted); max-width: 580px; margin: 0 auto; line-height: 1.75; }
+
+  /* COMPARISON TABLE */
+  .compare-section { padding: 6rem 4rem; }
+  .compare-inner { max-width: 1100px; margin: 0 auto; }
+
+  .compare-table {
+    width: 100%; border-collapse: collapse;
+    margin-top: 3rem;
+  }
+  .compare-table thead th {
+    padding: 1.5rem 1.5rem 1.2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+  }
+  .th-feature {
+    text-align: left !important;
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); width: 35%;
+  }
+  .th-free1, .th-free2 {
+    background: rgba(255,255,255,0.02);
+    border-left: 1px solid var(--border);
+    width: 17%;
+  }
+  .th-elite {
+    background: rgba(0,245,212,0.05);
+    border-left: 1px solid rgba(0,245,212,0.2);
+    border-top: 2px solid var(--cyan);
+    width: 31%;
+    position: relative;
+  }
+  .th-plan-name { font-family: var(--font-display); font-size: 1rem; font-weight: 800; display: block; margin-bottom: 0.25rem; }
+  .th-free1 .th-plan-name { color: var(--cyan); }
+  .th-free2 .th-plan-name { color: var(--purple); }
+  .th-elite .th-plan-name { color: var(--cyan); }
+  .th-plan-sub { font-family: var(--font-mono); font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.08em; display: block; margin-bottom: 0.75rem; }
+  .th-plan-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--text); }
+  .th-plan-price span { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+  .th-elite .th-plan-price { color: var(--cyan); }
+  .best-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.15em;
+    background: var(--cyan); color: var(--bg); padding: 0.2rem 0.8rem;
+    text-transform: uppercase; white-space: nowrap;
+  }
+
+  /* TABLE ROWS */
+  .compare-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .compare-table tbody tr:hover { background: var(--surface); }
+  .compare-table tbody tr.category-row { background: var(--bg3) !important; }
+  .compare-table tbody tr.category-row td { padding: 0.6rem 1.5rem; }
+  .category-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+
+  .compare-table td { padding: 0.9rem 1.5rem; vertical-align: middle; }
+  .td-feature { font-size: 0.87rem; color: var(--text-muted); }
+  .td-feature strong { color: var(--text); font-weight: 500; }
+  .td-val { text-align: center; border-left: 1px solid var(--border); }
+  .td-elite { background: rgba(0,245,212,0.03); border-left: 1px solid rgba(0,245,212,0.15); text-align: center; }
+
+  .check { color: var(--cyan); font-size: 1rem; }
+  .check-purple { color: var(--purple); font-size: 1rem; }
+  .cross { color: var(--text-dim); font-size: 0.9rem; }
+  .partial { color: var(--orange); font-size: 0.75rem; font-family: var(--font-mono); }
+  .elite-val { color: var(--cyan); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em; font-weight: 700; }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 6rem 4rem;
+    background: var(--bg2);
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .cta-inner { max-width: 700px; margin: 0 auto; }
+  .cta-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; line-height: 1.15; }
+  .cta-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.75; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg); background: var(--cyan);
+    padding: 1.1rem 2.8rem; text-decoration: none;
+    box-shadow: 0 0 40px rgba(0,245,212,0.3);
+    transition: all 0.25s;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(0,245,212,0.5); }
+  .cta-fine { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); margin-top: 1rem; letter-spacing: 0.05em; }
+
+  /* UPGRADE CARDS */
+  .upgrade-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 4rem 0; max-width: 1100px; margin-left: auto; margin-right: auto; }
+  .upgrade-card { background: var(--bg); padding: 2rem; text-align: left; position: relative; overflow: hidden; }
+  .upgrade-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), transparent); }
+  .upgrade-icon { font-size: 1.5rem; margin-bottom: 1rem; display: block; }
+  .upgrade-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+  .upgrade-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+  .upgrade-tag { display: inline-block; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--cyan); border: 1px solid rgba(0,245,212,0.25); padding: 0.2rem 0.55rem; }
+
+  /* FOOTER */
+  footer { padding: 2rem 4rem; background: var(--bg); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); }
+
+  @media(max-width:900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero, .compare-section, .cta-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .compare-table { font-size: 0.8rem; }
+    .compare-table td, .compare-table th { padding: 0.7rem 0.75rem; }
+    .upgrade-grid { grid-template-columns: 1fr; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://rainbowmatrix.ai" class="nav-logo">🌈 Rainbow Matrix AI</a>
+  <div class="nav-links">
+    <a href="https://rainbowmatrix.ai">← Main Site</a>
+    <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank">Free Script 1</a>
+    <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank">Free Script 2</a>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="nav-cta">Get Elite →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge">// Feature Comparison</div>
+  <h1 class="hero-title">Free tools are just<br><span>the beginning.</span></h1>
+  <p class="hero-desc">You've seen the edge with the free scripts. Now see what the full institutional engine unlocks — and why Elite operators don't trade without it.</p>
+</div>
+
+<!-- WHAT YOU UNLOCK -->
+<section style="padding:5rem 4rem; background:var(--bg2); border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px; margin:0 auto; text-align:center;">
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// Elite Upgrade</div>
+    <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; margin-bottom:3rem;">6 systems the free scripts<br>don't have access to.</h2>
+    <div class="upgrade-grid">
+      <div class="upgrade-card">
+        <span class="upgrade-icon">🧠</span>
+        <div class="upgrade-title">5-Timeframe Global Score</div>
+        <p class="upgrade-desc">50 variables across 5 temporal dimensions compressed into a single 0–100% probability metric. The free scripts show you walls — the Elite shows you the verdict.</p>
+        <span class="upgrade-tag">50:1 Compression Ratio</span>
+      </div>
+      <div class="upgrade-card">
+        <span class="upgrade-icon">🎯</span>
+        <div class="upgrade-title">AI Signal Labels</div>
+        <p class="upgrade-desc">SNIPER, EXTREME, STRONG, PROBABLE — automatically plotted on your chart with zero repaint. No guessing. The system tells you when to pull the trigger.</p>
+        <span class="upgrade-tag">Zero Repaint // Locked on Close</span>
+      </div>
+      <div class="upgrade-card">
+        <span class="upgrade-icon">📊</span>
+        <div class="upgrade-title">MTF Probability HUD</div>
+        <p class="upgrade-desc">A full tactical dashboard showing the live status of all 5 timeframes, Z-Score, RSI, SAR, Volume, and the AI Tactical Summary with Entry / SL / TP.</p>
+        <span class="upgrade-tag">Real-Time Cockpit</span>
+      </div>
+      <div class="upgrade-card">
+        <span class="upgrade-icon">📱</span>
+        <div class="upgrade-title">Mobile Sniper Alerts</div>
+        <p class="upgrade-desc">Push notifications directly to your phone — filtered to only fire on SNIPER and EXTREME setups. No noise. Only the highest-probability windows.</p>
+        <span class="upgrade-tag">iOS + Android // Webhook</span>
+      </div>
+      <div class="upgrade-card">
+        <span class="upgrade-icon">🔷</span>
+        <div class="upgrade-title">Smart Money Concepts</div>
+        <p class="upgrade-desc">Automated Order Blocks (OB) and Fair Value Gaps (FVG) — validated by abnormal volume injection. Fused with the Global Score for the SNIPER convergence alert.</p>
+        <span class="upgrade-tag">OB + FVG // Auto-Mapped</span>
+      </div>
+      <div class="upgrade-card">
+        <span class="upgrade-icon">🌍</span>
+        <div class="upgrade-title">5 Native Languages</div>
+        <p class="upgrade-desc">The entire HUD, labels, and tactical summaries switch natively between English, Portuguese, Spanish, Russian, and Mandarin — zero latency.</p>
+        <span class="upgrade-tag">EN · PT · ES · RU · 中文</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="compare-section">
+  <div class="compare-inner">
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// Side-by-Side</div>
+    <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,3vw,2.5rem); font-weight:800; margin-bottom:0.5rem;">Full Feature Comparison</h2>
+    <p style="font-size:0.9rem; color:var(--text-muted);">Everything across all three scripts, line by line.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="th-feature">Feature</th>
+          <th class="th-free1">
+            <span class="th-plan-name">🌈 Cloud Bands</span>
+            <span class="th-plan-sub">Free Script 01</span>
+            <span class="th-plan-price">$0 <span>/ forever</span></span>
+          </th>
+          <th class="th-free2">
+            <span class="th-plan-name">🧱 MGI Walls</span>
+            <span class="th-plan-sub">Free Script 02</span>
+            <span class="th-plan-price">$0 <span>/ forever</span></span>
+          </th>
+          <th class="th-elite">
+            <div class="best-badge">⭐ Full Engine</div>
+            <span class="th-plan-name">💎 Elite Access</span>
+            <span class="th-plan-sub">Full Institutional Engine</span>
+            <span class="th-plan-price">$39.99 <span>/ month</span></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- VISUAL ENGINE -->
+        <tr class="category-row"><td colspan="4"><span class="category-label">// Visual Engine</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Log-Normal Rainbow Cloud</strong><br>8 thermal deviation zones</td>
+          <td class="td-val"><span class="check">✓</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">+ Quantum HFT Mode</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Dynamic VWAP Glow</strong><br>Intensity scales with proximity</td>
+          <td class="td-val"><span class="check">✓</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">+ Daily / Weekly / Monthly</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Black Swan Zones</strong><br>Purple / Aqua ±3.85σ alerts</td>
+          <td class="td-val"><span class="check">✓</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span></td>
+        </tr>
+
+        <!-- INSTITUTIONAL WALLS -->
+        <tr class="category-row"><td colspan="4"><span class="category-label">// Institutional Walls</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Volume Profile Walls</strong><br>POC / VAH / VAL mapping</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="check-purple">✓</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">+ Gravitational Physics</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Macro VWAP Anchors</strong><br>Daily, Weekly, Monthly</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="check-purple">✓</span></td>
+          <td class="td-elite"><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Wall Fusion Algorithm</strong><br>Multi-TF confluence detection</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="check-purple">✓</span></td>
+          <td class="td-elite"><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>MGI Gravitational Physics</strong><br>Magnetic 🧲 vs Friction 🧱 polarity</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Institutional SAR</strong><br>Directional flow indicator</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="check-purple">✓</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">+ MTF Weighted</span></td>
+        </tr>
+
+        <!-- PROBABILITY ENGINE -->
+        <tr class="category-row"><td colspan="4"><span class="category-label">// Probability Engine</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Global Score (0–100%)</strong><br>5-timeframe probability synthesis</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>MTF Probability Matrix</strong><br>Live status of all 5 timeframes</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Z-Score Engine</strong><br>Real-time statistical deviation</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+
+        <!-- SIGNAL SYSTEM -->
+        <tr class="category-row"><td colspan="4"><span class="category-label">// Signal System</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>SNIPER Alerts</strong><br>Score + SMC confluence trigger</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>STRONG / EXTREME Labels</strong><br>Volume-validated reversals</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Zero Repaint Guarantee</strong><br>Signals locked on candle close</td>
+          <td class="td-val"><span class="check">✓</span></td>
+          <td class="td-val"><span class="check-purple">✓</span></td>
+          <td class="td-elite"><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Order Blocks (OB)</strong><br>Volume-validated institutional entries</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Fair Value Gaps (FVG)</strong><br>Price inefficiency mapping</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+
+        <!-- TACTICAL HUD -->
+        <tr class="category-row"><td colspan="4"><span class="category-label">// Tactical HUD & Alerts</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>AI Tactical Summary</strong><br>Human-readable market verdict</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Entry / SL / TP Lines</strong><br>Auto-calculated setup parameters</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Mobile Push Notifications</strong><br>Filtered Sniper alerts to phone</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Webhook / JSON Automation</strong><br>Bot integration support</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">Elite Only</span></td>
+        </tr>
+
+        <!-- PLATFORM -->
+        <tr class="category-row"><td colspan="4"><span class="category-label">// Platform & Access</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>TradingView Free Plan</strong><br>No premium subscription needed</td>
+          <td class="td-val"><span class="check">✓</span></td>
+          <td class="td-val"><span class="check-purple">✓</span></td>
+          <td class="td-elite"><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Asset Coverage</strong><br>Crypto, Forex, Stocks, Indices</td>
+          <td class="td-val"><span class="check">✓</span></td>
+          <td class="td-val"><span class="check-purple">✓</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">+ OI Derivatives Sensor</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Native Languages</strong><br>HUD language selection</td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check">✓</span> <span class="elite-val">EN · PT · ES · RU · 中文</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Number of Scripts Required</strong></td>
+          <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted)">1 script</span></td>
+          <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted)">1 script</span></td>
+          <td class="td-elite"><span class="elite-val">1 master script</span></td>
+        </tr>
+
+        <!-- CTA ROW -->
+        <tr>
+          <td class="td-feature"></td>
+          <td class="td-val" style="padding:1.5rem">
+            <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" style="display:inline-block; font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan); border:1px solid rgba(0,245,212,0.3); padding:0.6rem 1rem; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='rgba(0,245,212,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
+          </td>
+          <td class="td-val" style="padding:1.5rem">
+            <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" style="display:inline-block; font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); border:1px solid rgba(155,93,229,0.3); padding:0.6rem 1rem; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='rgba(155,93,229,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
+          </td>
+          <td class="td-elite" style="padding:1.5rem">
+            <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" style="display:inline-block; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--bg); background:var(--cyan); padding:0.75rem 1.5rem; text-decoration:none; box-shadow:0 0 20px rgba(0,245,212,0.3); transition:all 0.2s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,245,212,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,245,212,0.3)'">Get Elite — $39.99/mo →</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// Ready to Upgrade?</div>
+    <h2 class="cta-title">Stop seeing half the picture.<br><span style="color:var(--cyan)">Go full institutional.</span></h2>
+    <p class="cta-desc">The free scripts show you the terrain. The Elite engine gives you the full battle map — probability scores, AI signals, mobile alerts, and the complete tactical HUD. 7 days free to test everything.</p>
+    <a href="https://whop.com/rainbow-matrix/rainbow-matrix-elite-access" class="cta-btn">
+      Start 7-Day Free Trial →
+    </a>
+    <p class="cta-fine">Cancel anytime. No contracts. No lock-in. $39.99/month after trial.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🌈 RAINBOW MATRIX AI</div>
+  <div class="footer-copy">© Rainbow Matrix AI · All rights reserved · Not financial advice.</div>
+  <a href="https://rainbowmatrix.ai" style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); text-decoration:none; letter-spacing:0.08em;">← Back to Main Site</a>
+</footer>
+
+</body>
+</html>
