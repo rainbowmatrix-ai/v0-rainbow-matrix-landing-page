@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix AI — Comparación Free vs Elite</title>
+<meta name="description" content="Compara los scripts gratuitos de Rainbow Matrix AI con el Acceso Elite. Ve exactamente qué desbloqueas con el motor institucional completo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/compare/compare.html">
+<link rel="alternate" hreflang="pt" href="https://rainbowmatrix.ai/compare/compare-pt.html">
+<link rel="alternate" hreflang="es" href="https://rainbowmatrix.ai/compare/compare-es.html">
+<link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/compare/compare-ru.html">
+<link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/compare/compare-cn.html">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../favicon.ico">
+<style>
+  :root {
+    --bg: #080c10; --bg2: #0d1117; --bg3: #111820;
+    --surface: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.07);
+    --cyan: #00f5d4; --cyan-dim: rgba(0,245,212,0.1);
+    --purple: #9b5de5; --orange: #ff6b35; --yellow: #f9c74f; --red: #ff4444;
+    --text: #e8edf2; --text-muted: #6b7a8d; --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif; --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; line-height: 1.7; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(8,12,16,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: var(--font-display); font-size: 1rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); text-decoration: none; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta { color: var(--bg) !important; background: var(--cyan); padding: 0.5rem 1.2rem; transition: box-shadow 0.2s !important; }
+  .nav-cta:hover { box-shadow: 0 0 24px rgba(0,245,212,0.5) !important; }
+
+  .lang-switcher { display: flex; gap: 0.5rem; align-items: center; font-family: var(--font-mono); font-size: 0.65rem; border-left: 1px solid var(--border); padding-left: 1rem; margin-left: 0.5rem; }
+  .lang-link { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .lang-link:hover, .lang-link.active { color: var(--cyan); font-weight: 700; }
+  .lang-sep { color: var(--border); }
+
+  .hero { padding: 10rem 4rem 6rem; text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,245,212,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,212,0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%); }
+  .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--cyan); border: 1px solid rgba(0,245,212,0.25); padding: 0.35rem 0.85rem; margin-bottom: 2rem; background: rgba(0,245,212,0.05); }
+  .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
+  .hero-title span { background: linear-gradient(135deg, #00f5d4, #9b5de5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-desc { font-size: 1rem; color: var(--text-muted); max-width: 580px; margin: 0 auto 3rem; line-height: 1.75; }
+
+  .free-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); max-width: 1100px; margin: 0 auto; }
+  .free-card { background: var(--bg2); padding: 2rem; position: relative; overflow: hidden; }
+  .free-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .free-card:nth-child(1)::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .free-card:nth-child(2)::before { background: linear-gradient(90deg, var(--purple), transparent); }
+  .free-card:nth-child(3)::before { background: linear-gradient(90deg, var(--orange), transparent); }
+  .free-card-num { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .free-card:nth-child(1) .free-card-num { color: var(--cyan); }
+  .free-card:nth-child(2) .free-card-num { color: var(--purple); }
+  .free-card:nth-child(3) .free-card-num { color: var(--orange); }
+  .free-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; line-height: 1.2; }
+  .free-card-sub { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); margin-bottom: 1rem; }
+  .free-card-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+  .free-card-btn { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 0.6rem 1.1rem; transition: box-shadow 0.2s; }
+  .free-card:nth-child(1) .free-card-btn { color: var(--bg); background: var(--cyan); }
+  .free-card:nth-child(1) .free-card-btn:hover { box-shadow: 0 0 24px rgba(0,245,212,0.5); }
+  .free-card:nth-child(2) .free-card-btn { color: #fff; background: var(--purple); }
+  .free-card:nth-child(2) .free-card-btn:hover { box-shadow: 0 0 24px rgba(155,93,229,0.5); }
+  .free-card:nth-child(3) .free-card-btn { color: #fff; background: var(--orange); }
+  .free-card:nth-child(3) .free-card-btn:hover { box-shadow: 0 0 24px rgba(255,107,53,0.5); }
+
+  .unlock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); max-width: 1100px; margin: 3rem auto 0; }
+  .unlock-card { background: var(--bg); padding: 1.8rem; position: relative; overflow: hidden; }
+  .unlock-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), transparent); }
+  .unlock-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+  .unlock-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .unlock-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.65; }
+  .unlock-tag { display: inline-block; margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; color: var(--cyan); border: 1px solid rgba(0,245,212,0.2); padding: 0.2rem 0.5rem; }
+
+  .compare-section { padding: 6rem 4rem; }
+  .compare-inner { max-width: 1200px; margin: 0 auto; }
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 3rem; }
+  .compare-table thead th { padding: 1.5rem 1rem 1.2rem; text-align: center; border-bottom: 2px solid var(--border); }
+  .th-feature { text-align: left !important; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); width: 28%; }
+  .th-free1, .th-free2, .th-free3 { background: rgba(255,255,255,0.02); border-left: 1px solid var(--border); width: 14%; }
+  .th-free1 { border-top: 2px solid var(--cyan); }
+  .th-free2 { border-top: 2px solid var(--purple); }
+  .th-free3 { border-top: 2px solid var(--orange); }
+  .th-elite { background: rgba(0,245,212,0.05); border-left: 1px solid rgba(0,245,212,0.2); border-top: 2px solid var(--cyan); width: 30%; position: relative; }
+  .th-plan-name { font-family: var(--font-display); font-size: 0.88rem; font-weight: 800; display: block; margin-bottom: 0.2rem; }
+  .th-free1 .th-plan-name { color: var(--cyan); }
+  .th-free2 .th-plan-name { color: var(--purple); }
+  .th-free3 .th-plan-name { color: var(--orange); }
+  .th-elite .th-plan-name { color: var(--cyan); font-size: 1rem; }
+  .th-plan-sub { font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-dim); letter-spacing: 0.08em; display: block; margin-bottom: 0.6rem; }
+  .th-plan-price { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: var(--text); }
+  .th-plan-price span { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; }
+  .th-elite .th-plan-price { color: var(--cyan); font-size: 1.5rem; }
+  .best-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.15em; background: var(--cyan); color: var(--bg); padding: 0.2rem 0.8rem; text-transform: uppercase; white-space: nowrap; }
+
+  .compare-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .compare-table tbody tr:hover { background: var(--surface); }
+  .compare-table tbody tr.category-row { background: var(--bg3) !important; }
+  .compare-table tbody tr.category-row td { padding: 0.6rem 1rem; }
+  .category-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .compare-table td { padding: 0.85rem 1rem; vertical-align: middle; }
+  .td-feature { font-size: 0.85rem; color: var(--text-muted); }
+  .td-feature strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 0.15rem; }
+  .td-feature small { font-size: 0.75rem; color: var(--text-dim); }
+  .td-val { text-align: center; border-left: 1px solid var(--border); }
+  .td-elite { background: rgba(0,245,212,0.03); border-left: 1px solid rgba(0,245,212,0.15); text-align: center; }
+  .check-c { color: var(--cyan); font-size: 1rem; }
+  .check-p { color: var(--purple); font-size: 1rem; }
+  .check-o { color: var(--orange); font-size: 1rem; }
+  .cross { color: var(--text-dim); font-size: 0.9rem; }
+  .elite-val { color: var(--cyan); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.04em; font-weight: 700; display: block; }
+  .elite-only { font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan); background: rgba(0,245,212,0.1); padding: 0.15rem 0.4rem; border: 1px solid rgba(0,245,212,0.2); display: inline-block; }
+
+  .cta-section { padding: 6rem 4rem; background: var(--bg2); text-align: center; border-top: 1px solid var(--border); }
+  .cta-inner { max-width: 700px; margin: 0 auto; }
+  .cta-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; line-height: 1.15; }
+  .cta-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.75; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bg); background: var(--cyan); padding: 1.1rem 2.8rem; text-decoration: none; box-shadow: 0 0 40px rgba(0,245,212,0.3); transition: all 0.25s; }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(0,245,212,0.5); }
+  .cta-fine { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); margin-top: 1rem; letter-spacing: 0.05em; }
+
+  footer { padding: 2rem 4rem; background: var(--bg); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); }
+
+  @media(max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero, .compare-section, .cta-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .free-cards, .unlock-grid { grid-template-columns: 1fr; }
+    .compare-table { font-size: 0.78rem; }
+    .compare-table td, .compare-table th { padding: 0.65rem 0.6rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://rainbowmatrix.ai/es.html" class="nav-logo">🌈 Rainbow Matrix AI</a>
+  <div class="nav-links">
+    <a href="https://rainbowmatrix.ai/es.html">← Sitio Principal</a>
+    <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank">Script 01</a>
+    <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank">Script 02</a>
+    <a href="TRADINGVIEW_LINK_AQUI" target="_blank">Script 03</a>
+    <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="nav-cta">Obtener Elite →</a>
+    <div class="lang-switcher">
+      <a href="../compare/compare.html" class="lang-link">EN</a><span class="lang-sep">|</span>
+      <a href="compare-pt.html" class="lang-link">PT</a><span class="lang-sep">|</span>
+      <a href="compare-es.html" class="lang-link active">ES</a><span class="lang-sep">|</span>
+      <a href="compare-ru.html" class="lang-link">RU</a><span class="lang-sep">|</span>
+      <a href="compare-cn.html" class="lang-link">中文</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge">// Comparación de Funciones — 3 Scripts Gratuitos vs Elite</div>
+  <h1 class="hero-title">Las herramientas gratuitas son solo<br><span>el principio.</span></h1>
+  <p class="hero-desc">Tres scripts gratuitos para probar el motor. Un acceso Elite para desplegar el arsenal institucional completo. Ve exactamente qué desbloquea cada uno — lado a lado.</p>
+  <div class="free-cards">
+    <div class="free-card">
+      <div class="free-card-num">// Script Gratuito 01</div>
+      <div class="free-card-title">🌈 Cloud Institutional Bands</div>
+      <div class="free-card-sub">Rainbow Matrix AI · GRATUITO · TradingView</div>
+      <p class="free-card-desc">Rainbow Cloud Log-Normal con VWAP Dinámico. 8 zonas de desviación térmica que muestran exactamente dónde las instituciones defienden y atacan.</p>
+      <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" class="free-card-btn">Agregar Gratis →</a>
+    </div>
+    <div class="free-card">
+      <div class="free-card-num">// Script Gratuito 02</div>
+      <div class="free-card-title">🧱 MGI Walls — Radar de Liquidez</div>
+      <div class="free-card-sub">Rainbow Matrix AI · GRATUITO · TradingView</div>
+      <p class="free-card-desc">Motor MTF de mapeo de muros institucionales. POC/VAH/VAL + anclas VWAP macro proyectadas directamente en tu gráfico en tiempo real.</p>
+      <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" class="free-card-btn">Agregar Gratis →</a>
+    </div>
+    <div class="free-card">
+      <div class="free-card-num">// Script Gratuito 03</div>
+      <div class="free-card-title">📈 Kinetic Oscillator</div>
+      <div class="free-card-sub">Rainbow Matrix AI · GRATUITO · TradingView</div>
+      <p class="free-card-desc">Oscilador puro de flujo de órdenes que fusiona 5 marcos temporales vía Z-Score Log-Normal, CVD y detección adaptativa de Squeeze en una única métrica de probabilidad.</p>
+      <a href="TRADINGVIEW_LINK_AQUI" target="_blank" class="free-card-btn">Agregar Gratis →</a>
+    </div>
+  </div>
+</div>
+
+<!-- LO QUE DESBLOQUEAS -->
+<section style="padding:5rem 4rem; background:var(--bg2); border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px; margin:0 auto; text-align:center;">
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// Upgrade Elite</div>
+    <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; margin-bottom:3rem;">6 sistemas a los que los scripts gratuitos<br>no tienen acceso.</h2>
+    <div class="unlock-grid">
+      <div class="unlock-card"><span class="unlock-icon">🧠</span><div class="unlock-title">Score Global 5-TF</div><p class="unlock-desc">50 variables de 5 marcos temporales comprimidas en una única métrica de probabilidad de 0–100%. Los scripts gratuitos dan piezas — Elite da el veredicto.</p><span class="unlock-tag">Compresión 50:1</span></div>
+      <div class="unlock-card"><span class="unlock-icon">🎯</span><div class="unlock-title">Labels de Señal IA</div><p class="unlock-desc">SNIPER, EXTREME, STRONG, PROBABLE — trazados automáticamente con cero repintado. El sistema te dice exactamente cuándo apretar el gatillo.</p><span class="unlock-tag">Cero Repintado // Fijado al Cierre</span></div>
+      <div class="unlock-card"><span class="unlock-icon">📊</span><div class="unlock-title">HUD de Probabilidad MTF</div><p class="unlock-desc">Panel táctico completo: estado en vivo de los 5 marcos temporales, Z-Score, RSI, SAR, Volumen y el Resumen Táctico IA con Entrada / SL / TP.</p><span class="unlock-tag">Cabina en Tiempo Real</span></div>
+      <div class="unlock-card"><span class="unlock-icon">📱</span><div class="unlock-title">Alertas Sniper Mobile</div><p class="unlock-desc">Notificaciones push directo al móvil — filtradas para disparar solo en setups SNIPER y EXTREME. Sin ruido. Solo las ventanas de mayor probabilidad.</p><span class="unlock-tag">iOS + Android // Webhook</span></div>
+      <div class="unlock-card"><span class="unlock-icon">🔷</span><div class="unlock-title">Smart Money Concepts</div><p class="unlock-desc">Order Blocks (OB) y Fair Value Gaps (FVG) automatizados, validados por volumen anormal. Fusionados con el Score Global para convergencia SNIPER.</p><span class="unlock-tag">OB + FVG // Mapeo Automático</span></div>
+      <div class="unlock-card"><span class="unlock-icon">🧲</span><div class="unlock-title">Física Gravitacional MGI</div><p class="unlock-desc">Polaridad Magnética 🧲 vs Fricción 🧱 en los muros institucionales. El MGI gratuito mapea los muros — Elite calcula la fuerza gravitacional.</p><span class="unlock-tag">Polaridad Magnética / Fricción</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TABLA DE COMPARACIÓN -->
+<section class="compare-section">
+  <div class="compare-inner">
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// Lado a Lado</div>
+    <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,3vw,2.5rem); font-weight:800; margin-bottom:0.5rem;">Comparación Completa de Funciones</h2>
+    <p style="font-size:0.9rem; color:var(--text-muted);">Cada función en todos los scripts, línea por línea.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="th-feature">Función</th>
+          <th class="th-free1"><span class="th-plan-name">🌈 Cloud Bands</span><span class="th-plan-sub">Script Gratuito 01</span><span class="th-plan-price">$0 <span>/ gratis</span></span></th>
+          <th class="th-free2"><span class="th-plan-name">🧱 MGI Walls</span><span class="th-plan-sub">Script Gratuito 02</span><span class="th-plan-price">$0 <span>/ gratis</span></span></th>
+          <th class="th-free3"><span class="th-plan-name">📈 Kinetic Osc.</span><span class="th-plan-sub">Script Gratuito 03</span><span class="th-plan-price">$0 <span>/ gratis</span></span></th>
+          <th class="th-elite"><div class="best-badge">⭐ Motor Completo</div><span class="th-plan-name">💎 Acceso Elite</span><span class="th-plan-sub">Motor Institucional Completo</span><span class="th-plan-price">$39.99 <span>/ mes</span></span></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// Motor Visual</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Rainbow Cloud Log-Normal</strong><small>8 zonas de desviación térmica</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Modo Quantum HFT</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Brillo Dinámico del VWAP</strong><small>Intensidad escala con proximidad</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Diario / Semanal / Mensual</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Zonas de Cisne Negro</strong><small>Alertas morado / aqua ±3.85σ</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// Motor de Flujo de Órdenes</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Score Cinético (0–100%)</strong><small>Síntesis de probabilidad 5-TF</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Distorsión Gravitacional MGI</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>CVD — Delta de Volumen Acumulado</strong><small>Detector de agresión del flujo de órdenes</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Detección de Clímax de Volumen</strong><small>Alerta de agotamiento de volumen anormal</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Detección de Squeeze</strong><small>Alerta de compresión de volatilidad</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Alerta de Anomalía Cinética Squeeze</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Canal Térmico Dinámico</strong><small>Canal de volatilidad autocalibrante</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">Oscilador Global</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// Muros Institucionales</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Muros del Perfil de Volumen</strong><small>Mapeo POC / VAH / VAL</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Física Gravitacional</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Anclas VWAP Macro</strong><small>Diario, Semanal, Mensual</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Algoritmo de Fusión de Muros</strong><small>Detección de confluencia multi-TF</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Física Gravitacional MGI</strong><small>Polaridad Magnética 🧲 vs Fricción 🧱</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// Motor de Probabilidad</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Score Global (0–100%)</strong><small>Síntesis completa de probabilidad 5-TF</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>HUD Matriz de Probabilidad MTF</strong><small>Estado en vivo de los 5 marcos temporales</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Motor Z-Score</strong><small>Desviación estadística en tiempo real</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ MTF Ponderado Completo</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// Sistema de Señales</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Alertas SNIPER</strong><small>Score + gatillo de confluencia SMC</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Labels STRONG / EXTREME</strong><small>Reversiones validadas por volumen</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Alertas de Agotamiento</strong><small>Score &gt;85% o &lt;15% como gatillo</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Jerarquía Completa de Señales</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Garantía Cero Repintado</strong><small>Señales fijadas al cierre de la vela</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Order Blocks (OB)</strong><small>Entradas institucionales validadas por volumen</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Fair Value Gaps (FVG)</strong><small>Mapeo de ineficiencias de precio</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// HUD Táctico y Alertas</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Panel de Información</strong><small>Score, dirección, canal, ritmo</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Resumen Táctico IA</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Líneas de Entrada / SL / TP</strong><small>Parámetros de setup autocalculados</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Notificaciones Push Mobile</strong><small>Alertas Sniper filtradas al móvil</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Automatización Webhook / JSON</strong><small>Soporte de integración con bots</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">Solo Elite</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// Plataforma y Acceso</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>Plan Gratuito de TradingView</strong><small>Sin necesidad de suscripción premium</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Cobertura de Activos</strong><small>Cripto, Forex, Acciones, Índices</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Sensor de Derivados OI</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Idiomas Nativos</strong><small>Selección de idioma en el HUD</small></td>
+          <td class="td-val"><span class="check-c">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5 idiomas</span></td>
+          <td class="td-val"><span class="check-p">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5 idiomas</span></td>
+          <td class="td-val"><span class="check-o">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5 idiomas</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">EN · PT · ES · RU · 中文</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Scripts Necesarios</strong></td>
+          <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted)">1</span></td>
+          <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted)">1</span></td>
+          <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted)">1</span></td>
+          <td class="td-elite"><span class="elite-val">1 script maestro</span></td>
+        </tr>
+
+        <!-- CTA ROW -->
+        <tr>
+          <td></td>
+          <td class="td-val" style="padding:1.5rem">
+            <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,245,212,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,245,212,0.08)'" onmouseout="this.style.background='transparent'">Agregar Gratis →</a>
+          </td>
+          <td class="td-val" style="padding:1.5rem">
+            <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);border:1px solid rgba(155,93,229,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(155,93,229,0.08)'" onmouseout="this.style.background='transparent'">Agregar Gratis →</a>
+          </td>
+          <td class="td-val" style="padding:1.5rem">
+            <a href="TRADINGVIEW_LINK_AQUI" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(255,107,53,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,53,0.08)'" onmouseout="this.style.background='transparent'">Agregar Gratis →</a>
+          </td>
+          <td class="td-elite" style="padding:1.5rem">
+            <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" style="display:inline-block;font-family:var(--font-mono);font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--bg);background:var(--cyan);padding:0.75rem 1.5rem;text-decoration:none;box-shadow:0 0 20px rgba(0,245,212,0.3);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,245,212,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,245,212,0.3)'">Obtener Elite — $39.99/mes →</a>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// ¿Listo para el Upgrade?</div>
+    <h2 class="cta-title">Deja de ver fragmentos.<br><span style="color:var(--cyan)">Ve institucional completo.</span></h2>
+    <p class="cta-desc">Los scripts gratuitos te dan el mapa del terreno. El motor Elite te da el campo de batalla completo — Score Global, señales IA, alertas mobile, Entrada/SL/TP y el HUD táctico completo. 7 días gratis para probar todo.</p>
+    <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-btn">Iniciar Prueba Gratuita de 7 Días →</a>
+    <p class="cta-fine">Cancela en cualquier momento. Sin contratos. Sin permanencia. $39.99/mes tras la prueba.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">🌈 RAINBOW MATRIX AI</div>
+  <div class="footer-copy">© Rainbow Matrix AI · Todos los derechos reservados · No es asesoramiento financiero.</div>
+  <a href="https://rainbowmatrix.ai/es.html" style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); text-decoration:none; letter-spacing:0.08em;">← Volver al Sitio Principal</a>
+</footer>
+
+<!-- CHATBOT -->
+<div id="chat-btn" onclick="toggleChat()" title="Soporte Rainbow Matrix">
+  <span id="chat-btn-icon">🤖</span>
+</div>
+<div id="chat-window">
+  <div id="chat-header">
+    <div>
+      <div id="chat-title">🌈 Rainbow Matrix AI</div>
+      <div id="chat-subtitle">// Operador de Soporte Táctico</div>
+    </div>
+    <button onclick="toggleChat()" id="chat-close">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="msg bot"><span>Operador en línea. ¿Cómo puedo ayudarte con Rainbow Matrix AI hoy?</span></div>
+  </div>
+  <div id="chat-input-wrap">
+    <input id="chat-input" type="text" placeholder="Pregunta cualquier cosa sobre Rainbow Matrix..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()" id="chat-send">→</button>
+  </div>
+</div>
+
+<style>
+  #chat-btn { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; width: 56px; height: 56px; border-radius: 2px; background: var(--cyan); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 0 30px rgba(0,245,212,0.4); transition: transform 0.2s, box-shadow 0.2s; }
+  #chat-btn:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,245,212,0.6); }
+  #chat-window { position: fixed; bottom: 6rem; right: 2rem; z-index: 998; width: 420px; height: 620px; background: #0d1117; border: 1px solid rgba(0,245,212,0.3); display: none; flex-direction: column; box-shadow: 0 0 60px rgba(0,0,0,0.6); }
+  #chat-window.open { display: flex; }
+  #chat-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(0,245,212,0.05); }
+  #chat-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; color: #00f5d4; }
+  #chat-subtitle { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #6b7a8d; letter-spacing: 0.1em; margin-top: 2px; }
+  #chat-close { background: none; border: none; color: #6b7a8d; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+  #chat-close:hover { color: #00f5d4; }
+  #chat-messages { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.85rem; }
+  #chat-messages::-webkit-scrollbar { width: 3px; }
+  #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); }
+  .msg { display: flex; max-width: 88%; }
+  .msg.bot { align-self: flex-start; }
+  .msg.user { align-self: flex-end; }
+  .msg span { font-family: 'DM Sans', sans-serif; font-size: 0.84rem; line-height: 1.6; padding: 0.7rem 1rem; border-radius: 2px; white-space: pre-wrap; }
+  .msg.bot span { background: rgba(255,255,255,0.04); color: #e8edf2; border-left: 2px solid #00f5d4; }
+  .msg.user span { background: rgba(0,245,212,0.1); color: #e8edf2; border-right: 2px solid #9b5de5; }
+  .msg.typing span { color: #6b7a8d; font-style: italic; }
+  #chat-input-wrap { display: flex; border-top: 1px solid rgba(255,255,255,0.07); }
+  #chat-input { flex: 1; background: rgba(255,255,255,0.03); border: none; outline: none; color: #e8edf2; font-family: 'DM Sans', sans-serif; font-size: 0.84rem; padding: 0.9rem 1.1rem; }
+  #chat-input::placeholder { color: #3d4a57; }
+  #chat-send { background: #00f5d4; border: none; color: #080c10; font-weight: 700; font-size: 1rem; padding: 0 1.2rem; cursor: pointer; transition: background 0.2s; }
+  #chat-send:hover { background: #00d4b8; }
+  @media(max-width: 480px) { #chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; } #chat-btn { right: 1rem; bottom: 1rem; } }
+</style>
+
+<script>
+  const chatHistory = [];
+  function toggleChat() {
+    const win = document.getElementById('chat-window');
+    win.classList.toggle('open');
+    if (win.classList.contains('open')) document.getElementById('chat-input').focus();
+  }
+  function addMessage(text, role) {
+    const msgs = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    const span = document.createElement('span');
+    span.textContent = text;
+    div.appendChild(span);
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMessage(text, 'user');
+    chatHistory.push({ role: 'user', content: text });
+    const typing = addMessage('Analizando...', 'bot typing');
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory })
+      });
+      const data = await res.json();
+      typing.remove();
+      const reply = data.response || 'Error táctico. Por favor intenta de nuevo.';
+      addMessage(reply, 'bot');
+      chatHistory.push({ role: 'assistant', content: reply });
+    } catch (err) {
+      typing.remove();
+      addMessage('Conexión perdida. Intenta de nuevo o contacta contact@rainbowmatrix.ai', 'bot');
+    }
+  }
+</script>
+</body>
+</html>
