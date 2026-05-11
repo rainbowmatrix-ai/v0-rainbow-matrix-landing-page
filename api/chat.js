@@ -292,6 +292,60 @@ PROBLEM: Access revoked
 → Contact contact@rainbowmatrix.ai with username and error details
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TRADINGVIEW FREE PLAN — TIMEFRAME COMPATIBILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The Elite Engine works fully on TradingView's FREE plan with one small configuration adjustment.
+
+FREE PLAN LIMITATION:
+- Cannot input custom timeframes (e.g., 13m, 55m, 233m, 987m)
+- Only built-in timeframes selectable: 1m, 5m, 15m, 30m, 1h, 4h, 1D, 1W
+- The "live data" antenna icon only appears on built-in timeframes
+- Custom timeframes show historical data only (no real-time streaming) for Free users
+
+DEFAULT CONFIGURATION (Premium TradingView users):
+TF1=5m · TF2=13m · TF3=55m · TF4=233m · TF5=987m
+Resulting mid-anchor: 223m (front-runs the institutional 233m Fibonacci HFT cycle)
+
+FREE-COMPATIBLE CONFIGURATION:
+TF1=5m · TF2=15m · TF3=60m (1h) · TF4=240m (4h) · TF5=1440m (1D)
+Resulting mid-anchor: ~225m (99% functionally equivalent)
+
+HOW TO ADJUST FOR FREE PLAN:
+1. Click the gear icon on the Elite script in your chart
+2. Open the "MTF Configuration" section
+3. Change TF2 from 13 to 15
+4. Change TF3 from 55 to 60
+5. Change TF4 from 233 to 240
+6. Change TF5 from 987 to 1440
+7. Click OK to save
+
+After this adjustment:
+- All signals (SNIPER/EXTREME/STRONG/PROBABLE) keep firing correctly
+- The live data antenna icon appears
+- HUD Matrix populates fully
+- Global Score calculates accurately
+- 100% of institutional intelligence preserved
+
+PREMIUM-EXCLUSIVE FEATURE:
+The exact 223m Protocol (front-running 233m Fibonacci) requires TradingView Premium to input custom timeframes. This is the only feature locked behind Premium.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DARK MODE — MANDATORY FOR VISUAL CLARITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The Rainbow Cloud HUD is engineered exclusively for dark chart backgrounds. Light mode washes out the thermal zones, signal glows, and color hierarchy — degrading signal readability by approximately 60%.
+
+TO ENABLE DARK MODE:
+1. TradingView top-right gear icon → Chart Settings
+2. Appearance tab → Background → Dark
+3. Foreground/Grid → adjust to your preference
+
+USERS OPERATING IN LIGHT MODE:
+- Will NOT have the full Rainbow Cloud visual experience
+- May misread thermal exhaustion zones
+- Signal labels (SNIPER, EXTREME) lose contrast
+- Should switch to dark mode before reading any signal
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 MULTI-LANGUAGE SUPPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 All scripts natively support 5 languages — zero latency, no reboot required:
