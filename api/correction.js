@@ -10,7 +10,7 @@
  * Response: { success: true } or { error: "..." }
  */
 
-const MAKE_WEBHOOK = 'https://hook.us2.make.com/43p27kjlcnrv1wgegpeq1t4ibwy9iubc';
+const MAKE_WEBHOOK = 'https://hook.us2.make.com/q45ytmyb9stwv71ovt0ctfizfc8l6tg8';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,30}$/;
