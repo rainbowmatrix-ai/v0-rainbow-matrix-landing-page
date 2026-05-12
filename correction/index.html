@@ -231,6 +231,17 @@
       box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.1);
     }
 
+    /* Browser autofill override — keeps dark theme intact */
+    .field-input:-webkit-autofill,
+    .field-input:-webkit-autofill:hover,
+    .field-input:-webkit-autofill:focus,
+    .field-input:-webkit-autofill:active {
+      -webkit-text-fill-color: var(--rb-text-main) !important;
+      -webkit-box-shadow: 0 0 0 1000px var(--rb-bg) inset !important;
+      caret-color: var(--rb-text-main);
+      transition: background-color 9999s ease-in-out 0s;
+    }
+
     .field-input.error {
       border-color: var(--rb-danger);
       box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
