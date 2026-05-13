@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rainbow Matrix AI — 免费版与Elite版对比</title>
-<meta name="description" content="对比Rainbow Matrix AI免费脚本与Elite访问权限。了解完整机构引擎为您解锁的全部功能。">
+<title>Rainbow Matrix AI — 免费版与 Elite 版对比</title>
+<meta name="description" content="对比 Rainbow Matrix AI 免费脚本与 Elite 权限。确切了解完整机构级引擎所能解锁的功能。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/compare/compare.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/compare/compare-ru.html">
 <link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/compare/compare-cn.html">
 <link rel="icon" type="image/x-icon" href="../favicon.ico">
-<link rel="apple-touch-icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../favicon.ico">    
 <style>
   :root {
     --bg: #080c10; --bg2: #0d1117; --bg3: #111820;
@@ -36,15 +36,10 @@
   .nav-cta { color: var(--bg) !important; background: var(--cyan); padding: 0.5rem 1.2rem; transition: box-shadow 0.2s !important; }
   .nav-cta:hover { box-shadow: 0 0 24px rgba(0,245,212,0.5) !important; }
 
-  .lang-switcher { display: flex; gap: 0.5rem; align-items: center; font-family: var(--font-mono); font-size: 0.65rem; border-left: 1px solid var(--border); padding-left: 1rem; margin-left: 0.5rem; }
-  .lang-link { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-  .lang-link:hover, .lang-link.active { color: var(--cyan); font-weight: 700; }
-  .lang-sep { color: var(--border); }
-
   .hero { padding: 10rem 4rem 6rem; text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
   .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,245,212,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,212,0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%); }
   .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--cyan); border: 1px solid rgba(0,245,212,0.25); padding: 0.35rem 0.85rem; margin-bottom: 2rem; background: rgba(0,245,212,0.05); }
-  .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.2rem; }
+  .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
   .hero-title span { background: linear-gradient(135deg, #00f5d4, #9b5de5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero-desc { font-size: 1rem; color: var(--text-muted); max-width: 580px; margin: 0 auto 3rem; line-height: 1.75; }
 
@@ -58,9 +53,9 @@
   .free-card:nth-child(1) .free-card-num { color: var(--cyan); }
   .free-card:nth-child(2) .free-card-num { color: var(--purple); }
   .free-card:nth-child(3) .free-card-num { color: var(--orange); }
-  .free-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; line-height: 1.3; }
+  .free-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; line-height: 1.2; }
   .free-card-sub { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); margin-bottom: 1rem; }
-  .free-card-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; }
+  .free-card-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
   .free-card-btn { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 0.6rem 1.1rem; transition: box-shadow 0.2s; }
   .free-card:nth-child(1) .free-card-btn { color: var(--bg); background: var(--cyan); }
   .free-card:nth-child(1) .free-card-btn:hover { box-shadow: 0 0 24px rgba(0,245,212,0.5); }
@@ -74,7 +69,7 @@
   .unlock-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), transparent); }
   .unlock-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
   .unlock-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; }
-  .unlock-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; }
+  .unlock-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.65; }
   .unlock-tag { display: inline-block; margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; color: var(--cyan); border: 1px solid rgba(0,245,212,0.2); padding: 0.2rem 0.5rem; }
 
   .compare-section { padding: 6rem 4rem; }
@@ -118,7 +113,7 @@
 
   .cta-section { padding: 6rem 4rem; background: var(--bg2); text-align: center; border-top: 1px solid var(--border); }
   .cta-inner { max-width: 700px; margin: 0 auto; }
-  .cta-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
+  .cta-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; line-height: 1.15; }
   .cta-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.75; }
   .cta-btn { display: inline-flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bg); background: var(--cyan); padding: 1.1rem 2.8rem; text-decoration: none; box-shadow: 0 0 40px rgba(0,245,212,0.3); transition: all 0.25s; }
   .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(0,245,212,0.5); }
@@ -142,76 +137,66 @@
 <body>
 
 <nav>
-  <a href="https://rainbowmatrix.ai/cn.html" class="nav-logo">🌈 Rainbow Matrix AI</a>
+  <a href="https://rainbowmatrix.ai" class="nav-logo">🌈 Rainbow Matrix AI</a>
   <div class="nav-links">
-    <a href="https://rainbowmatrix.ai/cn.html">← 主页</a>
+    <a href="https://rainbowmatrix.ai">← 返回主页</a>
     <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank">脚本 01</a>
     <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank">脚本 02</a>
-    <a href="TRADINGVIEW_LINK_AQUI" target="_blank">脚本 03</a>
+    <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank">脚本 03</a>
     <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="nav-cta">获取 Elite →</a>
-    <div class="lang-switcher">
-      <a href="../compare/compare.html" class="lang-link">EN</a><span class="lang-sep">|</span>
-      <a href="compare-pt.html" class="lang-link">PT</a><span class="lang-sep">|</span>
-      <a href="compare-es.html" class="lang-link">ES</a><span class="lang-sep">|</span>
-      <a href="compare-ru.html" class="lang-link">RU</a><span class="lang-sep">|</span>
-      <a href="compare-cn.html" class="lang-link active">中文</a>
-    </div>
   </div>
 </nav>
 
-<!-- 主视觉 -->
 <div class="hero">
   <div class="hero-grid"></div>
-  <div class="hero-badge">// 功能对比 — 3个免费脚本 vs Elite版</div>
-  <h1 class="hero-title">免费工具只是<br><span>一个开始。</span></h1>
-  <p class="hero-desc">三个免费脚本带您体验引擎。一个Elite访问权限部署完整机构级武器库。逐项对比，清晰了解每个版本解锁的功能。</p>
+  <div class="hero-badge">// 功能对比 — 3 款免费脚本 vs Elite</div>
+  <h1 class="hero-title">免费工具仅仅是<br><span>一个开始。</span></h1>
+  <p class="hero-desc">三款免费脚本助您验证该引擎。一个 Elite 权限即可部署完整的机构级武器库。并排查看各自解锁的确切功能。</p>
   <div class="free-cards">
     <div class="free-card">
       <div class="free-card-num">// 免费脚本 01</div>
       <div class="free-card-title">🌈 Cloud Institutional Bands</div>
       <div class="free-card-sub">Rainbow Matrix AI · 免费 · TradingView</div>
-      <p class="free-card-desc">对数正态彩虹云配动态VWAP。8个热力偏差区间，精准显示机构资金防守与进攻的位置。</p>
+      <p class="free-card-desc">结合动态 VWAP 的 Log-Normal Rainbow Cloud。8 个热力偏差区域，准确显示机构防御与攻击的位置。</p>
       <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" class="free-card-btn">免费添加 →</a>
     </div>
     <div class="free-card">
       <div class="free-card-num">// 免费脚本 02</div>
-      <div class="free-card-title">🧱 MGI Walls — 流动性雷达</div>
+      <div class="free-card-title">🧱 MGI Walls — 雷达与流动性</div>
       <div class="free-card-sub">Rainbow Matrix AI · 免费 · TradingView</div>
-      <p class="free-card-desc">MTF机构墙体映射引擎。POC/VAH/VAL + 宏观VWAP锚点实时投射至您的活跃图表。</p>
+      <p class="free-card-desc">MTF 机构级墙体映射。POC/VAH/VAL + 宏观 VWAP 锚点，实时直接投影到您的活动图表上。</p>
       <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" class="free-card-btn">免费添加 →</a>
     </div>
     <div class="free-card">
       <div class="free-card-num">// 免费脚本 03</div>
-      <div class="free-card-title">📈 Kinetic Oscillator</div>
+      <div class="free-card-title">📈 MTF Kinetic Oscillator</div>
       <div class="free-card-sub">Rainbow Matrix AI · 免费 · TradingView</div>
-      <p class="free-card-desc">纯订单流振荡器，通过对数正态Z-Score、CVD与自适应Squeeze检测，将5个时间框架融合为单一概率指标。</p>
-      <a href="TRADINGVIEW_LINK_AQUI" target="_blank" class="free-card-btn">免费添加 →</a>
+      <p class="free-card-desc">多时间级别震荡指标，将 5 个斐波那契分形融合为 0–100 的单一概率分数。由定向 Z-Score、CVD order flow、Black Swan 区域和自适应 Squeeze 探测提供动力。</p>
+      <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" class="free-card-btn">免费添加 →</a>
     </div>
   </div>
 </div>
 
-<!-- 您将解锁的内容 -->
 <section style="padding:5rem 4rem; background:var(--bg2); border-bottom:1px solid var(--border);">
   <div style="max-width:1100px; margin:0 auto; text-align:center;">
-    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// Elite 升级</div>
-    <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; margin-bottom:3rem;">6大系统——免费脚本<br>无法触及的核心功能。</h2>
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// 升级 Elite</div>
+    <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; margin-bottom:3rem;">6 大免费版本<br>无法触及的系统。</h2>
     <div class="unlock-grid">
-      <div class="unlock-card"><span class="unlock-icon">🧠</span><div class="unlock-title">5时框全局评分</div><p class="unlock-desc">5个时间框架的50个变量压缩为0–100%单一概率指标。免费脚本给您碎片——Elite给您最终裁决。</p><span class="unlock-tag">50:1 压缩比</span></div>
-      <div class="unlock-card"><span class="unlock-icon">🎯</span><div class="unlock-title">AI信号标签</div><p class="unlock-desc">SNIPER、EXTREME、STRONG、PROBABLE——零重绘自动绘制。系统精准告诉您何时扣动扳机。</p><span class="unlock-tag">零重绘 // 收盘锁定</span></div>
-      <div class="unlock-card"><span class="unlock-icon">📊</span><div class="unlock-title">MTF概率HUD</div><p class="unlock-desc">完整战术仪表板：5个时框实时状态、Z-Score、RSI、SAR、成交量，以及含入场/止损/止盈的AI战术摘要。</p><span class="unlock-tag">实时驾驶舱</span></div>
-      <div class="unlock-card"><span class="unlock-icon">📱</span><div class="unlock-title">移动端狙击手警报</div><p class="unlock-desc">推送通知直达手机——仅筛选SNIPER和EXTREME级别触发。无噪音，只有最高概率窗口。</p><span class="unlock-tag">iOS + Android // Webhook</span></div>
-      <div class="unlock-card"><span class="unlock-icon">🔷</span><div class="unlock-title">聪明钱概念 SMC</div><p class="unlock-desc">订单块(OB)与公允价值缺口(FVG)自动绘制，经异常成交量验证。与全局评分融合触发SNIPER会聚。</p><span class="unlock-tag">OB + FVG // 自动映射</span></div>
-      <div class="unlock-card"><span class="unlock-icon">🧲</span><div class="unlock-title">MGI引力物理学</div><p class="unlock-desc">机构墙体磁性🧲 vs 摩擦🧱 极性。免费MGI绘制墙体——Elite计算引力。</p><span class="unlock-tag">磁性 / 摩擦 极性</span></div>
+      <div class="unlock-card"><span class="unlock-icon">🧠</span><div class="unlock-title">5-TF 全局分数</div><p class="unlock-desc">将跨越 5 个时间级别的 50 个变量压缩为单一的 0–100% 概率指标。免费脚本给您碎片 — Elite 直接给您最终裁决。</p><span class="unlock-tag">50:1 压缩率</span></div>
+      <div class="unlock-card"><span class="unlock-icon">🎯</span><div class="unlock-title">AI 信号标签</div><p class="unlock-desc">SNIPER, EXTREME, STRONG, PROBABLE — 自动绘制，Zero Repaint。系统准确告诉您何时扣动扳机。</p><span class="unlock-tag">Zero Repaint // 收盘锁定</span></div>
+      <div class="unlock-card"><span class="unlock-icon">📊</span><div class="unlock-title">MTF 概率 HUD</div><p class="unlock-desc">完整的战术仪表盘：所有 5 个时间级别、Z-Score、RSI、SAR、Volume 以及包含 Entry / SL / TP 的 AI 战术摘要的实时状态。</p><span class="unlock-tag">实时驾驶舱</span></div>
+      <div class="unlock-card"><span class="unlock-icon">📱</span><div class="unlock-title">移动端 Sniper 警报</div><p class="unlock-desc">推送到您手机的通知 — 经过过滤，仅在 SNIPER 和 EXTREME 设置下触发。没有噪音。只提供最高概率的交易窗口。</p><span class="unlock-tag">iOS + Android // Webhook</span></div>
+      <div class="unlock-card"><span class="unlock-icon">🔷</span><div class="unlock-title">Smart Money Concepts</div><p class="unlock-desc">由异常交易量验证的自动化 Order Blocks (OB) 和 Fair Value Gaps (FVG)。与全局分数融合以实现 SNIPER 共振。</p><span class="unlock-tag">OB + FVG // 自动映射</span></div>
+      <div class="unlock-card"><span class="unlock-icon">🧲</span><div class="unlock-title">MGI 物理引力</div><p class="unlock-desc">机构墙体上的 Magnetic（磁性）🧲 vs Friction（摩擦）🧱 极性。免费的 MGI 负责映射墙体 — Elite 负责计算引力。</p><span class="unlock-tag">Magnetic / Friction 极性</span></div>
     </div>
   </div>
 </section>
 
-<!-- 功能对比表 -->
 <section class="compare-section">
   <div class="compare-inner">
-    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// 并排对比</div>
+    <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// 核心对比</div>
     <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,3vw,2.5rem); font-weight:800; margin-bottom:0.5rem;">完整功能对比</h2>
-    <p style="font-size:0.9rem; color:var(--text-muted);">所有脚本的每项功能，逐行对比。</p>
+    <p style="font-size:0.9rem; color:var(--text-muted);">跨越所有脚本的每一项功能，逐行对比。</p>
 
     <table class="compare-table">
       <thead>
@@ -219,176 +204,197 @@
           <th class="th-feature">功能</th>
           <th class="th-free1"><span class="th-plan-name">🌈 Cloud Bands</span><span class="th-plan-sub">免费脚本 01</span><span class="th-plan-price">$0 <span>/ 免费</span></span></th>
           <th class="th-free2"><span class="th-plan-name">🧱 MGI Walls</span><span class="th-plan-sub">免费脚本 02</span><span class="th-plan-price">$0 <span>/ 免费</span></span></th>
-          <th class="th-free3"><span class="th-plan-name">📈 Kinetic Osc.</span><span class="th-plan-sub">免费脚本 03</span><span class="th-plan-price">$0 <span>/ 免费</span></span></th>
-          <th class="th-elite"><div class="best-badge">⭐ 完整引擎</div><span class="th-plan-name">💎 Elite 访问</span><span class="th-plan-sub">完整机构引擎</span><span class="th-plan-price">$39.99 <span>/ 月</span></span></th>
+          <th class="th-free3"><span class="th-plan-name">📈 MTF Kinetic</span><span class="th-plan-sub">免费脚本 03</span><span class="th-plan-price">$0 <span>/ 免费</span></span></th>
+          <th class="th-elite"><div class="best-badge">⭐ 完整引擎</div><span class="th-plan-name">💎 Elite Access</span><span class="th-plan-sub">完整的机构级引擎</span><span class="th-plan-price">$39.99 <span>/ 月</span></span></th>
         </tr>
       </thead>
       <tbody>
 
         <tr class="category-row"><td colspan="5"><span class="category-label">// 视觉引擎</span></td></tr>
         <tr>
-          <td class="td-feature"><strong>对数正态彩虹云</strong><small>8个热力偏差区间</small></td>
+          <td class="td-feature"><strong>Log-Normal Rainbow Cloud</strong><small>8 个热力偏差区域</small></td>
           <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
           <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Quantum HFT 模式</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>动态VWAP光晕</strong><small>强度随价格接近自动缩放</small></td>
+          <td class="td-feature"><strong>动态 VWAP 发光</strong><small>强度随接近度缩放</small></td>
           <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 日线 / 周线 / 月线</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 日 / 周 / 月</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>黑天鹅区间</strong><small>紫色 / 青色 ±3.85σ 警报</small></td>
-          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-feature"><strong>Black Swan 区域</strong><small>Purple / Aqua 极端区域警报</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Vacuum Trail (真空轨迹)</strong><small>回到通道的几何收敛线</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
           <td class="td-elite"><span class="check-c">✓</span></td>
         </tr>
 
-        <tr class="category-row"><td colspan="5"><span class="category-label">// 订单流引擎</span></td></tr>
+        <tr class="category-row"><td colspan="5"><span class="category-label">// Order Flow 引擎</span></td></tr>
         <tr>
-          <td class="td-feature"><strong>动能评分 (0–100%)</strong><small>5时框概率综合</small></td>
+          <td class="td-feature"><strong>Kinetic 分数 (0–100%)</strong><small>5-TF 概率合成</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ MGI引力畸变</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ MGI 引力扭曲</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>CVD — 累计成交量差值</strong><small>订单流攻击性检测器</small></td>
+          <td class="td-feature"><strong>CVD — 累积量价差</strong><small>Order flow 攻击性探测器</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
           <td class="td-elite"><span class="check-c">✓</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>成交量高潮检测</strong><small>异常成交量耗尽警报</small></td>
+          <td class="td-feature"><strong>Volume Climax (量能高潮) 探测</strong><small>异常成交量衰竭警报</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
           <td class="td-elite"><span class="check-c">✓</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>Squeeze 检测</strong><small>波动率压缩警报</small></td>
+          <td class="td-feature"><strong>Squeeze 探测</strong><small>波动率压缩警报</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 动能Squeeze异常警报</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ Kinetic Squeeze 异常警报</span></td>
         </tr>
         <tr>
           <td class="td-feature"><strong>动态热力通道</strong><small>自校准波动率通道</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">全局振荡器</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">全局震荡指标</span></td>
         </tr>
 
-        <tr class="category-row"><td colspan="5"><span class="category-label">// 机构墙体</span></td></tr>
+        <tr class="category-row"><td colspan="5"><span class="category-label">// 机构级墙体</span></td></tr>
         <tr>
-          <td class="td-feature"><strong>成交量分布墙体</strong><small>POC / VAH / VAL 映射</small></td>
+          <td class="td-feature"><strong>Volume Profile 墙体</strong><small>POC / VAH / VAL 映射</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 引力物理学</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 物理引力</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>宏观VWAP锚点</strong><small>日线、周线、月线</small></td>
-          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="check-c">✓</span></td>
-        </tr>
-        <tr>
-          <td class="td-feature"><strong>墙体融合算法</strong><small>多时框会聚检测</small></td>
+          <td class="td-feature"><strong>宏观 VWAP 锚点</strong><small>日、周、月</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="cross">—</span></td>
           <td class="td-elite"><span class="check-c">✓</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>MGI引力物理学</strong><small>磁性🧲 vs 摩擦🧱 极性</small></td>
+          <td class="td-feature"><strong>墙体融合算法</strong><small>Multi-TF 共振探测</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>MGI 物理引力</strong><small>Magnetic 🧲 vs Friction 🧱 极性</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
           <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
         </tr>
 
         <tr class="category-row"><td colspan="5"><span class="category-label">// 概率引擎</span></td></tr>
         <tr>
-          <td class="td-feature"><strong>全局评分 (0–100%)</strong><small>5时框完整概率综合</small></td>
+          <td class="td-feature"><strong>全局分数 (0–100%)</strong><small>5-TF 完整概率合成</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
           <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>MTF概率矩阵HUD</strong><small>5个时框全部实时状态</small></td>
+          <td class="td-feature"><strong>MTF 概率矩阵 HUD</strong><small>所有 5 个时间级别的实时状态</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
           <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>Z-Score 引擎</strong><small>实时统计偏差</small></td>
+          <td class="td-feature"><strong>定向 Z-Score 引擎</strong><small>具备 K 线感知的 Log-Normal Z-Score</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 完整MTF加权</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 完整 MTF 加权</span></td>
         </tr>
 
         <tr class="category-row"><td colspan="5"><span class="category-label">// 信号系统</span></td></tr>
         <tr>
-          <td class="td-feature"><strong>SNIPER 警报</strong><small>评分 + SMC会聚触发</small></td>
+          <td class="td-feature"><strong>SNIPER 警报</strong><small>分数 + SMC 共振触发</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
           <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>STRONG / EXTREME 标签</strong><small>成交量验证的反转信号</small></td>
+          <td class="td-feature"><strong>STRONG / EXTREME 标签</strong><small>成交量验证的反转</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
           <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>耗尽警报</strong><small>评分 &gt;85% 或 &lt;15% 触发</small></td>
+          <td class="td-feature"><strong>衰竭警报</strong><small>分数 &gt;85% 或 &lt;15% 触发</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
           <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 完整信号层级</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>零重绘保证</strong><small>信号锁定于K线收盘</small></td>
-          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
-          <td class="td-elite"><span class="check-c">✓</span></td>
-        </tr>
-        <tr>
-          <td class="td-feature"><strong>订单块 (OB)</strong><small>成交量验证的机构入场位</small></td>
-          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
-        </tr>
-        <tr>
-          <td class="td-feature"><strong>公允价值缺口 (FVG)</strong><small>价格低效区映射</small></td>
-          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
-        </tr>
-
-        <tr class="category-row"><td colspan="5"><span class="category-label">// 战术HUD与警报</span></td></tr>
-        <tr>
-          <td class="td-feature"><strong>信息面板</strong><small>评分、方向、通道、节奏</small></td>
+          <td class="td-feature"><strong>Black Swan 警报</strong><small>边缘触发的布防/撤防逻辑</small></td>
           <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ AI战术摘要</span></td>
+          <td class="td-elite"><span class="check-c">✓</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>入场 / 止损 / 止盈线</strong><small>自动计算交易参数</small></td>
-          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
-        </tr>
-        <tr>
-          <td class="td-feature"><strong>移动端推送通知</strong><small>过滤后的狙击手警报直达手机</small></td>
-          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
-        </tr>
-        <tr>
-          <td class="td-feature"><strong>Webhook / JSON 自动化</strong><small>机器人集成支持</small></td>
-          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
-          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
-        </tr>
-
-        <tr class="category-row"><td colspan="5"><span class="category-label">// 平台与访问</span></td></tr>
-        <tr>
-          <td class="td-feature"><strong>TradingView 免费套餐</strong><small>无需高级订阅</small></td>
+          <td class="td-feature"><strong>Zero Repaint 保证</strong><small>信号在收盘时锁定</small></td>
           <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
           <td class="td-elite"><span class="check-c">✓</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>资产覆盖</strong><small>加密货币、外汇、股票、指数</small></td>
-          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
-          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ OI衍生品传感器</span></td>
+          <td class="td-feature"><strong>Order Blocks (OB)</strong><small>成交量验证的机构级入场</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
         </tr>
         <tr>
-          <td class="td-feature"><strong>原生语言支持</strong><small>HUD语言选择</small></td>
-          <td class="td-val"><span class="check-c">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5种语言</span></td>
-          <td class="td-val"><span class="check-p">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5种语言</span></td>
-          <td class="td-val"><span class="check-o">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5种语言</span></td>
+          <td class="td-feature"><strong>Fair Value Gaps (FVG)</strong><small>价格低效区映射</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// 战术 HUD 与警报</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>信息面板</strong><small>分数、方向、通道、节奏</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ AI 战术摘要</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Entry / SL / TP 线</strong><small>自动计算的交易设置参数</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>移动端 Push 通知</strong><small>过滤后的 Sniper 警报发送至手机</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>Webhook / JSON 自动化</strong><small>支持 Bot（机器人）集成</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
+        </tr>
+
+        <tr class="category-row"><td colspan="5"><span class="category-label">// 平台与权限</span></td></tr>
+        <tr>
+          <td class="td-feature"><strong>TradingView 免费计划</strong><small>无需高级订阅</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 兼容免费版的 MTF 配置</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>开源 (MPL 2.0)</strong><small>可审计的源代码</small></td>
+          <td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="cross">—</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="cross">—</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>资产覆盖范围</strong><small>加密货币、外汇、股票、指数</small></td>
+          <td class="td-val"><span class="check-c">✓</span></td><td class="td-val"><span class="check-p">✓</span></td><td class="td-val"><span class="check-o">✓</span></td>
+          <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">+ 衍生品 OI 传感器</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>原生语言</strong><small>HUD 语言选择</small></td>
+          <td class="td-val"><span class="check-c">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5 种语言</span></td>
+          <td class="td-val"><span class="check-p">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5 种语言</span></td>
+          <td class="td-val"><span class="check-o">✓</span><br><span style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim)">5 种语言</span></td>
           <td class="td-elite"><span class="check-c">✓</span><span class="elite-val">EN · PT · ES · RU · 中文</span></td>
+        </tr>
+        <tr>
+          <td class="td-feature"><strong>自适应 MTF 配置</strong><small>自定义（TV 高级版）或内置（TV 免费版）时间级别</small></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-val"><span class="cross">—</span></td>
+          <td class="td-elite"><span class="elite-only">仅限 Elite</span></td>
         </tr>
         <tr>
           <td class="td-feature"><strong>所需脚本数量</strong></td>
           <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted)">1</span></td>
           <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted)">1</span></td>
           <td class="td-val"><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted)">1</span></td>
-          <td class="td-elite"><span class="elite-val">1个主脚本</span></td>
+          <td class="td-elite"><span class="elite-val">1 个主脚本</span></td>
         </tr>
 
-        <!-- CTA ROW -->
         <tr>
           <td></td>
           <td class="td-val" style="padding:1.5rem">
@@ -398,7 +404,7 @@
             <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);border:1px solid rgba(155,93,229,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(155,93,229,0.08)'" onmouseout="this.style.background='transparent'">免费添加 →</a>
           </td>
           <td class="td-val" style="padding:1.5rem">
-            <a href="TRADINGVIEW_LINK_AQUI" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(255,107,53,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,53,0.08)'" onmouseout="this.style.background='transparent'">免费添加 →</a>
+            <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(255,107,53,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,53,0.08)'" onmouseout="this.style.background='transparent'">免费添加 →</a>
           </td>
           <td class="td-elite" style="padding:1.5rem">
             <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" style="display:inline-block;font-family:var(--font-mono);font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--bg);background:var(--cyan);padding:0.75rem 1.5rem;text-decoration:none;box-shadow:0 0 20px rgba(0,245,212,0.3);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,245,212,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,245,212,0.3)'">获取 Elite — $39.99/月 →</a>
@@ -407,30 +413,31 @@
 
       </tbody>
     </table>
+    <p style="margin-top:2.5rem; font-family:var(--font-mono); font-size:0.62rem; color:var(--text-dim); text-align:center; letter-spacing:0.05em;">
+      * 所有 Rainbow Matrix 脚本均专为暗色图表背景而设计。浅色模式会降低信号的可读性 — 请在操作前开启 TradingView 图表设置中的深色模式。
+    </p>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-section">
   <div class="cta-inner">
     <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--cyan); margin-bottom:1rem; text-transform:uppercase;">// 准备好升级了吗？</div>
-    <h2 class="cta-title">不要只看碎片。<br><span style="color:var(--cyan)">进入完整机构级别。</span></h2>
-    <p class="cta-desc">免费脚本给您地形图。Elite引擎给您完整战场——全局评分、AI信号、移动端警报、入场/止损/止盈，以及完整战术HUD。7天免费体验全部功能。</p>
-    <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-btn">开始7天免费试用 →</a>
-    <p class="cta-fine">随时取消。无合同约束。无套牢风险。试用后 $39.99/月。</p>
+    <h2 class="cta-title">停止以偏概全。<br><span style="color:var(--cyan)">进入纯正的机构级别。</span></h2>
+    <p class="cta-desc">免费脚本为您提供地形图。Elite 引擎为您提供完整的作战空间 — 全局分数、AI 信号、移动警报、Entry/SL/TP 以及完整的战术 HUD。7 天免费体验一切。</p>
+    <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-btn">开始 7 天免费试用 →</a>
+    <p class="cta-fine">随时取消。无合约。无绑定。试用期后 $39.99/月。</p>
   </div>
 </section>
 
 <footer>
   <div class="footer-logo">🌈 RAINBOW MATRIX AI</div>
-  <div class="footer-copy">© Rainbow Matrix AI · 版权所有 · 非金融建议。</div>
-  <a href="https://rainbowmatrix.ai/cn.html" style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); text-decoration:none; letter-spacing:0.08em;">← 返回主页</a>
+  <div class="footer-copy">© Rainbow Matrix AI · 保留所有权利 · 非财务建议。</div>
+  <a href="https://rainbowmatrix.ai" style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); text-decoration:none; letter-spacing:0.08em;">← 返回主页</a>
 </footer>
-
-<!-- 聊天机器人 -->
-<div id="chat-btn" onclick="toggleChat()" title="Rainbow Matrix 支持">
+  <div id="chat-btn" onclick="toggleChat()" title="Rainbow Matrix 支持">
   <span id="chat-btn-icon">🤖</span>
 </div>
+
 <div id="chat-window">
   <div id="chat-header">
     <div>
@@ -440,49 +447,102 @@
     <button onclick="toggleChat()" id="chat-close">✕</button>
   </div>
   <div id="chat-messages">
-    <div class="msg bot"><span>操作员在线。今天有什么关于 Rainbow Matrix AI 的问题？</span></div>
+    <div class="msg bot">
+      <span>操作员在线。今天我能为您提供哪些关于 Rainbow Matrix AI 的协助？</span>
+    </div>
   </div>
   <div id="chat-input-wrap">
-    <input id="chat-input" type="text" placeholder="请输入您关于 Rainbow Matrix 的问题..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <input id="chat-input" type="text" placeholder="询问关于 Rainbow Matrix 的任何问题..." onkeydown="if(event.key==='Enter') sendMessage()">
     <button onclick="sendMessage()" id="chat-send">→</button>
   </div>
 </div>
 
 <style>
-  #chat-btn { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; width: 56px; height: 56px; border-radius: 2px; background: var(--cyan); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 0 30px rgba(0,245,212,0.4); transition: transform 0.2s, box-shadow 0.2s; }
+  #chat-btn {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    width: 56px; height: 56px; border-radius: 2px;
+    background: var(--cyan); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 30px rgba(0,245,212,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
   #chat-btn:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,245,212,0.6); }
-  #chat-window { position: fixed; bottom: 6rem; right: 2rem; z-index: 998; width: 420px; height: 620px; background: #0d1117; border: 1px solid rgba(0,245,212,0.3); display: none; flex-direction: column; box-shadow: 0 0 60px rgba(0,0,0,0.6); }
+
+  #chat-window {
+    position: fixed; bottom: 6rem; right: 2rem; z-index: 998;
+    width: 420px; height: 620px;
+    background: #0d1117;
+    border: 1px solid rgba(0,245,212,0.3);
+    display: none; flex-direction: column;
+    box-shadow: 0 0 60px rgba(0,0,0,0.6);
+  }
   #chat-window.open { display: flex; }
-  #chat-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(0,245,212,0.05); }
+
+  #chat-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    background: rgba(0,245,212,0.05);
+  }
   #chat-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; color: #00f5d4; }
   #chat-subtitle { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #6b7a8d; letter-spacing: 0.1em; margin-top: 2px; }
   #chat-close { background: none; border: none; color: #6b7a8d; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
   #chat-close:hover { color: #00f5d4; }
-  #chat-messages { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.85rem; }
+
+  #chat-messages {
+    flex: 1; overflow-y: auto; padding: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.85rem;
+  }
   #chat-messages::-webkit-scrollbar { width: 3px; }
   #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); }
+
   .msg { display: flex; max-width: 88%; }
   .msg.bot { align-self: flex-start; }
   .msg.user { align-self: flex-end; }
-  .msg span { font-family: 'DM Sans', sans-serif; font-size: 0.84rem; line-height: 1.6; padding: 0.7rem 1rem; border-radius: 2px; white-space: pre-wrap; }
+  .msg span {
+    font-family: 'DM Sans', sans-serif; font-size: 0.84rem; line-height: 1.6;
+    padding: 0.7rem 1rem; border-radius: 2px;
+    white-space: pre-wrap;
+  }
   .msg.bot span { background: rgba(255,255,255,0.04); color: #e8edf2; border-left: 2px solid #00f5d4; }
   .msg.user span { background: rgba(0,245,212,0.1); color: #e8edf2; border-right: 2px solid #9b5de5; }
   .msg.typing span { color: #6b7a8d; font-style: italic; }
-  #chat-input-wrap { display: flex; border-top: 1px solid rgba(255,255,255,0.07); }
-  #chat-input { flex: 1; background: rgba(255,255,255,0.03); border: none; outline: none; color: #e8edf2; font-family: 'DM Sans', sans-serif; font-size: 0.84rem; padding: 0.9rem 1.1rem; }
+
+  #chat-input-wrap {
+    display: flex; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  #chat-input {
+    flex: 1; background: rgba(255,255,255,0.03); border: none; outline: none;
+    color: #e8edf2; font-family: 'DM Sans', sans-serif; font-size: 0.84rem;
+    padding: 0.9rem 1.1rem;
+  }
   #chat-input::placeholder { color: #3d4a57; }
-  #chat-send { background: #00f5d4; border: none; color: #080c10; font-weight: 700; font-size: 1rem; padding: 0 1.2rem; cursor: pointer; transition: background 0.2s; }
+  #chat-send {
+    background: #00f5d4; border: none; color: #080c10;
+    font-weight: 700; font-size: 1rem;
+    padding: 0 1.2rem; cursor: pointer; transition: background 0.2s;
+  }
   #chat-send:hover { background: #00d4b8; }
-  @media(max-width: 480px) { #chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; } #chat-btn { right: 1rem; bottom: 1rem; } }
+
+  @media(max-width: 480px) {
+    #chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
+    #chat-btn { right: 1rem; bottom: 1rem; }
+  }
 </style>
 
 <script>
   const chatHistory = [];
+
   function toggleChat() {
     const win = document.getElementById('chat-window');
     win.classList.toggle('open');
-    if (win.classList.contains('open')) document.getElementById('chat-input').focus();
+    if (win.classList.contains('open')) {
+      document.getElementById('chat-input').focus();
+    }
   }
+
   function addMessage(text, role) {
     const msgs = document.getElementById('chat-messages');
     const div = document.createElement('div');
@@ -494,28 +554,36 @@
     msgs.scrollTop = msgs.scrollHeight;
     return div;
   }
+
   async function sendMessage() {
     const input = document.getElementById('chat-input');
     const text = input.value.trim();
     if (!text) return;
+
     input.value = '';
     addMessage(text, 'user');
     chatHistory.push({ role: 'user', content: text });
+
+    // 打字指示器
     const typing = addMessage('分析中...', 'bot typing');
+
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: chatHistory })
       });
+
       const data = await res.json();
       typing.remove();
-      const reply = data.response || '战术错误，请重试。';
+
+      const reply = data.response || '战术错误。请重试。';
       addMessage(reply, 'bot');
       chatHistory.push({ role: 'assistant', content: reply });
+
     } catch (err) {
       typing.remove();
-      addMessage('连接中断，请重试或联系 contact@rainbowmatrix.ai', 'bot');
+      addMessage('连接丢失。请重试或联系 contact@rainbowmatrix.ai', 'bot');
     }
   }
 </script>
