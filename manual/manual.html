@@ -454,6 +454,75 @@
   .progress-bar { display: flex; gap: 3px; margin-top: 2rem; }
   .pb-seg { height: 3px; flex: 1; border-radius: 1px; }
 
+  /* ── MANUAL FIGURES ── */
+  .manual-figure {
+    margin: 2rem 0 2.5rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .manual-figure::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, var(--cyan), transparent 60%);
+    opacity: 0.4;
+  }
+  .manual-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 1px;
+  }
+  .manual-figure figcaption {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.3rem 0.2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    line-height: 1.5;
+  }
+  .manual-figure figcaption::before {
+    content: '◆';
+    color: var(--cyan);
+    font-size: 0.5rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .manual-figure figcaption .fig-id {
+    color: var(--cyan);
+    font-weight: 700;
+    margin-right: 0.4rem;
+    letter-spacing: 0.12em;
+  }
+  /* Banner figures (small decorative, narrow height) */
+  .manual-figure.figure-banner {
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(0,245,212,0.15);
+    border-bottom: 1px solid rgba(0,245,212,0.15);
+    padding: 0.9rem 0;
+    margin: 1.5rem 0;
+  }
+  .manual-figure.figure-banner::before { display: none; }
+  .manual-figure.figure-banner figcaption {
+    border-top: none;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  /* Compact figures (small UI screenshots) */
+  .manual-figure.figure-compact {
+    max-width: 480px;
+    margin-left: 0;
+  }
+
   /* ── FOOTER (NEW: multi-column with lang switcher) ── */
   .manual-footer {
     background: var(--bg);
@@ -667,6 +736,11 @@
         <p>While ordinary trading bots react to the market, <strong>Rainbow Matrix AI anticipates it.</strong> While retail traders just see a screen, you see five temporal dimensions fused into a single probability signal.</p>
       </div>
 
+      <figure class="manual-figure">
+        <img src="images/ch01-fig02.png" alt="Anticipation vs Reaction — The institutional X-ray vision paradigm" loading="lazy">
+        <figcaption><span class="fig-id">FIG.01.02</span> Anticipation vs Reaction // The institutional X-ray vision paradigm</figcaption>
+      </figure>
+
       <div class="section-heading">1.1 Why We Are Not a "Trading Robot"</div>
       <p>Generic bots operate on fixed parameters, hardcoded for specific market conditions. When the volatility regime shifts — or when a "Black Swan" event strikes — the bot, unable to structurally adapt, often wipes out the user's account in a matter of hours.</p>
       <p>Rainbow Matrix AI was forged from years of research and reverse-engineering institutional behavior. We didn't build a bot to trade for you; <strong>we built an analytical exoskeleton for your brain.</strong></p>
@@ -676,6 +750,11 @@
         <li><strong>Result:</strong> The human retains absolute control. You are no longer the prey. You are the predator.</li>
       </ul>
 
+      <figure class="manual-figure">
+        <img src="images/ch01-fig01.png" alt="The Trading Robot Trap — Why Rainbow Matrix is not a bot" loading="lazy">
+        <figcaption><span class="fig-id">FIG.01.01</span> The Trading Robot Trap // Rigid bots vs adaptive analytical exoskeleton</figcaption>
+      </figure>
+
       <div class="section-heading">1.2 The Mathematical Basis: Fibonacci, Log-Normal & Quantum HFT</div>
       <p>Rainbow Matrix AI is not an ordinary indicator — it is a quantitative calculation engine built on three fundamental mathematical pillars:</p>
       <ul class="bullet-list">
@@ -683,6 +762,11 @@
         <li><strong>Log-Normal Distribution:</strong> Unlike conventional Bollinger Bands (linear distribution), exhaustion zones are calculated using natural logarithms — capturing the geometric and asymmetric reality of price movements.</li>
         <li><strong>Quantum HFT Volatility (GK + EWMA):</strong> Fuses Garman-Klass (capturing intra-candle violence of wicks and stop-hunts) with RiskMetrics EWMA (J.P. Morgan's standard for volatility clustering). The cloud compresses during liquidity squeezes and blasts open during genuine breakouts.</li>
       </ul>
+
+      <figure class="manual-figure">
+        <img src="images/ch01-fig03.png" alt="Three mathematical pillars: Fibonacci sequence, Log-Normal distribution, Quantum HFT volatility" loading="lazy">
+        <figcaption><span class="fig-id">FIG.01.03</span> The Three Mathematical Pillars // Fibonacci · Log-Normal · Quantum HFT</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -698,6 +782,11 @@
         <div class="callout-title">✅ TradingView Plan Compatibility</div>
         <p>The indicator operates seamlessly across <strong>all TradingView tiers: FREE, Basic, Essential, Plus, and Premium.</strong> By consolidating all market intelligence into a single, high-density script, you eliminate the need for multiple simultaneous indicators.</p>
       </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch02-fig01.png" alt="TradingView plan tiers compatibility matrix" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.01</span> TradingView Plan Compatibility Matrix // FREE through Premium</figcaption>
+      </figure>
 
       <div class="section-heading">2.2 Step-by-Step Installation</div>
       <div class="step-list">
@@ -720,11 +809,26 @@
         <li><strong>Resolution:</strong> Minimum 1920×1080 for desktop trading to fully leverage all visual elements of the tactical HUD.</li>
       </ul>
 
+      <figure class="manual-figure">
+        <img src="images/ch02-fig02.png" alt="Recommended workspace setup with dark theme and HUD layout" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.02</span> Recommended Workspace // Adaptive layout across screen sizes</figcaption>
+      </figure>
+
       <div class="section-heading">2.4 Candlesticks vs Heikin Ashi — The Novice Trader's Trap</div>
       <p>Traditional candlesticks show the raw reality of the market. Even in a clear uptrend, the alternating green and red candles generate a sense of permanent chaos for the novice trader — anxiety spikes, and emotional impulses hijack rational decision-making.</p>
 
+      <figure class="manual-figure">
+        <img src="images/ch02-fig03.png" alt="Traditional candlestick chaos — alternating colors in clear uptrend" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.03</span> Traditional Candlestick Chaos // Alternating green/red triggers premature exits</figcaption>
+      </figure>
+
       <div class="subsection-heading">2.4.1 The Alternative: Heikin Ashi</div>
       <p>Heikin Ashi calculates an average of the current and previous candles, visually smoothing price action. The result: long streaks of the same color even in volatile markets — uptrends as continuous green blocks, downtrends as solid red blocks.</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch02-fig04.png" alt="Heikin Ashi smoothed price action — continuous color blocks" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.04</span> Heikin Ashi Smoothing // Continuous color blocks reveal true trend</figcaption>
+      </figure>
 
       <div class="callout purple">
         <div class="callout-title">⚡ The Tactical Synergy</div>
@@ -733,6 +837,11 @@
         <strong>Rainbow Matrix AI</strong> → Real-time Probability Score.<br><br>
         Three complementary confirmations. One high-probability decision.</p>
       </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch02-fig05.png" alt="Three-layer tactical synergy: Heikin Ashi + Candlesticks + Rainbow Matrix" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.05</span> Triple-Confirmation Stack // Heikin Ashi · Candlesticks · Rainbow Matrix</figcaption>
+      </figure>
 
       <div class="section-heading" id="ch2-5">2.5 TradingView Free Plan — Engine Compatibility</div>
       <p>The Multi-Timeframe Probability Engine is fully compatible with TradingView's <strong>FREE plan</strong>. One small adjustment in the indicator settings unlocks <strong>99% of the institutional intelligence</strong> without requiring any TradingView subscription upgrade.</p>
@@ -807,6 +916,11 @@
     </div>
     <div class="prose">
 
+      <figure class="manual-figure figure-banner">
+        <img src="images/ch03-fig01.png" alt="Chapter 03 — Configuration Menu module banner" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.01</span> Configuration Menu // 15 algorithmic parameters across 8 architectural modules</figcaption>
+      </figure>
+
       <div class="section-heading">3.1 Volatility Engine — The Quantum HFT Upgrade</div>
       <table class="data-table">
         <tr><th>Mode</th><th>Description</th><th>Best For</th></tr>
@@ -817,8 +931,87 @@
       <div class="section-heading">3.2 AI Score Engine — The Brain Behind the Global Score</div>
       <p>The AI Score Engine is the core algorithm calculating the <em>Global Probability Score</em> — the precise metric between 0% and 100% that quantifies directional pressure across all 5 timeframes simultaneously.</p>
 
+      <div class="section-heading">3.10 Show Vacuum Trail — The Institutional Liquidity Void</div>
+      <p>There is a kinetic phenomenon that dictates algorithmic market behavior with absolute structural consistency — a principle the retail masses have never been trained to audit. In physics, when a high-velocity mass rapidly displaces, the resulting vacuum creates a gravitational void that violently pulls the surrounding environment back to stabilize it. In algorithmic financial markets, the exact same principle applies to kinetic price action.</p>
+      <p>The <em>Vacuum Trail</em> renders this kinetic phenomenon entirely visible — a system of converging geometric vectors deployed directly on the oscillator console (not on the primary price chart). It engages the exact millisecond the Global Score breaches the upper or lower boundaries of the dynamic channel.</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig02.png" alt="Vacuum Trail — converging geometric vectors mapping mean reversion trajectory" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.02</span> Vacuum Trail Engine // Active vectors + Ghost Lines mapping institutional liquidity void</figcaption>
+      </figure>
+
+      <ul class="bullet-list">
+        <li><strong>Score severely above the channel:</strong> Buy-side flow is exhausted. Institutional Liquidity Void created above. Gravitational algorithmic force pulls the score back down. <em>Red Trail</em> maps the anticipated trajectory.</li>
+        <li><strong>Score severely below the channel:</strong> Sell-side flow is exhausted. Mathematical vacuum below kinetic price. Algorithmic mean reversion vector projected upward. <em>Green Trail</em> maps the anticipated trajectory.</li>
+        <li><strong>Centerline (Dashed White):</strong> Dynamic Channel Equilibrium Point. Primary take-profit target for the mean reversion sequence — the first coordinate of severe deceleration when the score snaps back from an extreme anomaly.</li>
+        <li><strong>Ghost Lines (Dotted, extending right):</strong> Historical Vacuum Trails projected horizontally as quantitative reference nodes — maps exact thresholds where the score suffered previous kinetic exhaustion.</li>
+      </ul>
+
+      <div class="callout purple">
+        <div class="callout-title">⚡ Why the Vacuum Trail Is Lethal</div>
+        <p>It provides not just a directional bias, but the <strong>exact algorithmic target coordinate</strong> for the reversion. The retail trader sees the score is extreme and blindly counter-trades. The Elite operator sees the precise mean-reversion trajectory <strong>and</strong> the high-probability deceleration zone.</p>
+      </div>
+
+      <div class="section-heading">Tactical Setup — Apex Strike Protocol</div>
+      <p>Beyond raw score telemetry, the Rainbow Matrix AI's Tactical Setup architecture compresses three lethal sub-engines into a single execution layer: the <em>Asymmetrical R:R Filter</em>, <em>JSON Webhook Automation</em>, and the <em>Kinetic Direction Change</em> coordinate marker.</p>
+
+      <div class="subsection-heading">The Asymmetrical Risk-to-Reward (R:R) Filter</div>
+      <p>This is one of the most lethal and sophisticated engines within the Tactical Setup architecture — entirely invisible to anyone merely looking at lines on a chart. Before rendering the final execution coordinates, the system automatically calculates the structural R:R ratio of the setup and mathematically audits it against the operator's minimum threshold.</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig03.png" alt="Asymmetrical Risk-to-Reward Filter — auto-projection of synthetic targets" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.03</span> R:R Filter // Default Minimum Threshold = 2.0 — auto-overrides shallow barriers</figcaption>
+      </figure>
+
+      <ul class="bullet-list">
+        <li><strong>Default Minimum R:R Threshold = 2.0:</strong> For every 1 unit of kinetic risk, the target must mathematically extract a minimum of 2 reward units.</li>
+        <li><strong>Structural R:R &lt; 2.0 (Barrier Too Close):</strong> Engine algorithmically bypasses the shallow barrier. Computes Take Profit = Entry + (Risk × Min R:R Threshold). Projects extraction to the mathematically compensatory level.</li>
+        <li><strong>Structural R:R ≥ 2.0:</strong> Engine respects the natural institutional barrier — high-probability mean reversion target preserved.</li>
+      </ul>
+
+      <div class="subsection-heading">Algorithmic Execution — JSON Webhook Telemetry</div>
+      <p>For quantitative operators deploying automated execution bots, the Tactical Setup engine integrates via dynamic JSON Webhooks. When armed in the configuration panel — <strong>🤖 INSTITUTIONAL AUTOMATION → Enable Order Automation (JSON)</strong> — the exact millisecond an Apex Strike Protocol is mathematically validated, the engine transmits a payload containing the absolute execution coordinates:</p>
+
+      <div class="code-block">{
+  "bot_id": "BOT_VIP_01",
+  "signal": "SNIPER_LONG",
+  "asset": "BTCUSDT",
+  "entry_price": 79250.50,
+  "stop_loss": 78100.00,
+  "take_profit": 81550.00
+}</div>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig04.png" alt="JSON webhook payload structure with entry/SL/TP coordinates" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.04</span> JSON Webhook Telemetry // Apex Strike payload — entry · stop_loss · take_profit</figcaption>
+      </figure>
+
+      <div class="subsection-heading">Show Kinetic Direction Change (🔀)</div>
+      <p>Flags the exact coordinate where kinetic dominance structurally shifts from Buyers to Sellers (or vice versa). This is not a momentum signal — it is the mathematical inversion of the dominant kinetic vector at the resolution of the active fractal.</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig08.png" alt="Kinetic Direction Change marker on oscillator console" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.05</span> Kinetic Direction Change // 🔀 marker flags structural shift in dominant vector</figcaption>
+      </figure>
+
       <div class="section-heading">3.12 Label Filters — Algorithmic Execution Telemetry</div>
       <p>The Signal Hierarchy — from maximum lethality to minor contextual alerts:</p>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch03-fig05.png" alt="Label Filter — Chart Labels configuration on price chart" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.06</span> Chart Labels // Telemetry rendered on price feed</figcaption>
+      </figure>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch03-fig06.png" alt="Label Filter — Oscillator Labels configuration in oscillator pane" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.07</span> Oscillator Labels // Telemetry rendered on oscillator pane</figcaption>
+      </figure>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch03-fig07.png" alt="Label Filter — Strict configuration variant (Sniper-only)" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.08</span> Strict Variant // Sniper-only filter for minimal cognitive load</figcaption>
+      </figure>
+
       <div class="signal-grid">
         <div class="signal-card">
           <div class="signal-icon">🎯</div>
@@ -916,6 +1109,11 @@
         <tr><td>🌩️ Absolute Macro Confluence</td><td style="color:var(--cyan)">✅ ON</td><td><strong>NEVER DISABLE.</strong> Rarest, trend-defining events.</td></tr>
       </table>
 
+      <figure class="manual-figure">
+        <img src="images/ch03-fig09.png" alt="Alert Filters telemetry panel — Structural Climax and Kinetic Anomaly alerts" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.09</span> Alert Telemetry Panel // 🔥 Structural Climax + 🌊 Kinetic Anomaly — multi-fractal synchronization</figcaption>
+      </figure>
+
       <div class="section-heading">3.14 Institutional Gravity Engine (MGI)</div>
       <table class="data-table">
         <tr><th>Parameter</th><th>Default</th><th>Range</th><th>Effect</th></tr>
@@ -937,6 +1135,11 @@
         <div class="callout-title">⚠️ Absolute Directive</div>
         <p><strong>TF1 &lt; TF2 &lt; TF3 &lt; TF4 &lt; TF5</strong> — Ascending chronological hierarchy is mathematically mandatory. Injecting timeframes out of order will structurally break the synchronization engine and generate critically corrupted telemetry.</p>
       </div>
+
+      <figure class="manual-figure figure-banner">
+        <img src="images/ch03-fig10.png" alt="MTF Synchronization banner — 5 fractals weights summary" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.10</span> MTF Sync Telemetry // TF1:15% · TF2:20% · TF3:25% · TF4:25% · TF5:15%</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -960,11 +1163,21 @@
         </tr>
       </table>
 
+      <figure class="manual-figure">
+        <img src="images/ch04-fig01.png" alt="223-minute fractal — telemetry beacon synchronization with Global Score" loading="lazy">
+        <figcaption><span class="fig-id">FIG.04.01</span> Telemetry Beacon 📡 // Active when resolution synchronizes with Synthetic Global Score</figcaption>
+      </figure>
+
       <div class="callout">
         <div class="callout-title">⚙️ Configuration Protocol: Deploying the 223m Fractal</div>
         <p>Target the active temporal resolution menu (e.g., "1H") on the primary TradingView toolbar → Directly type <strong>223</strong> into the numerical input field → Select <strong>Minutes</strong> from the dropdown → Press Enter.<br><br>
         <em>Result: Your terminal is now algorithmically synchronized to front-run the institutional clock.</em></p>
       </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch04-fig02.png" alt="223m calibration protocol — synthetic timeframe resolution input" loading="lazy">
+        <figcaption><span class="fig-id">FIG.04.02</span> 223m Calibration // Synthetic Global Score resolution input on TradingView toolbar</figcaption>
+      </figure>
 
       <p>By anchoring your terminal to the 223-minute resolution, your kinetic candle closes exactly <strong>10 minutes before</strong> the massive Fibonacci block of HFT algorithms executes on the 233-minute threshold. You cease reacting to Smart Money — you anticipate them.</p>
     </div>
@@ -999,11 +1212,22 @@
       </div>
 
       <div class="section-heading">5.4 Multi-Lingual NLP Engine</div>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch05-fig01.png" alt="Native multi-language dropdown — operational language selector" loading="lazy">
+        <figcaption><span class="fig-id">FIG.05.01</span> Language Dropdown // Native operational language selector — zero-latency switch</figcaption>
+      </figure>
+
       <table class="data-table">
         <tr><th>🇺🇸 English</th><th>🇧🇷 Portuguese</th><th>🇪🇸 Español</th><th>🇷🇺 Русский</th><th>🇨🇳 中文</th></tr>
         <tr><td>Native</td><td>Native</td><td>Native</td><td>Native</td><td>Native</td></tr>
       </table>
       <p>Linguistic calibration executes at absolute zero-latency, requiring no terminal reboot or data-feed refresh.</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch05-fig02.png" alt="NLP Tactical Engine — first algorithmic processing layer integrated into TradingView terminal" loading="lazy">
+        <figcaption><span class="fig-id">FIG.05.02</span> NLP Tactical Engine // First algorithmic NLP layer natively integrated into a TradingView terminal</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -1032,6 +1256,11 @@
         ⚠️ <strong>Absolute Directive:</strong> Never blindly fade the kinetic vector at this threshold without absolute mathematical authorization from the Synthetic Global Score.</p>
       </div>
 
+      <figure class="manual-figure">
+        <img src="images/ch06-fig01.png" alt="Aqua and Purple Black Swan zones — extreme anomaly territory beyond 3.85σ" loading="lazy">
+        <figcaption><span class="fig-id">FIG.06.01</span> Black Swan Phosphorescence // 🩵 Aqua (lower &lt;-3.85σ) · 💜 Purple (upper &gt;+3.85σ) — territory of imminent reversal</figcaption>
+      </figure>
+
       <div class="section-heading">6.3 The Macro VWAP Architecture</div>
       <ul class="bullet-list">
         <li><strong>Dynamic Macro VWAP:</strong> Visually intensifies and "heats up" as kinetic price approaches. Spatial proximity exponentially magnifies the optical flare.</li>
@@ -1050,6 +1279,11 @@
       <p class="chapter-desc">Volume Profile walls, gravitational physics of Smart Money, Order Blocks, and Fair Value Gaps.</p>
     </div>
     <div class="prose">
+      <figure class="manual-figure">
+        <img src="images/ch07-fig01.png" alt="Institutional Radar — multi-fractal volumetric architecture overlay" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.01</span> Institutional Radar // Real-time satellite view of Smart Money positioning</figcaption>
+      </figure>
+
       <div class="section-heading">7.1 The Anatomy of Institutional Walls</div>
       <table class="data-table">
         <tr><th>Level</th><th>Description</th><th>Behavior</th></tr>
@@ -1058,6 +1292,11 @@
         <tr><td><strong>VAL</strong> — Value Area Low</td><td>Lower boundary of the 70% Value Area.</td><td>Price is systematically rejected and forced back inside the accepted volume matrix.</td></tr>
         <tr><td><strong>Historical VWAP D/W/M</strong></td><td>Long-term volume-weighted anchorages.</td><td>Gravitational density strictly proportional to temporal length (Monthly > Weekly > Daily).</td></tr>
       </table>
+
+      <figure class="manual-figure">
+        <img src="images/ch07-fig02.png" alt="MGI tactical map — POC/VAH/VAL gravitational walls projected on price chart" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.02</span> MGI Tactical Map // POC center of gravity + VAH/VAL boundaries — institutional positioning revealed</figcaption>
+      </figure>
 
       <div class="section-heading">7.3 The Dual Physics Polarities of the MGI</div>
       <div class="tier-grid" style="grid-template-columns:1fr 1fr">
@@ -1083,6 +1322,47 @@
       <div class="callout">
         <div class="callout-title">🎯 The Convergence Protocol — SNIPER Alert</div>
         <p>When the Synthetic Global Score breaches an absolute extreme (<strong>&gt;90% systemic exhaustion</strong>) at the exact millisecond kinetic price physically mitigates a validated Order Block, the engine dynamically fuses these two data streams and deploys a <strong>SNIPER telemetry alert</strong> — representing the absolute maximum quantitative convergence achievable within the system.</p>
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch07-fig03.png" alt="SMC architecture — Order Blocks and Fair Value Gaps with tactical warnings" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.03</span> SMC Convergence Map // Order Blocks (validated) + Fair Value Gaps + Convergence rules</figcaption>
+      </figure>
+
+      <div class="section-heading">7.5 Derivatives Telemetry — Open Interest &amp; Funding Rate</div>
+      <p>There is a hidden dimension to the cryptocurrency algorithmic battlespace that the vast majority of retail operators completely ignore — and that institutional whales obsessively monitor. It is the <em>derivatives telemetry layer</em>: Perpetual Futures Contracts, Open Interest (OI), and the Funding Rate (FR). This quantitative data reveals not just where kinetic price is currently located, but exactly <strong>where massive capital is heavily leveraged</strong>, and how statistically vulnerable that capital is to algorithmic liquidity sweeps.</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch07-fig04.png" alt="Perpetual Futures matrix — OI and Funding Rate institutional intelligence layer" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.04</span> Perpetual Futures Matrix // OI footprint + FR cost-of-leverage — Tier-1 exchanges only (Binance · Bybit · OKX)</figcaption>
+      </figure>
+
+      <div class="subsection-heading">Open Interest (OI) — The Kinetic Capital Footprint</div>
+      <p>Open Interest measures the total volume of active, unsettled derivative contracts natively open in the market. It is the absolute mathematical footprint of leveraged capital.</p>
+      <ul class="bullet-list">
+        <li><strong>OI Rising + Price Rising:</strong> Aggressive capital entering Long positions. Bullish momentum backed by genuine kinetic volume. <em>Structurally healthy uptrend.</em></li>
+        <li><strong>OI Falling + Price Rising:</strong> Short positions being forcibly closed (short squeeze). The move lacks fresh capital — high probability of imminent exhaustion.</li>
+        <li><strong>OI Rising + Price Falling:</strong> Aggressive capital entering Short positions. Bearish momentum confirmed.</li>
+        <li><strong>OI Falling + Price Falling:</strong> Long positions being liquidated. Move lacks fresh sellers — bearish momentum questionable.</li>
+      </ul>
+
+      <div class="subsection-heading">Funding Rate (FR) — The Asymmetrical Cost of Leverage</div>
+      <p>The Funding Rate is the periodic payment exchanged between Long and Short perpetual positions to keep the contract price anchored to the spot index. It is the asymmetrical cost of holding leverage — and reveals the dominant directional bias of leveraged capital.</p>
+      <ul class="bullet-list">
+        <li><strong>FR Extremely Positive:</strong> Longs are paying Shorts heavily. Excessive long bias — leveraged retail trapped on the wrong side. High probability of cascade liquidation downward.</li>
+        <li><strong>FR Extremely Negative:</strong> Shorts are paying Longs heavily. Excessive short bias — perfect ignition for a short-squeeze rally.</li>
+      </ul>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠️ Critical Engagement Protocol</div>
+        <p><strong>✅ ENGAGE when:</strong> executing Cryptocurrency Perpetual Futures on Tier-1 exchanges (Binance, Bybit, OKX). Active chart ticker must be a perpetual contract (e.g., <code>BTCUSDT.P</code>, <code>ETHUSDT.P</code>).<br><br>
+        <strong>❌ DO NOT ENGAGE when:</strong> operating Spot Markets, Forex, Traditional Equities, Indices, or Commodities. The active ticker must possess native Open Interest telemetry.<br><br>
+        <em>If mistakenly enabled on an unsupported asset, the </em><code>ignore_invalid_symbol=true</code><em> engine protocol automatically suppresses the error, allowing the core indicator to function uninterrupted.</em></p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">❌ Never Utilize Derivatives as an Isolated Trigger</div>
+        <p>OI and FR are <strong>risk-exposure multipliers</strong> — they are not isolated buy/sell triggers. Always confirm directional bias via the Synthetic Global Score and Tactical Setup architecture first. Derivatives telemetry amplifies confluence; it does not replace it.</p>
       </div>
     </div>
   </section>
@@ -1142,6 +1422,11 @@
         <div class="formula-eq">Position Size = Authorized Risk ($) ÷ Stop-Loss Distance ($)</div>
         <div class="formula-label">// Example: $10,000 equity × 1% risk = $100 ÷ $200 SL distance = 0.5 Units</div>
       </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch09-fig01.png" alt="Position sizing calculation example — equity preservation across drawdown scenarios" loading="lazy">
+        <figcaption><span class="fig-id">FIG.09.01</span> Capital Preservation Math // 1% vs 10% risk over 5-drawdown sequence — 5% loss vs 41% loss</figcaption>
+      </figure>
 
       <div class="callout danger">
         <div class="callout-title">⚠️ Absolute Directive</div>
