@@ -4,6 +4,72 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rainbow Matrix AI — Elite Operator's Manual</title>
+
+<!-- ── AUTO-DETECT LANGUAGE (runs first to prevent FOUC) ── -->
+<script>
+(function(){
+  try {
+    var LANGS = { 'pt': 'manual-pt.html', 'es': 'manual-es.html', 'ru': 'manual-ru.html', 'zh': 'manual-cn.html' };
+    var PREF_KEY = 'rm_lang';
+    var SESS_KEY = 'rm_lang_redirected_manual';
+
+    var path = window.location.pathname || '/';
+    var file = (path.split('/').pop() || 'manual.html').toLowerCase();
+    if (!file || file === '/') file = 'manual.html';
+
+    // Manual override via ?lang=xx
+    var qs = window.location.search || '';
+    if (qs.indexOf('lang=') > -1) {
+      var langParam = qs.split('lang=')[1].split('&')[0].toLowerCase();
+      localStorage.setItem(PREF_KEY, langParam);
+      sessionStorage.setItem(SESS_KEY, '1');
+      return;
+    }
+
+    // If user is on a localized page, update preference and stay
+    for (var lang in LANGS) {
+      if (file === LANGS[lang]) {
+        localStorage.setItem(PREF_KEY, lang);
+        return;
+      }
+    }
+
+    // Below: only on manual.html (default EN entry point)
+    if (file !== 'manual.html') return;
+
+    // Prevent redirect loop within session
+    if (sessionStorage.getItem(SESS_KEY)) return;
+    sessionStorage.setItem(SESS_KEY, '1');
+
+    var pref = localStorage.getItem(PREF_KEY);
+
+    if (pref) {
+      // Returning visitor with saved pref — redirect if non-EN
+      if (pref !== 'en' && LANGS[pref]) {
+        window.location.replace(LANGS[pref]);
+      }
+      return;
+    }
+
+    // First-time visitor — detect browser language
+    var bl = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    var detected = 'en';
+    if (bl.indexOf('pt') === 0) detected = 'pt';
+    else if (bl.indexOf('es') === 0) detected = 'es';
+    else if (bl.indexOf('ru') === 0) detected = 'ru';
+    else if (bl.indexOf('zh') === 0) detected = 'zh';
+
+    localStorage.setItem(PREF_KEY, detected);
+
+    if (detected !== 'en' && LANGS[detected]) {
+      window.location.replace(LANGS[detected]);
+    }
+  } catch(e) {
+    // localStorage unavailable — fail silent, stay on EN
+  }
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/manual/manual.html">
@@ -388,16 +454,82 @@
   .progress-bar { display: flex; gap: 3px; margin-top: 2rem; }
   .pb-seg { height: 3px; flex: 1; border-radius: 1px; }
 
-  /* ── FOOTER ── */
+  /* ── FOOTER (NEW: multi-column with lang switcher) ── */
   .manual-footer {
-    padding: 2.5rem 5rem;
     background: var(--bg);
+    padding: 4rem 5rem 2rem;
     border-top: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 1rem;
   }
-  .footer-logo { font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); }
-  .footer-copy { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.06em; }
+  .footer-content {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+    letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 0.8rem;
+  }
+  .footer-tagline {
+    font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim);
+    letter-spacing: 0.05em; line-height: 1.7; max-width: 280px;
+  }
+  .footer-contact-block { margin-top: 1.5rem; }
+  .footer-contact-label {
+    font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-dim);
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .footer-contact-block a {
+    font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan);
+    text-decoration: none; font-weight: 700; transition: color 0.2s;
+  }
+  .footer-contact-block a:hover { color: #fff; }
+  .footer-col-title {
+    font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan);
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .footer-col-title::before { content: ''; width: 16px; height: 1px; background: var(--cyan); }
+  .footer-col-links { display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col-links a {
+    font-family: var(--font-body); font-size: 0.82rem; color: var(--text-muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-col-links a:hover { color: var(--cyan); }
+  .footer-col-links a.cta-link {
+    color: var(--cyan); font-weight: 700;
+  }
+  .footer-col-links a.cta-link:hover { color: #fff; }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto; padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-lang { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .footer-lang-label {
+    font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .footer-lang-links {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.72rem;
+  }
+  .footer-lang-links a {
+    color: var(--text-muted); text-decoration: none; transition: all 0.2s;
+    padding: 0.25rem 0.5rem; border: 1px solid transparent; border-radius: 2px;
+  }
+  .footer-lang-links a:hover { color: var(--cyan); border-color: rgba(0,245,212,0.2); }
+  .footer-lang-links a.active {
+    color: var(--cyan); font-weight: 700;
+    border-color: rgba(0,245,212,0.3); background: rgba(0,245,212,0.05);
+  }
+  .footer-lang-sep { color: var(--text-dim); }
+  .footer-copy {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim); letter-spacing: 0.08em;
+  }
 
   /* ── RESPONSIVE ── */
   @media(max-width: 900px) {
@@ -405,7 +537,10 @@
     .sidebar { transform: translateX(-280px); width: 280px; }
     .sidebar.open { transform: translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.6); }
     .main { margin-left: 0; }
-    .chapter, .manual-hero, .manual-footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .chapter, .manual-hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .manual-footer { padding: 3rem 1.5rem 1.5rem; }
+    .footer-content { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
     .tier-grid { grid-template-columns: 1fr; }
     .menu-btn { display: block; }
     .topnav-tag { display: none; }
@@ -1092,11 +1227,66 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- FOOTER (NEW: multi-column with lang switcher) -->
   <footer class="manual-footer">
-    <div class="footer-logo">🌈 RAINBOW MATRIX AI</div>
-    <div class="footer-copy">© Rainbow Matrix AI · Elite Operator's Manual v4 · Confidential — Elite Members Only</div>
-    <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--bg);background:var(--cyan);padding:0.55rem 1.2rem;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow='0 0 24px rgba(0,245,212,0.5)'" onmouseout="this.style.boxShadow='none'">Join Elite →</a>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="footer-logo">🌈 RAINBOW MATRIX</div>
+        <div class="footer-tagline">// Elite Operator's Manual v4 — Decision-Support Engine &amp; Institutional Radar. Confidential document for verified Elite members.</div>
+        <div class="footer-contact-block">
+          <div class="footer-contact-label">// Elite Operator Support</div>
+          <a href="mailto:contact@rainbowmatrix.ai">contact@rainbowmatrix.ai</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Product</div>
+        <div class="footer-col-links">
+          <a href="../index.html">Main Site</a>
+          <a href="../compare/compare.html">Free vs Elite</a>
+          <a href="../index.html#pricing">Pricing</a>
+          <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-link">Start Free Trial →</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Manual</div>
+        <div class="footer-col-links">
+          <a href="#ch2">Installation</a>
+          <a href="#ch4">223m Protocol</a>
+          <a href="#ch9">Capital Preservation</a>
+          <a href="#ch8">FAQ</a>
+          <a href="#ch11">Legal &amp; Risk</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Free Tools</div>
+        <div class="footer-col-links">
+          <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" rel="noopener">🌈 Cloud Institutional Bands</a>
+          <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" rel="noopener">🧱 MGI Walls</a>
+          <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" rel="noopener">📈 MTF Kinetic Oscillator</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-lang">
+        <span class="footer-lang-label">// Language</span>
+        <div class="footer-lang-links">
+          <a href="manual.html?lang=en" class="active">EN</a>
+          <span class="footer-lang-sep">·</span>
+          <a href="manual-pt.html">PT</a>
+          <span class="footer-lang-sep">·</span>
+          <a href="manual-es.html">ES</a>
+          <span class="footer-lang-sep">·</span>
+          <a href="manual-ru.html">RU</a>
+          <span class="footer-lang-sep">·</span>
+          <a href="manual-cn.html">中文</a>
+        </div>
+      </div>
+      <div class="footer-copy">© 2026 Rainbow Matrix · Elite Operator's Manual v4 · Confidential — Elite Members Only</div>
+    </div>
   </footer>
 
 </main>
