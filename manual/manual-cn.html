@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainbow Matrix AI — 精英操作员手册</title>
+
+<script>
+(function(){
+  try {
+    var LANGS = { 'pt': 'manual-pt.html', 'es': 'manual-es.html', 'ru': 'manual-ru.html', 'zh': 'manual-cn.html' };
+    var PREF_KEY = 'rm_lang';
+    var SESS_KEY = 'rm_lang_redirected_manual';
+
+    var path = window.location.pathname || '/';
+    var file = (path.split('/').pop() || 'manual.html').toLowerCase();
+    if (!file || file === '/') file = 'manual.html';
+
+    // Manual override via ?lang=xx
+    var qs = window.location.search || '';
+    if (qs.indexOf('lang=') > -1) {
+      var langParam = qs.split('lang=')[1].split('&')[0].toLowerCase();
+      localStorage.setItem(PREF_KEY, langParam);
+      sessionStorage.setItem(SESS_KEY, '1');
+      return;
+    }
+
+    // If user is on a localized page, update preference and stay
+    for (var lang in LANGS) {
+      if (file === LANGS[lang]) {
+        localStorage.setItem(PREF_KEY, lang);
+        return;
+      }
+    }
+
+    // Below: only on manual.html (default EN entry point)
+    if (file !== 'manual.html') return;
+
+    // Prevent redirect loop within session
+    if (sessionStorage.getItem(SESS_KEY)) return;
+    sessionStorage.setItem(SESS_KEY, '1');
+
+    var pref = localStorage.getItem(PREF_KEY);
+
+    if (pref) {
+      // Returning visitor with saved pref — redirect if non-EN
+      if (pref !== 'en' && LANGS[pref]) {
+        window.location.replace(LANGS[pref]);
+      }
+      return;
+    }
+
+    // First-time visitor — detect browser language
+    var bl = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    var detected = 'en';
+    if (bl.indexOf('pt') === 0) detected = 'pt';
+    else if (bl.indexOf('es') === 0) detected = 'es';
+    else if (bl.indexOf('ru') === 0) detected = 'ru';
+    else if (bl.indexOf('zh') === 0) detected = 'zh';
+
+    localStorage.setItem(PREF_KEY, detected);
+
+    if (detected !== 'en' && LANGS[detected]) {
+      window.location.replace(LANGS[detected]);
+    }
+  } catch(e) {
+    // localStorage unavailable — fail silent, stay on EN
+  }
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/manual/manual.html">
+<link rel="alternate" hreflang="pt" href="https://rainbowmatrix.ai/manual/manual-pt.html">
+<link rel="alternate" hreflang="es" href="https://rainbowmatrix.ai/manual/manual-es.html">
+<link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/manual/manual-ru.html">
+<link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/manual/manual-cn.html">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../favicon.ico">  
+<style>
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.07);
+    --border-glow: rgba(0,245,212,0.3);
+    --cyan: #00f5d4;
+    --cyan-dim: rgba(0,245,212,0.15);
+    --purple: #9b5de5;
+    --purple-dim: rgba(155,93,229,0.15);
+    --orange: #ff6b35;
+    --yellow: #f9c74f;
+    --red: #ff4444;
+    --text: #e8edf2;
+    --text-muted: #6b7a8d;
+    --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+    --sidebar-w: 280px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; line-height: 1.7; }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    background: rgba(8,12,16,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav-logo {
+    font-family: var(--font-display); font-size: 0.95rem; font-weight: 800;
+    letter-spacing: 0.12em; color: var(--cyan); text-transform: uppercase;
+    text-decoration: none;
+  }
+  .topnav-right { display: flex; align-items: center; gap: 1.5rem; }
+  .topnav-tag {
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em;
+    color: var(--cyan); border: 1px solid rgba(0,245,212,0.3);
+    padding: 0.25rem 0.7rem; text-transform: uppercase;
+  }
+  .topnav-link {
+    font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em;
+    color: var(--text-muted); text-decoration: none; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .topnav-link:hover { color: var(--cyan); }
+  .menu-btn {
+    display: none; background: none; border: none; cursor: pointer;
+    color: var(--text-muted); font-size: 1.2rem; padding: 0.25rem;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed; top: 56px; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto; z-index: 100;
+    padding: 1.5rem 0 2rem; transition: transform 0.3s ease;
+  }
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .sidebar-section-label {
+    font-family: var(--font-mono); font-size: 0.55rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-dim); padding: 0.5rem 1.5rem;
+    margin-top: 1rem;
+  }
+  .sidebar-link {
+    display: flex; align-items: flex-start; gap: 0.6rem;
+    padding: 0.55rem 1.5rem;
+    font-family: var(--font-body); font-size: 0.8rem;
+    color: var(--text-muted); text-decoration: none;
+    transition: all 0.15s; border-left: 2px solid transparent;
+    line-height: 1.4;
+  }
+  .sidebar-link:hover { color: var(--text); background: var(--surface); }
+  .sidebar-link.active {
+    color: var(--cyan); border-left-color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+  .sidebar-link .ch-num {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--text-dim); min-width: 22px; margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .sidebar-link.active .ch-num { color: var(--cyan); opacity: 0.7; }
+  .sidebar-sub { padding-left: 3.5rem; font-size: 0.75rem; }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    padding-top: 56px;
+    min-height: 100vh;
+  }
+
+  /* ── MANUAL HERO ── */
+  .manual-hero {
+    background: var(--bg);
+    padding: 5rem 5rem 4rem; border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .manual-hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,212,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,212,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+  }
+  .manual-hero-glow {
+    position: absolute; top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(155,93,229,0.07) 0%, transparent 70%);
+  }
+  .manual-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em;
+    color: var(--cyan); border: 1px solid rgba(0,245,212,0.25);
+    padding: 0.35rem 0.85rem; margin-bottom: 1.8rem;
+    background: rgba(0,245,212,0.05);
+  }
+  .manual-badge::before {
+    content: ''; width: 5px; height: 5px;
+    background: var(--cyan); border-radius: 50%;
+    box-shadow: 0 0 6px var(--cyan);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .manual-title {
+    font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800; line-height: 1.1; margin-bottom: 1rem;
+  }
+  .manual-title span {
+    background: linear-gradient(135deg, #00f5d4, #9b5de5);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .manual-subtitle {
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 2rem;
+    line-height: 1.8; max-width: 580px;
+  }
+  .manual-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .meta-item { display: flex; align-items: center; gap: 0.5rem; }
+  .meta-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; }
+  .meta-value { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+
+  /* ── CHAPTER CONTENT ── */
+  .chapter {
+    padding: 4rem 5rem; border-bottom: 1px solid var(--border);
+    scroll-margin-top: 72px;
+  }
+  .chapter:nth-child(even) { background: var(--bg2); }
+
+  .chapter-header { margin-bottom: 2.5rem; }
+  .chapter-num {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.2em; color: var(--cyan); margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .chapter-num::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--cyan); opacity: 0.4; }
+  .chapter-title {
+    font-family: var(--font-display); font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 800; line-height: 1.15; margin-bottom: 0.75rem;
+  }
+  .chapter-desc {
+    font-size: 0.9rem; color: var(--text-muted); max-width: 620px; line-height: 1.75;
+  }
+
+  /* ── CONTENT ELEMENTS ── */
+  .prose { max-width: 780px; }
+  .prose p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 1.25rem; }
+  .prose p strong { color: var(--text); font-weight: 600; }
+  .prose p em { color: var(--cyan); font-style: normal; }
+
+  .section-heading {
+    font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
+    color: var(--text); margin: 2.5rem 0 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-heading::before {
+    content: ''; width: 4px; height: 1.1em;
+    background: var(--cyan); flex-shrink: 0;
+  }
+  .subsection-heading {
+    font-family: var(--font-display); font-size: 0.95rem; font-weight: 700;
+    color: var(--cyan); margin: 2rem 0 0.75rem; font-style: italic;
+  }
+
+  /* callout box */
+  .callout {
+    border-left: 3px solid var(--cyan);
+    background: rgba(0,245,212,0.05); padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0; border-radius: 0 2px 2px 0;
+  }
+  .callout.warning {
+    border-left-color: var(--orange); background: rgba(255,107,53,0.05);
+  }
+  .callout.danger {
+    border-left-color: var(--red); background: rgba(255,68,68,0.05);
+  }
+  .callout.purple {
+    border-left-color: var(--purple); background: rgba(155,93,229,0.05);
+  }
+  .callout-title {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .callout .callout-title { color: var(--cyan); }
+  .callout.warning .callout-title { color: var(--orange); }
+  .callout.danger .callout-title { color: var(--red); }
+  .callout.purple .callout-title { color: var(--purple); }
+  .callout p { font-size: 0.87rem; color: var(--text-muted); margin-bottom: 0; line-height: 1.75; }
+  .callout p strong { color: var(--text); }
+
+  /* bullet list */
+  .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin: 1rem 0 1.5rem; }
+  .bullet-list li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;
+  }
+  .bullet-list li::before {
+    content: '→'; color: var(--cyan); flex-shrink: 0; margin-top: 1px;
+    font-family: var(--font-mono); font-size: 0.75rem;
+  }
+  .bullet-list li strong { color: var(--text); }
+
+  /* check/x list */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+  .check-list li { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; }
+  .check-list li.yes::before { content: '✅'; font-size: 0.8rem; flex-shrink: 0; }
+  .check-list li.no::before { content: '❌'; font-size: 0.8rem; flex-shrink: 0; }
+  .check-list li.warn::before { content: '⚠️'; font-size: 0.8rem; flex-shrink: 0; }
+
+  /* step list */
+  .step-list { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; counter-reset: steps; }
+  .step-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border); border-top: none;
+    transition: background 0.2s;
+  }
+  .step-item:first-child { border-top: 1px solid var(--border); }
+  .step-item:hover { background: var(--surface); }
+  .step-num {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    color: var(--cyan); min-width: 24px; margin-top: 2px; flex-shrink: 0;
+  }
+  .step-text { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; }
+  .step-text strong { color: var(--text); }
+
+  /* data table */
+  .data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.83rem; }
+  .data-table th {
+    background: rgba(0,245,212,0.07); color: var(--cyan);
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 0.75rem 1rem; text-align: left;
+    border-bottom: 1px solid rgba(0,245,212,0.2);
+  }
+  .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; line-height: 1.6; }
+  .data-table td strong { color: var(--text); }
+  .data-table tr:hover td { background: var(--surface); }
+
+  /* tier cards */
+  .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 1.5rem 0; }
+  .tier-card {
+    background: var(--bg); padding: 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .tier-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .tier-card:nth-child(1)::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .tier-card:nth-child(2)::before { background: linear-gradient(90deg, var(--purple), transparent); }
+  .tier-card:nth-child(3)::before { background: linear-gradient(90deg, var(--orange), transparent); }
+  .tier-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .tier-card:nth-child(1) .tier-label { color: var(--cyan); }
+  .tier-card:nth-child(2) .tier-label { color: var(--purple); }
+  .tier-card:nth-child(3) .tier-label { color: var(--orange); }
+  .tier-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .tier-items { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .tier-items li { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; }
+  .tier-items li::before { content: '·'; color: var(--text-dim); }
+
+  /* signal card */
+  .signal-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); margin: 1.5rem 0; }
+  .signal-card {
+    background: var(--bg2); padding: 1.5rem 1.75rem;
+    display: flex; gap: 1.5rem; align-items: flex-start; transition: background 0.2s;
+  }
+  .signal-card:hover { background: var(--bg3); }
+  .signal-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .signal-body {}
+  .signal-name {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+  .signal-card:nth-child(1) .signal-name { color: var(--yellow); }
+  .signal-card:nth-child(2) .signal-name { color: var(--purple); }
+  .signal-card:nth-child(3) .signal-name { color: var(--red); }
+  .signal-card:nth-child(4) .signal-name { color: var(--orange); }
+  .signal-card:nth-child(5) .signal-name { color: var(--cyan); }
+  .signal-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.65; }
+  .signal-tag {
+    display: inline-block; margin-top: 0.6rem;
+    font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em;
+    color: var(--text-dim); border: 1px solid var(--border); padding: 0.2rem 0.55rem;
+  }
+
+  /* code block */
+  .code-block {
+    background: var(--bg3); border: 1px solid var(--border);
+    padding: 1.2rem 1.5rem; margin: 1.25rem 0;
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--cyan); line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  /* formula */
+  .formula {
+    background: rgba(155,93,229,0.06); border: 1px solid rgba(155,93,229,0.2);
+    padding: 1.5rem; margin: 1.5rem 0; text-align: center;
+  }
+  .formula-eq { font-family: var(--font-mono); font-size: 1.1rem; color: var(--text); margin-bottom: 0.5rem; }
+  .formula-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; }
+
+  /* zone table */
+  .zone-row { display: flex; align-items: center; gap: 0; margin-bottom: 2px; }
+  .zone-color { width: 6px; height: 48px; flex-shrink: 0; }
+  .zone-content { flex: 1; padding: 0.65rem 1rem; background: var(--bg3); border: 1px solid var(--border); margin-left: 2px; }
+  .zone-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .zone-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* toc inside page */
+  .toc-box {
+    background: var(--bg3); border: 1px solid var(--border);
+    padding: 2rem; margin-bottom: 3rem;
+  }
+  .toc-box-title {
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 1.25rem;
+  }
+  .toc-entries { display: flex; flex-direction: column; gap: 0.4rem; }
+  .toc-entry { display: flex; gap: 0.75rem; text-decoration: none; color: var(--text-muted); font-size: 0.83rem; transition: color 0.15s; }
+  .toc-entry:hover { color: var(--cyan); }
+  .toc-entry-num { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); min-width: 28px; }
+
+  /* progress bar in hero */
+  .progress-bar { display: flex; gap: 3px; margin-top: 2rem; }
+  .pb-seg { height: 3px; flex: 1; border-radius: 1px; }
+
+  /* ── MANUAL FIGURES ── */
+  .manual-figure {
+    margin: 2rem 0 2.5rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .manual-figure::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, var(--cyan), transparent 60%);
+    opacity: 0.4;
+  }
+  .manual-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 1px;
+  }
+  .manual-figure figcaption {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.3rem 0.2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    line-height: 1.5;
+  }
+  .manual-figure figcaption::before {
+    content: '◆';
+    color: var(--cyan);
+    font-size: 0.5rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .manual-figure figcaption .fig-id {
+    color: var(--cyan);
+    font-weight: 700;
+    margin-right: 0.4rem;
+    letter-spacing: 0.12em;
+  }
+  /* Banner figures (small decorative, narrow height) */
+  .manual-figure.figure-banner {
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(0,245,212,0.15);
+    border-bottom: 1px solid rgba(0,245,212,0.15);
+    padding: 0.9rem 0;
+    margin: 1.5rem 0;
+  }
+  .manual-figure.figure-banner::before { display: none; }
+  .manual-figure.figure-banner figcaption {
+    border-top: none;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  /* Compact figures (small UI screenshots) */
+  .manual-figure.figure-compact {
+    max-width: 480px;
+    margin-left: 0;
+  }
+
+  /* ── FOOTER (NEW: multi-column with lang switcher) ── */
+  .manual-footer {
+    background: var(--bg);
+    padding: 4rem 5rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer-content {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+    letter-spacing: 0.15em; color: var(--cyan);
+    margin-bottom: 0.8rem;
+  }
+  .footer-tagline {
+    font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim);
+    letter-spacing: 0.05em; line-height: 1.7;
+    max-width: 280px;
+  }
+  .footer-contact-block { margin-top: 1.5rem; }
+  .footer-contact-label {
+    font-family: var(--font-mono); font-size: 0.55rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .footer-contact-block a {
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--cyan);
+    text-decoration: none; font-weight: 700; transition: color 0.2s;
+  }
+  .footer-contact-block a:hover { color: #fff; }
+  .footer-col-title {
+    font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan);
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .footer-col-title::before { content: ''; width: 16px; height: 1px; background: var(--cyan); }
+  .footer-col-links { display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col-links a {
+    font-family: var(--font-body);
+    font-size: 0.82rem; color: var(--text-muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-col-links a:hover { color: var(--cyan); }
+  .footer-col-links a.cta-link {
+    color: var(--cyan); font-weight: 700;
+  }
+  .footer-col-links a.cta-link:hover { color: #fff; }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto; padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-lang { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .footer-lang-label {
+    font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .footer-lang-links {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.72rem;
+  }
+  .footer-lang-links a {
+    color: var(--text-muted); text-decoration: none; transition: all 0.2s;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid transparent; border-radius: 2px;
+  }
+  .footer-lang-links a:hover { color: var(--cyan); border-color: rgba(0,245,212,0.2); }
+  .footer-lang-links a.active {
+    color: var(--cyan); font-weight: 700;
+    border-color: rgba(0,245,212,0.3); background: rgba(0,245,212,0.05);
+  }
+  .footer-lang-sep { color: var(--text-dim); }
+  .footer-copy {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 900px) {
+    :root { --sidebar-w: 0px; }
+    .sidebar { transform: translateX(-280px); width: 280px; }
+    .sidebar.open { transform: translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.6); }
+    .main { margin-left: 0; }
+    .chapter, .manual-hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .manual-footer { padding: 3rem 1.5rem 1.5rem; }
+    .footer-content { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .tier-grid { grid-template-columns: 1fr; }
+    .menu-btn { display: block; }
+    .topnav-tag { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="https://rainbowmatrix.ai" class="topnav-logo">🌈 Rainbow Matrix AI</a>
+  <div class="topnav-right">
+    <span class="topnav-tag">🌈 Rainbow Matrix AI: 🎯 Multi-Timeframe Probability Engine [💎 ELITE ACCESS] Manual</span>
+    <a href="https://rainbowmatrix.ai/cn.html" class="topnav-link">← 返回主页</a>
+    <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="topnav-link" style="color:var(--cyan)">获取 Elite →</a>
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+</nav>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section-label">// 导航</div>
+  <a href="#intro" class="sidebar-link active"><span class="ch-num">00</span>简介</a>
+
+  <div class="sidebar-section-label">// 章节</div>
+  <a href="#ch1" class="sidebar-link"><span class="ch-num">01</span>核心理念与觉醒</a>
+  <a href="#ch2" class="sidebar-link"><span class="ch-num">02</span>TradingView 部署</a>
+  <a href="#ch3" class="sidebar-link"><span class="ch-num">03</span>配置菜单</a>
+  <a href="#ch4" class="sidebar-link"><span class="ch-num">04</span>223分钟 Front-Running 协议</a>
+  <a href="#ch5" class="sidebar-link"><span class="ch-num">05</span>多重分形架构</a>
+  <a href="#ch6" class="sidebar-link"><span class="ch-num">06</span>Rainbow Cloud 与机构 VWAP</a>
+  <a href="#ch7" class="sidebar-link"><span class="ch-num">07</span>机构雷达与 MGI</a>
+  <a href="#ch8" class="sidebar-link"><span class="ch-num">08</span>战术交战与常见问题 (FAQ)</a>
+  <a href="#ch9" class="sidebar-link"><span class="ch-num">09</span>资金保护</a>
+  <a href="#ch10" class="sidebar-link"><span class="ch-num">10</span>系统诊断</a>
+  <a href="#ch11" class="sidebar-link"><span class="ch-num">11</span>风险披露与法律声明</a>
+
+  <div class="sidebar-section-label" style="margin-top:2rem">// 支持</div>
+  <a href="mailto:contact@rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">✉</span>contact@rainbowmatrix.ai</a>
+  <a href="https://rainbowmatrix.ai/cn.html" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
+</aside>
+
+<main class="main">
+
+  <div class="manual-hero" id="intro">
+    <div class="manual-hero-grid"></div>
+    <div class="manual-hero-glow"></div>
+    <div class="manual-badge">官方精英操作员手册 — v4</div>
+   
+    <h1 class="manual-title">
+      <span>Rainbow Matrix AI</span><br>
+      精英操作员手册。
+    </h1>
+    <p class="manual-subtitle">
+      🌈 MTF Probability Engine · 💎 Elite Access<br>
+      市场上可供私人操作员使用的最先进的多时间级别分析引擎。
+    </p>
+    <div class="manual-meta">
+      <div class="meta-item">
+        <span class="meta-label">门户</span>
+        <span class="meta-value">rainbowmatrix.ai</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">支持</span>
+        <span class="meta-value">contact@rainbowmatrix.ai</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">章节</span>
+        <span class="meta-value">11 个模块</span>
+      </div>
+ 
+      <div class="meta-item">
+        <span class="meta-label">权限</span>
+        <span class="meta-value" style="color:var(--cyan)">💎 仅限 Elite</span>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div class="pb-seg" style="background:var(--cyan)"></div>
+      <div class="pb-seg" style="background:#00c8ff"></div>
+      <div class="pb-seg" style="background:var(--purple)"></div>
+      <div class="pb-seg" style="background:#f72585"></div>
+      <div class="pb-seg" style="background:var(--orange)"></div>
+      <div class="pb-seg" style="background:var(--yellow)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+  
+      <div class="pb-seg" style="background:var(--border)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+      <div class="pb-seg" style="background:var(--border)"></div>
+    </div>
+
+    <div class="toc-box" style="margin-top:3rem; max-width:780px">
+      <div class="toc-box-title">// 目录</div>
+      <div class="toc-entries">
+        <a href="#ch1" class="toc-entry"><span class="toc-entry-num">Ch.01</span>核心理念：机构操作员的觉醒</a>
+        <a href="#ch2" class="toc-entry"><span class="toc-entry-num">Ch.02</span>TradingView 部署</a>
+        <a href="#ch3" class="toc-entry"><span class="toc-entry-num">Ch.03</span>配置菜单 — 全部 15 个参数</a>
+        <a href="#ch4" class="toc-entry"><span class="toc-entry-num">Ch.04</span>定量不对称性：223 分钟 Front-Running 协议</a>
+        <a href="#ch5" class="toc-entry"><span class="toc-entry-num">Ch.05</span>多重分形架构：定量不对称性</a>
+      
+        <a href="#ch6" class="toc-entry"><span class="toc-entry-num">Ch.06</span>引力生态系统：Rainbow Cloud 与机构 VWAP</a>
+        <a href="#ch7" class="toc-entry"><span class="toc-entry-num">Ch.07</span>机构雷达：MGI 与算法流动性墙</a>
+        <a href="#ch8" class="toc-entry"><span class="toc-entry-num">Ch.08</span>战术交战与常见问题解答 (FAQ)</a>
+        <a href="#ch9" class="toc-entry"><span class="toc-entry-num">Ch.09</span>资金保护架构：生存的绝对法则</a>
+        <a href="#ch10" class="toc-entry"><span class="toc-entry-num">Ch.10</span>系统诊断与战术故障排除</a>
+        <a href="#ch11" class="toc-entry"><span class="toc-entry-num">Ch.11</span>系统性风险披露与绝对法律指令</a>
+    
+      </div>
+    </div>
+  </div>
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 01 章</div>
+      <h2 class="chapter-title">核心理念：机构操作员的觉醒</h2>
+      <p class="chapter-desc">源自同样的失眠之夜。源自同样糟糕的入场时机。这个系统的锻造正是源于您现在可能正在感受的确切痛苦。</p>
+    </div>
+    <div class="prose">
+      <p>有一个统计数据，在您刚开始时没有人会告诉您：<strong>95% 踏入这个市场的人都会亏钱。</strong> 这不是运气不好，也不是缺乏智慧。这是一个被精确设计成这样的系统。我们是充满鲨鱼和巨鲸的海洋中的沙丁鱼。我们的钱没有消失 —— 它是被转移了。</p>
+      <p>随着时间的推移，理解那些比图表和指标大得多的事物变得清晰。金融市场不仅仅是数字 —— 它是一场戏剧。机构巨鲸准确地知道散户的止损位置。他们布置陷阱。他们在朝着您预测的方向前进之前，制造虚假的波动以触发平仓。</p>
+      <p>经过超过 <strong>两年半的密集开发</strong>，在真实市场中的数百小时测试，以及最佳 AI 代理的协作，提取了核心市场指标，并同时应用于 5 个不同且可配置的时间级别。通过基于斐波那契、对数正态统计和机构引力物理学的数学算法，所有 50 个参数被转化为一个单一数字：<em>Global Probability Score。</em></p>
+
+      <div class="callout">
+        
+        <div class="callout-title">⚡ 根本区别</div>
+        <p>虽然普通的交易机器人是对市场做出反应，但 <strong>Rainbow Matrix AI 是在预测市场。</strong> 散户交易员只看到一个屏幕，而您看到的是融合为单一概率信号的五个时间维度。</p>
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch01-fig02.png" alt="预测与反应 — 机构 X 射线视觉范式" loading="lazy">
+        <figcaption><span class="fig-id">FIG.01.02</span> 预测与反应 // 机构 X 射线视觉范式</figcaption>
+      </figure>
+
+  
+      <div class="section-heading">1.1 为什么我们不是“交易机器人”</div>
+      <p>通用的机器人使用固定的参数运行，针对特定的市场条件进行硬编码。当波动率状态改变时 —— 或者当“黑天鹅”(Black Swan) 事件来袭时 —— 机器人由于无法进行结构性适应，通常会在几个小时内让用户的账户爆仓。</p>
+      <p>Rainbow Matrix AI 是基于对机构行为多年的研究和逆向工程而打造的。我们并没有构建一个替您交易的机器人；<strong>我们为您的大脑构建了一个分析型外骨骼。</strong></p>
+      <ul class="bullet-list">
+        <li><strong>机器人 (Bots)：</strong> 凭借对背景盲目的固定、僵化参数对市场做出反应。</li>
+        <li><strong>Rainbow Matrix AI：</strong> 通过具有 X 射线视觉的实时数学概率 HUD 来预测市场。</li>
+        <li><strong>结果：</strong> 人类保留扣动扳机的绝对控制权。您不再是猎物。您是掠食者。</li>
+      </ul>
+
+      <figure class="manual-figure">
+        <img src="images/ch01-fig01.png" alt="交易机器人的陷阱 — 为什么 Rainbow Matrix 不是机器人" loading="lazy">
+        <figcaption><span class="fig-id">FIG.01.01</span> 交易机器人的陷阱 // 僵化的机器人 vs 适应性分析型外骨骼</figcaption>
+      </figure>
+
+      <div class="section-heading">1.2 数学基础：斐波那契、对数正态分布与 Quantum HFT</div>
+      <p>Rainbow Matrix AI 不是一个普通的指标 —— 它是一个建立在三大数学支柱上的定量计算引擎：</p>
+      <ul class="bullet-list">
+        <li><strong>斐波那契数列 (Fibonacci Sequence)：</strong> 定义时间级别的参数和权重。机构市场建立在这一数列之上 —— 理解它就是懂得了大玩家的语言。</li>
+        <li><strong>对数正态分布 (Log-Normal Distribution)：</strong> 与传统的布林带（线性分布）不同，衰竭区使用自然对数计算 —— 捕捉价格运动的几何和不对称现实。</li>
+        <li><strong>Quantum HFT 波动率 (GK + EWMA)：</strong> 融合了 Garman-Klass（捕捉影线和止损猎杀的单根 K 线内部暴力行为）和 RiskMetrics EWMA（摩根大通的波动率聚类标准）。云层在流动性挤压 (Squeeze) 期间压缩，并在真正的突破期间爆发。</li>
+      </ul>
+
+      <figure class="manual-figure">
+        <img src="images/ch01-fig03.png" alt="三大数学支柱：斐波那契数列、对数正态分布、Quantum HFT 波动率" loading="lazy">
+        <figcaption><span class="fig-id">FIG.01.03</span> 三大数学支柱 // Fibonacci · Log-Normal · Quantum HFT</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 02 章</div>
+      <h2 class="chapter-title">TradingView 部署</h2>
+      <p class="chapter-desc">分步安装指南、工作区设置、关键的 Heikin Ashi 战术协议，以及 TradingView 免费计划兼容性配置。</p>
+    </div>
+    <div class="prose">
+      <div class="callout">
+        <div class="callout-title">✅ TradingView 计划兼容性</div>
+        <p>该指标在 <strong>所有 TradingView 等级中无缝运行：FREE, Basic, Essential, Plus 和 Premium。</strong> 通过将所有市场情报整合到单个高密度脚本中，您无需同时使用多个指标。</p>
+ 
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch02-fig01.png" alt="TradingView 计划层级兼容性矩阵" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.01</span> TradingView 计划兼容性矩阵 // 从 FREE 到 Premium</figcaption>
+      </figure>
+
+      <div class="section-heading">2.2 分步安装指南</div>
+      <div class="step-list">
+        <div class="step-item"><span class="step-num">01</span><span class="step-text">在您的浏览器或桌面应用 (<strong>app.tradingview.com</strong>) 中打开 TradingView。</span></div>
+        <div class="step-item"><span class="step-num">02</span><span class="step-text">加载您想要分析的资产的图表（加密货币、外汇、指数或股票）。</span></div>
+        <div class="step-item"><span class="step-num">03</span><span class="step-text">在顶部工具栏上，点击 <strong>“Indicators” (指标)</strong>。</span></div>
+        <div class="step-item"><span class="step-num">04</span><span class="step-text">在菜单中，寻找 <strong>“Invite-only scripts” (仅限邀请脚本)</strong> 选项卡 — 仅在获得 Elite 权限后出现。</span></div>
+        <div class="step-item"><span class="step-num">05</span><span class="step-text">找到 <strong>🌈 Rainbow Matrix AI: 🎯 MTF Probability Engine [💎 ELITE ACCESS]</strong> 并单击一次以添加它。</span></div>
+        <div class="step-item"><span class="step-num">06</span><span class="step-text">等待几秒钟。算法编译所有对数正态计算，您的图表将转变为一个完整的定量终端。</span></div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">💡 专家提示 — 视觉清晰度</div>
+        <p>要隐藏杂乱的输入值：右键单击图表 → <strong>“Settings” (设置)</strong> → <strong>“Status line” (状态行)</strong> 选项卡 → 取消选中 <strong>“Arguments” (参数)</strong>。您的工作区将保持干净、专注且专业。</p>
+      </div>
+
+      <div class="section-heading">2.3 推荐工作区设置</div>
+      <ul class="bullet-list">
+        <li><strong>暗色主题 (Dark Theme)：</strong> 该指标专门针对暗黑模式设计，发光效果和热力区域在暗色下能产生最大的视觉冲击。</li>
+        <li><strong>分辨率：</strong> 桌面交易的最低分辨率为 1920×1080，以充分利用战术 HUD 的所有视觉元素。</li>
+      </ul>
+
+      <figure class="manual-figure">
+      
+        <img src="images/ch02-fig02.png" alt="带有暗色主题和 HUD 布局的推荐工作区设置" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.02</span> 推荐工作区 // 适应各种屏幕尺寸的布局</figcaption>
+      </figure>
+
+      <div class="section-heading">2.4 传统 K 线 vs Heikin Ashi — 新手交易员的陷阱</div>
+      <p>传统的 K 线图显示了市场的原始残酷现实。即使在明显的上升趋势中，交替出现的绿色和红色 K 线也会给新手交易员带来一种永久混乱的感觉 —— 焦虑激增，情绪冲动劫持了理性的决策。</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch02-fig03.png" alt="传统 K 线图的混乱 — 清晰上升趋势中的交替颜色" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.03</span> 传统 K 线的混乱 // 绿/红交替导致过早平仓</figcaption>
+      </figure>
+
+      <div class="subsection-heading">2.4.1 替代方案：Heikin Ashi</div>
+      <p>Heikin Ashi 计算当前和前一个 K 线的平均值，在视觉上平滑了价格走势。结果：即使在波动的市场中也能出现相同颜色的长连击 —— 上升趋势显示为连续的绿色块，下降趋势显示为实心的红色块。</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch02-fig04.png" alt="Heikin Ashi 平滑后的价格行为 — 连续的色块" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.04</span> Heikin Ashi 平滑 // 连续色块揭示真实趋势</figcaption>
+      </figure>
+
+      <div class="callout purple">
+        <div class="callout-title">⚡ 战术协同作用</div>
+       
+        <p><strong>Heikin Ashi</strong> → 对趋势和背景的宏观读取。<br>
+        <strong>传统 K 线 (Candlesticks)</strong> → 精确入场和出场的执行。<br>
+        <strong>Rainbow Matrix AI</strong> → 实时 Probability Score。<br><br>
+        三重相互补充的确认。一次高概率的决策。</p>
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch02-fig05.png" alt="三层战术协同：Heikin Ashi + 传统 K 线 + Rainbow Matrix" loading="lazy">
+        <figcaption><span class="fig-id">FIG.02.05</span> 三重确认堆栈 // Heikin Ashi · Candlesticks · Rainbow Matrix</figcaption>
+      </figure>
+
+      <div class="section-heading" id="ch2-5">2.5 TradingView 免费计划 — 引擎兼容性</div>
+      <p>多时间级别概率引擎 (MTF Probability Engine) 完全兼容 TradingView 的 <strong>免费计划 (FREE Plan)</strong>。指标设置中的一个小调整就能解锁 <strong>99% 的机构智能</strong>，而无需升级任何 TradingView 订阅。</p>
+
+      <div class="subsection-heading">2.5.1 免费操作员面临的限制</div>
+      <p>TradingView 的免费版本不允许用户直接输入 <strong>自定义的时间级别值</strong> (例如，13m, 55m, 233m, 987m)。只能选择内置的时间级别：1m, 5m, 15m, 30m, 1h, 4h, 1D, 1W。此外，<em>实时数据天线图标</em> 仅出现在这些内置时间级别上 —— 免费账户的自定义值在没有实时流的情况下对存储的历史数据运行。</p>
+
+      <div class="subsection-heading">2.5.2 默认配置 (Premium TradingView)</div>
+      <table class="data-table">
+        <tr><th>位置</th><th>数值</th><th>角色</th></tr>
+        <tr><td><strong>TF1</strong></td><td>5 分钟</td><td>Kinetic Trigger / Sniper</td></tr>
+        <tr><td><strong>TF2</strong></td><td>13 分钟</td><td>日内过滤器</td></tr>
+        <tr><td><strong>TF3</strong></td><td>55 分钟</td><td>宏观第一梯队</td></tr>
+        <tr><td><strong>TF4</strong></td><td>233 分钟</td><td>宏观第二梯队 — 斐波那契 front-run</td></tr>
+   
+        <tr><td><strong>TF5</strong></td><td>987 分钟</td><td>基础锚点</td></tr>
+      </table>
+      <p>中间锚点：<strong>223m 协议</strong> — 针对 233 分钟机构 HFT 循环的 10 分钟非对称优势。完整的战略细节在 <a href="#ch4" style="color:var(--cyan)">第 04 章</a>。</p>
+
+      <div class="subsection-heading">2.5.3 兼容免费版的配置</div>
+      <table class="data-table">
+        <tr><th>位置</th><th>数值</th><th>内置等效值</th></tr>
+        <tr><td><strong>TF1</strong></td><td>5</td><td>5 分钟 ✅</td></tr>
+        <tr><td><strong>TF2</strong></td><td>15</td><td>15 分钟 ✅</td></tr>
+        <tr><td><strong>TF3</strong></td><td>60</td><td>1 小时 ✅</td></tr>
+        <tr><td><strong>TF4</strong></td><td>240</td><td>4 小时 ✅</td></tr>
+        <tr><td><strong>TF5</strong></td><td>1440</td><td>1 天 ✅</td></tr>
+      </table>
+      <p>此配置下的中间锚点：<strong>~225m</strong> — 在功能上等同于默认的 223m 协议，偏差仅为 1%。实时数据天线图标将激活，并且完整的实时信号生成被保留。</p>
+
+      <div class="subsection-heading">2.5.4 如何调整配置</div>
+      <div class="step-list">
+        <div class="step-item"><span class="step-num">01</span><span class="step-text">点击图表中 Elite 脚本上的齿轮图标 (⚙️)。</span></div>
+        <div class="step-item"><span class="step-num">02</span><span class="step-text">在指标设置面板中打开 <strong>“MTF Configuration” (MTF 配置)</strong> 部分。</span></div>
+        <div class="step-item"><span class="step-num">03</span><span class="step-text">将 <strong>TF2</strong> 从 <strong>13</strong> 更改为 <strong>15</strong>。</span></div>
+        <div class="step-item"><span class="step-num">04</span><span class="step-text">将 <strong>TF3</strong> 从 <strong>55</strong> 更改为 <strong>60</strong>。</span></div>
+        <div class="step-item"><span class="step-num">05</span><span class="step-text">将 <strong>TF4</strong> 从 <strong>233</strong> 更改为 <strong>240</strong>。</span></div>
+        <div class="step-item"><span class="step-num">06</span><span class="step-text">将 <strong>TF5</strong> 从 <strong>987</strong> 更改为 <strong>1440</strong>。</span></div>
+        <div class="step-item"><span class="step-num">07</span><span class="step-text">点击 <strong>OK</strong> 保存并重新编译。</span></div>
+      </div>
+
+      <div class="subsection-heading">2.5.5 在免费配置下您将保留什么</div>
+      <ul class="check-list">
+        <li class="yes">完整的 SNIPER / EXTREME / STRONG / PROBABLE 信号层级</li>
+    
+        <li class="yes">完整的 MTF Probability Matrix HUD</li>
+        <li class="yes">MGI 引力物理 (机构墙体)</li>
+        <li class="yes">Smart Money Concepts — Order Blocks, Fair Value Gaps, CHoCH, BOS 自动映射</li>
+        <li class="yes">包含 Entry / SL / TP 的 AI 战术摘要</li>
+        <li class="yes">所有 8 个 Rainbow Cloud 热力区域</li>
+        <li class="yes">实时数据流（实时天线图标处于活动状态）</li>
+        <li class="yes">移动端 Push 推送通知</li>
+  
+        <li class="yes">HUD 的所有 5 种原生语言</li>
+      </ul>
+
+      <div class="callout purple">
+        <div class="callout-title">💎 唯一的高级版独占优势</div>
+        <p>确切的 <strong>223m 协议</strong> — 提前 10 分钟对 233 分钟斐波那契机构 HFT 循环进行 front-running — 这需要 TradingView Premium (高级版) 才能直接输入自定义时间级别值。这是升级 TradingView 唯一解锁的功能（与 Rainbow Matrix 订阅无关）。对于大多数操作员而言，兼容免费版的配置能提供 99% 的机构级优势。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 关键的视觉设置 — 必须使用暗黑模式</div>
+        <p>Rainbow Cloud HUD 是专门针对深色图表背景设计的。浅色模式会使热力区域、信号发光和颜色层次变得模糊不清 —— 使信号可读性降低约 60%。<strong>在读取任何信号之前：</strong> 点击 TradingView 右上角齿轮图标 → Chart Settings (图表设置) → Appearance (外观) → Background (背景) → <strong>Dark (暗色)</strong>。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 03 章</div>
+      <h2 class="chapter-title">配置菜单</h2>
+      <p class="chapter-desc">Rainbow Matrix AI 的所有 15 个参数 —— 从波动率引擎到 MTF 同步引擎。</p>
+    </div>
+    <div class="prose">
+
+      
+      <figure class="manual-figure figure-banner">
+        <img src="images/ch03-fig01.png" alt="第 03 章 — 配置菜单模块横幅" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.01</span> 配置菜单 // 横跨 8 个架构模块的 15 个算法参数</figcaption>
+      </figure>
+
+      <div class="section-heading">3.1 Volatility Engine (波动率引擎) — Quantum HFT 升级</div>
+      <table class="data-table">
+        <tr><th>模式</th><th>描述</th><th>最适合</th></tr>
+        <tr><td><strong>Classic (StdDev)</strong></td><td>传统的学术级标准差。可靠且稳定。</td><td>宏观、移动缓慢的市场</td></tr>
+        <tr><td><strong>Quantum HFT (GK+EWMA)</strong></td><td>融合 Garman-Klass 与 RiskMetrics EWMA。云层实时呼吸。</td><td>加密货币、指数 ⭐ 推荐</td></tr>
+      </table>
+
+      <div class="section-heading">3.2 AI Score Engine — Global Score 背后的核心大脑</div>
+      <p>AI 评分引擎 (AI Score Engine) 是计算 <em>Global Probability Score</em> 的核心算法 —— 一个在 0% 和 100% 之间的精确指标，能够同时量化所有 5 个时间级别上的方向压力。</p>
+
+      <div class="section-heading">3.10 显示 Vacuum Trail — 机构流动性真空</div>
+      <p>有一种动力学现象，以绝对的结构一致性决定着算法市场的行为 —— 这是散户群体从未接受过相关审计训练的原则。在物理学中，当一个高速质量迅速位移时，由此产生的真空会产生一个引力虚空，将其周围的环境猛烈地拉回以使其稳定。在算法金融市场中，完全相同的原理也适用于动力学价格行为。</p>
+      <p><em>Vacuum Trail</em> (真空轨迹) 将这种动力学现象完全可视化 —— 这是一个会聚的几何向量系统，直接部署在震荡指标控制台上（而不是在主价格图表上）。它在 Global Score 突破动态通道上限或下限的确切毫秒数接合。</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig02.png" alt="Vacuum Trail — 绘制均值回归轨迹的收敛几何向量" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.02</span> Vacuum Trail 引擎 // 活动向量 + Ghost Lines (幽灵线) 映射机构流动性真空</figcaption>
+      </figure>
+
+      <ul class="bullet-list">
+        <li><strong>Score 严重高于通道：</strong> 买方流量耗尽。上方产生机构流动性真空。引力算法力量将 Score 拉回。<em>红色轨迹</em> (Red Trail) 映射了预期路径。</li>
+        <li><strong>Score 严重低于通道：</strong> 卖方流量耗尽。动力学价格下方出现数学真空。算法均值回归向量向上投影。<em>绿色轨迹</em> (Green Trail) 映射了预期路径。</li>
+        <li><strong>中心线 (虚线白色)：</strong> 动态通道平衡点。均值回归序列的主要止盈目标 —— 当 Score 从极端异常中恢复时，面临严重减速的第一个坐标。</li>
+        <li><strong>Ghost Lines (点状线，向右延伸)：</strong> 历史真空轨迹作为定量参考节点水平投影 —— 精确映射了 Score 之前遭受动力学耗竭的阈值。</li>
+      </ul>
+
+      <div class="callout purple">
+        <div class="callout-title">⚡ 为什么 Vacuum Trail 是致命的</div>
+        <p>它不仅提供了方向上的偏见，而且提供了反转的 <strong>精确算法目标坐标</strong>。散户交易员看到分数处于极端，就盲目地进行逆势交易。Elite 操作员看到的是精确的均值回归轨迹 <strong>以及</strong> 高概率的减速区域。</p>
+      </div>
+
+      <div class="section-heading">战术设置 — Apex Strike 协议</div>
+      <p>除了原始的 Score 遥测之外，Rainbow Matrix AI 的战术设置 (Tactical Setup) 架构还将三个致命的子引擎压缩到一个单一的执行层中：<em>非对称 R:R 过滤器</em>、<em>JSON Webhook 自动化</em> 和 <em>动力学方向变化</em> 坐标标记。</p>
+
+      <div class="subsection-heading">非对称风险回报 (R:R) 过滤器</div>
+      <p>这是 Tactical Setup 架构中最致命、最复杂的引擎之一 —— 对于那些只盯着图表上的线看的人来说完全不可见。在渲染最终执行坐标之前，系统会自动计算 setup 的结构性 R:R 比例，并将其与操作员的最低阈值进行数学审计。</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig03.png" alt="非对称风险回报过滤器 — 合成目标的自动投影" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.03</span> R:R 过滤器 // 默认最小阈值 = 2.0 — 自动覆盖浅层屏障</figcaption>
+      </figure>
+
+      <ul class="bullet-list">
+        <li><strong>默认最小 R:R 阈值 = 2.0：</strong> 对于每 1 个单位的动力学风险，目标必须在数学上至少提取 2 个单位的回报。</li>
+        <li><strong>结构性 R:R &lt; 2.0 (屏障太近)：</strong> 引擎通过算法绕过浅层屏障。计算 Take Profit (止盈) = Entry (入场) + (Risk (风险) × Min R:R Threshold)。将提取额投射到数学补偿水平。</li>
+        <li><strong>结构性 R:R ≥ 2.0：</strong> 引擎尊重自然的机构屏障 —— 保留高概率的均值回归目标。</li>
+      </ul>
+
+      <div class="subsection-heading">算法执行 — JSON Webhook 遥测</div>
+      <p>对于部署自动执行机器人的量化操作员，战术设置引擎通过动态 JSON Webhook 进行集成。当在配置面板中设防时 —— <strong>🤖 INSTITUTIONAL AUTOMATION (机构自动化) → Enable Order Automation (JSON)</strong> —— 在 Apex Strike 协议在数学上被验证的确切毫秒，引擎会传输一个包含绝对执行坐标的 payload (有效载荷)：</p>
+
+      <div class="code-block">{
+  "bot_id": "BOT_VIP_01",
+  "signal": "SNIPER_LONG",
+  "asset": "BTCUSDT",
+  "entry_price": 79250.50,
+  "stop_loss": 78100.00,
+  "take_profit": 81550.00
+}</div>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig04.png" alt="包含 entry/SL/TP 坐标的 JSON webhook payload 结构" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.04</span> JSON Webhook 遥测 // Apex Strike 载荷 — entry · stop_loss · take_profit</figcaption>
+      </figure>
+
+      <div class="subsection-heading">显示动力学方向变化 (🔀)</div>
+      <p>标记动力主导力量在结构上从买方转移到卖方（反之亦然）的准确坐标。这不是动量信号 —— 它是在活动分形的解析度上，占主导地位的动力学向量的数学反转。</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig08.png" alt="振荡器控制台上的动力学方向变化标记" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.05</span> 动力学方向变化 // 🔀 标记指示主导向量的结构性转变</figcaption>
+      </figure>
+
+      <div class="section-heading">3.12 标签过滤器 — 算法执行遥测</div>
+      <p>信号层级 — 从最大致命性到次要情境警告：</p>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch03-fig05.png" alt="标签过滤器 — 价格图表上的 Chart Labels 配置" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.06</span> 图表标签 (Chart Labels) // 价格图上渲染的遥测数据</figcaption>
+      </figure>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch03-fig06.png" alt="标签过滤器 — 振荡器窗格上的 Oscillator Labels 配置" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.07</span> 振荡器标签 (Oscillator Labels) // 振荡器窗格上渲染的遥测数据</figcaption>
+   
+      </figure>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch03-fig07.png" alt="标签过滤器 — 严格配置变体 (仅限 Sniper)" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.08</span> 严格变体 // 仅限 Sniper 的过滤器，将认知负荷降至最低</figcaption>
+      </figure>
+
+      <div class="signal-grid">
+        <div class="signal-card">
+          <div class="signal-icon">🎯</div>
+          <div class="signal-body">
+          
+            <div class="signal-name">SNIPER — 最大机构级共振</div>
+            <div class="signal-desc">Global Score 突破绝对极值 (>85%) + 动力学价格缓解了 Deviation Band (偏差带) + Active SMC Structure 验证。顶点触发器。包含三个同时发生的高度定量共振层。在统计上非常罕见。</div>
+            <span class="signal-tag">默认: ✅ 开启 — 切勿禁用</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">🎯</div>
+          <div class="signal-body">
+            <div class="signal-name">EXTREME (极端) — 纯统计异常</div>
+            <div class="signal-desc">Global Score >85% + Deviation Band 被缓解 —— 但 未检测到 SMC 共振。价格处于严重的异常区域。高度可靠。</div>
+            <span class="signal-tag">默认: ✅ 开启 — 切勿禁用</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">⭐</div>
+          <div class="signal-body">
+            <div class="signal-name">STRONG (强力) — 结构性动力耗竭</div>
+            <div class="signal-desc">Global Score 突破上方衰竭阈值 (>71%) + Deviation Band 缓解。执行可靠性的第二梯队。是大多数高概率 setup 的基础触发器。</div>
+            <span class="signal-tag">默认: ✅ 开启 — 保持开启</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">📊</div>
+          <div class="signal-body">
+            <div class="signal-name">PROBABLE (可能) — 脱离算法平衡</div>
+       
+            <div class="signal-desc">Global Score 偏离中性区（峰值 >53% / 谷值 <47%），但价格 未缓解 极端条带。中等概率。最适合作为早期的态势警告。</div>
+            <span class="signal-tag">默认: ✅ 开启 — 推荐使用</span>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-icon">🛡️</div>
+          <div class="signal-body">
+            <div class="signal-name">SUPPORT (支撑) — 低信念的动力反弹</div>
+           
+            <div class="signal-desc">动量周期微弱，或 3 根 K 线的延续失败。代表算法市场噪音。方向性力量可忽略不计。仅供精锐分析师用来绘制 order-flow 测试区域。</div>
+            <span class="signal-tag">默认: ❌ 关闭 — 保持关闭</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-heading">按操作员配置进行校准</div>
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-label">// 第 1 级</div>
+          <div class="tier-name" style="color:var(--cyan)">严格型操作员</div>
+          <ul class="tier-items">
+            <li>图表标签: ✅ 开启</li>
+            <li>振荡器标签: ❌ 关闭</li>
+            <li>Strong/Snipers: ✅ 开启</li>
+            <li>Probable: ✅ (谨慎使用)</li>
+            <li>Support: ❌ 关闭</li>
+          </ul>
+     
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// 第 2 级</div>
+          <div class="tier-name" style="color:var(--purple)">战术型操作员</div>
+          <ul class="tier-items">
+            <li>图表标签: ✅ 开启</li>
+            <li>振荡器标签: ✅ 开启</li>
+            <li>Strong/Snipers: ✅ 开启</li>
+       
+            <li>Probable: ✅ 开启</li>
+            <li>Support: ❌ 关闭</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// 第 3 级</div>
+          <div class="tier-name" style="color:var(--orange)">定量分析师</div>
+          <ul class="tier-items">
+            <li>图表标签: ✅ 开启</li>
+            <li>振荡器标签: ✅ 开启</li>
+            <li>Strong/Snipers: ✅ 开启</li>
+            <li>Probable: ✅ 开启</li>
+            <li>Support: ✅ 开启</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-heading">3.13 警报过滤器 — 远程战术遥测</div>
+      
+      <div class="callout">
+        <div class="callout-title">// 部署协议：初始化遥测链接</div>
+        <p>点击警告 🔔 图标 → "Create Alert" (创建警报) → Condition (条件): <strong>Any alert() function call</strong> (极其关键 — 切勿选择特定的价格条件) → Trigger (触发器): <strong>Once Per Bar Close</strong> (每次柱线收盘一次) → 开启通知 (App + Email + Webhook) → 点击 "Create" (创建)。</p>
+      </div>
+      <table class="data-table">
+        <tr><th>警报</th><th>默认</th><th>指令</th></tr>
+        <tr><td>🎯 Snipers & Extreme</td><td style="color:var(--cyan)">✅ 开启</td><td><strong>切勿禁用。</strong> 最稀有、最具不对称性的执行窗口。</td></tr>
+        <tr><td>⭐ 强结构性反转</td><td style="color:var(--cyan)">✅ 开启</td><td>保持开启。高概率设置的基础触发器。</td></tr>
+        <tr><td>📊 Probable 反转</td><td style="color:var(--cyan)">✅ 开启</td><td>基于已校准的预期开启。预警雷达。</td></tr>
+        <tr><td>🛡️ Support 缓解</td><td style="color:var(--red)">❌ 关闭</td><td>保持关闭。噪音高，可靠性低。</td></tr>
+        <tr><td>⚓ 宏观 VWAP 碰撞</td><td style="color:var(--cyan)">✅ 开启</td><td>保持开启。大规模的机构流动性事件。</td></tr>
+        <tr><td>🧨 Kinetic Squeeze 异常</td><td style="color:var(--cyan)">✅ 开启</td><td><strong>切勿禁用。</strong> 最紧急的系统性警告。</td></tr>
+        <tr><td>⚙️ 宏观系统性警告</td><td style="color:var(--cyan)">✅ 开启</td><td>保持开启。跨越所有分形的统计极值。</td></tr>
+        <tr><td>🌩️ 绝对宏观共振</td><td style="color:var(--cyan)">✅ 开启</td><td><strong>切勿禁用。</strong> 最稀有、决定趋势的事件。</td></tr>
+      </table>
+
+      <figure class="manual-figure">
+        <img src="images/ch03-fig09.png" alt="警报过滤器遥测面板 — 结构高潮与动力学异常警告" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.09</span> 警报遥测面板 // 🔥 结构高潮 + 🌊 动力学异常 — 多重分形同步</figcaption>
+      </figure>
+
+      <div class="section-heading">3.14 机构引力引擎 (MGI)</div>
+     
+      <table class="data-table">
+        <tr><th>参数</th><th>默认</th><th>范围</th><th>效果</th></tr>
+        <tr><td><strong>Magnetic Radius (%) (磁性半径)</strong></td><td>0.25%</td><td>0.15% – 0.50%</td><td>激活 MGI 时距离墙的距离。越宽 = 预测越早。</td></tr>
+        <tr><td><strong>Gravitational Force (引力强度)</strong></td><td>6</td><td>3 – 10</td><td>每堵墙注入 Score 的分数。最高上限：总共 ±30 分。</td></tr>
+        <tr><td><strong>MGI Polarity (MGI 极性)</strong></td><td>Magnetic 🧲 (磁性)</td><td>Magnetic / Friction</td><td>Magnetic = stop-hunt 协议 (加密货币)。Friction = 吸收 (外汇/股票)。</td></tr>
+      </table>
+
+      <div class="section-heading">3.15 MTF 同步引擎</div>
+      <table class="data-table">
+        <tr><th>分形</th><th>默认</th><th>权重</th><th>角色</th></tr>
+        <tr><td><strong>TF1 — Kinetic Trigger</strong></td><td>5 分钟</td><td>15%</td><td>狙击手。探测资金部署的确切毫秒。</td></tr>
+        <tr><td><strong>TF2 — 日内过滤器</strong></td><td>13 分钟</td><td>20%</td><td>班长。通过算法清除虚假的 TF1 信号。</td></tr>
+        <tr><td><strong>TF3 — 宏观第一梯队</strong></td><td>55 分钟</td><td>25%</td><td>战地指挥官。定义主导的日内结构趋势。</td></tr>
+        <tr><td><strong>TF4 — 宏观第二梯队</strong></td><td>233 分钟</td><td>25%</td><td>战区指挥官。中期机构定位。</td></tr>
+        <tr><td><strong>TF5 — 基础锚点</strong></td><td>987 分钟</td><td>15%</td><td>卫星。长期的宏观背景。定义几周的锚点。</td></tr>
+      </table>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 绝对指令</div>
+        <p><strong>TF1 &lt; TF2 &lt; TF3 &lt; TF4 &lt; TF5</strong> — 升序的按时间顺序排列的层级在数学上是强制性的。无序注入时间级别将在结构上破坏同步引擎并生成严重损坏的遥测数据。</p>
+      </div>
+
+      <figure class="manual-figure figure-banner">
+        <img src="images/ch03-fig10.png" alt="MTF 同步横幅 — 5 个分形权重摘要" loading="lazy">
+        <figcaption><span class="fig-id">FIG.03.10</span> MTF Sync 遥测 // TF1:15% · TF2:20% · TF3:25% · TF4:25% · TF5:15%</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-header">
+   
+      <div class="chapter-num">// 第 04 章</div>
+      <h2 class="chapter-title">定量不对称性：223 分钟 Front-Running 协议</h2>
+      <p class="chapter-desc">如何通过数学方法恰好提前 10 分钟对机构 HFT 时钟进行 front-run。</p>
+    </div>
+    <div class="prose">
+      <p>散户群体普遍在高度可预测的时间网格上执行操作：5m, 15m, 1H, 4H。因为这些坐标是标准的且全球流行的，它们正是机构流动性引擎为了设计止损猎杀 (stop-hunts) 和陷阱而在数学上瞄准的确切区域。</p>
+      <p>第一梯队机构资金明确地在 <em>233 分钟时间分形</em> 上运作 —— 一个纯粹的斐波那契坐标。这就是部署巨额流动性订单的地方。</p>
+
+      <table class="data-table">
+        <tr><th>散户标准</th><th>机构 HFT</th><th>Rainbow Matrix Elite</th></tr>
+        <tr>
+          <td>4H (240 min)<br><span style="color:var(--text-dim);font-size:0.78rem">看到的是过去</span></td>
+          <td>233 min (Fibonacci)<br><span style="color:var(--text-dim);font-size:0.78rem">大批量运行</span></td>
+          <td style="color:var(--cyan)"><strong>223 min (Front-Running)</strong><br><span style="font-size:0.78rem">提前 10 分钟</span></td>
+        </tr>
+      </table>
+
+      
+      <figure class="manual-figure">
+        <img src="images/ch04-fig01.png" alt="223分钟分形 — 遥测信标与全局分数同步" loading="lazy">
+        <figcaption><span class="fig-id">FIG.04.01</span> 遥测信标 📡 // 当分辨率与合成全局分数同步时处于活动状态</figcaption>
+      </figure>
+
+      <div class="callout">
+        <div class="callout-title">⚙️ 配置协议：部署 223m 分形</div>
+        <p>在主要 TradingView 工具栏上定位活动时间分辨率菜单 (例如，"1H") → 直接在数字输入字段中键入 <strong>223</strong> → 从下拉菜单中选择 <strong>Minutes (分钟)</strong> → 按 Enter 键。<br><br>
+        <em>结果：您的终端现在通过算法同步以领先机构时钟 (Front-Running)。</em></p>
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch04-fig02.png" alt="223m 校准协议 — 合成时间段分辨率输入" loading="lazy">
+        <figcaption><span class="fig-id">FIG.04.02</span> 223m 校准 // TradingView 工具栏上的 Synthetic Global Score 解析度输入</figcaption>
+      </figure>
+
+      <p>通过将您的终端锚定到 223 分钟分辨率，您的动力学 K 线会准确地在大量斐波那契 HFT 算法于 233 分钟阈值执行的 <strong>10 分钟前</strong> 关闭。您将不再对 Smart Money (聪明钱) 作出反应 —— 而是预测他们。</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 05 章</div>
+      <h2 class="chapter-title">多重分形架构：定量不对称性</h2>
+      <p class="chapter-desc">5维时间矩阵和合成主分形 —— Global Score。</p>
+    </div>
+    <div class="prose">
+      <div class="callout warning">
+        <div class="callout-title">// 单一分形短视的致命缺陷</div>
+        <p>审核一个孤立的时间分形在战术上等同于仅通过一个微型狙击瞄准镜在战场上导航。被困在 5 分钟图表中的散户操作员每天都会被更高时间级别 (Higher Timeframes) 算法的主导宏观向量系统地清理。</p>
+      </div>
+
+      <div class="section-heading">5.2 5维时间矩阵</div>
+      <p>在每一毫秒内，跨越 5 个时间维度中的每一个，系统处理沉重的定量数据矩阵：</p>
+      <ul class="bullet-list">
+        <li><strong>Log-Normal Z-Score:</strong> 价格相对于算法均衡的确切动力学偏差，以终端标准差表示。</li>
+        <li><strong>机构 VWAP 与 Volume Profile (POC/VAH/VAL):</strong> 大规模机构流动性被吸收或部署的精确结构节点。</li>
+        <li><strong>Kinetic RSI:</strong> 针对每个特定时间范围校准的算法动量。</li>
+        <li><strong>Adaptive SAR:</strong> 绝对的结构性方向向量。</li>
+        <li><strong>Fractal Score:</strong> 对该级别内所有局部定量数据的数学综合。</li>
+      </ul>
+
+      <div class="callout">
+        <div class="callout-title">⚙️ 算法数据压缩</div>
+        <p>要以物理方式复制这种遥测水平，操作员需要 <strong>5 个显示器的阵列，每个屏幕运行 10 个不同的指标</strong>，试图每毫秒手动计算 50 个自变量。Rainbow Matrix AI 将这一切压缩成 <strong>一个绝对的数学概率指标。</strong></p>
+      </div>
+
+      <div class="section-heading">5.4 多语言 NLP 引擎</div>
+
+      <figure class="manual-figure figure-compact">
+        <img src="images/ch05-fig01.png" alt="原生多语言下拉菜单 — 操作语言选择器" loading="lazy">
+        <figcaption><span class="fig-id">FIG.05.01</span> 语言下拉菜单 // 原生操作语言选择器 — 零延迟切换</figcaption>
+      </figure>
+
+      <table class="data-table">
+        <tr><th>🇺🇸 English</th><th>🇧🇷 Português</th><th>🇪🇸 Español</th><th>🇷🇺 Русский</th><th>🇨🇳 中文</th></tr>
+  
+        <tr><td>原生</td><td>原生</td><td>原生</td><td>原生</td><td>原生</td></tr>
+      </table>
+      <p>语言校准以绝对零延迟执行，无需重新启动终端或刷新数据馈送。</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch05-fig02.png" alt="NLP 战术引擎 — 整合到 TradingView 终端的第一个算法处理层" loading="lazy">
+        <figcaption><span class="fig-id">FIG.05.02</span> NLP 战术引擎 // 首次原生地集成到 TradingView 终端中的算法 NLP 层</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 06 章</div>
+      <h2 class="chapter-title">引力生态系统：Rainbow Cloud 与机构 VWAP</h2>
+      <p class="chapter-desc">高保真光学遥测 — 热力区域、对数正态偏差和 Black Swan 磷光。</p>
+    </div>
+    <div class="prose">
+      <div class="section-heading">6.1 Rainbow Log-Normal 波动率云</div>
+      <p>这绝对不是原始的零售布林带。这是一个高度先进的对数正态标准差矩阵，可生成算法热力阈值，以手术级别的统计保真度映射出结构反转的确切数学概率。</p>
+
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--cyan),#00a896)"></div><div class="zone-content"><div class="zone-title" style="color:var(--cyan)">基线平衡 (0σ) — 核心绿 (Core Green)</div><div class="zone-desc">绝对的引力轴。Smart Money (聪明钱) 在此确立积累和派发界限的数学零点。</div></div></div>
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--yellow),#c9a000)"></div><div class="zone-content"><div class="zone-title" style="color:var(--yellow)">结构性缓解 (±1.5σ) — 黄色 / 蓝绿色 (Teal)</div><div class="zone-desc">健康的算法回撤。机构资本在这里重新积累以顺应趋势执行的精准结构性坐标。</div></div></div>
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--orange),#cc4400)"></div><div class="zone-content"><div class="zone-title" style="color:var(--orange)">预衰竭警告 (±1.85σ) — 橙色 / 蓝色 (Blue)</div><div class="zone-desc">动力学动量初步退化。产生严重的结构紧张。即将发生算法回调 (pullback) 的高概率。</div></div></div>
+      <div class="zone-row"><div class="zone-color" style="background:linear-gradient(var(--red),#990000)"></div><div class="zone-content"><div class="zone-title" style="color:var(--red)">绝对衰竭 (±2.75σ) — 绯红色 / 深蓝色 (Deep Blue)</div><div class="zone-desc">数学上的极端。散户羊群在这里由于 FOMO (错失恐惧症) 盲目注入资金，专门充当第一梯队 (Tier-1) 算法卸货的退出流动性 (exit liquidity)。</div></div></div>
+
+      <div class="section-heading">6.2 Black Swan (黑天鹅) 磷光效应</div>
+      <div class="callout danger">
+        <div class="callout-title">⚡ Black Swan 战术协议 (第 4 个 σ — ±3.85σ)</div>
+        <p>当动力学价格突破第 4 个对数标准差（发生概率不到 1%）时，可能出现两种极其暴力的结果：<br><br>
+        <strong>1. 爆发性均值回归 (主要概率)：</strong> 第一梯队资本将恐慌武器化，策划具有攻击性的反向量积累。回升是瞬时的、不对称的、且极度暴力的。<br><br>
+        <strong>2. 级联清算事件：</strong> 价格暂时无视地心引力 —— 一系列追加保证金通知 (margin-call) 在不可避免的反转之前系统性地摧毁了过早进行逆势交易的操作员。<br><br>
+        ⚠️ <strong>绝对指令：</strong> 在没有得到 Synthetic Global Score 绝对数学授权的情况下，切勿在此阈值盲目地与动力学向量进行逆向交易 (fade)。</p>
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch06-fig01.png" alt="水色 (Aqua) 和紫色 (Purple) 黑天鹅区域 — 超过 3.85σ 的极端异常区域" loading="lazy">
+        <figcaption><span class="fig-id">FIG.06.01</span> Black Swan 磷光效应 // 🩵 Aqua (下轨 &lt;-3.85σ) · 💜 Purple (上轨 &gt;+3.85σ) — 迫在眉睫的反转区域</figcaption>
+      </figure>
+
+      <div class="section-heading">6.3 宏观 VWAP 架构</div>
+      <ul class="bullet-list">
+        <li><strong>动态宏观 VWAP：</strong> 随着动力学价格接近，视觉上会加强并“发热” (glow)。空间接近度会成倍放大光学耀斑。</li>
+        <li><strong>日线 VWAP (D)：</strong> 在 24 小时交易时段的确切开始时间重置。日内算法横扫 (sweeps) 的主要磁铁。</li>
+        <li><strong>周线 VWAP (W)：</strong> 第一梯队资本的绝对引力中心。明确的突破在数学上决定了宏观状态的严重转变。</li>
+        <li><strong>月线 VWAP (M)：</strong> 顶峰的机构锚点。交叉确认了大规模的多重分形趋势反转正在积极进行中。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 07 章</div>
+      <h2 class="chapter-title">机构雷达：MGI 与算法流动性墙</h2>
+      <p class="chapter-desc">Volume Profile 墙、Smart Money 的引力物理学、Order Blocks 和 Fair Value Gaps。</p>
+    </div>
+    <div class="prose">
+      <figure class="manual-figure">
+   
+        <img src="images/ch07-fig01.png" alt="机构雷达 — 多分形体积架构叠加" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.01</span> 机构雷达 // Smart Money 仓位布局的实时卫星视图</figcaption>
+      </figure>
+
+      <div class="section-heading">7.1 机构墙体解剖</div>
+      <table class="data-table">
+        <tr><th>层级</th><th>描述</th><th>行为</th></tr>
+        <tr><td><strong>POC</strong> — Point of Control (控制点)</td><td>体积密度最高的坐标。绝对的算法引力中心。</td><td>价格在极端偏离后表现出回归 POC 的严重倾向。</td></tr>
+        <tr><td><strong>VAH</strong> — Value Area High (价值区高点)</td><td>被接受的 70% 机构容量的上限。</td><td>VAH 上方稀薄的流动性真空 — 频繁遭受暴力的算法拒绝。</td></tr>
+        <tr><td><strong>VAL</strong> — Value Area Low (价值区低点)</td><td>70% 价值区的下限。</td><td>价格被系统性地拒绝，并被迫回到已接受的容量矩阵内。</td></tr>
+        <tr><td><strong>历史 VWAP D/W/M</strong></td><td>长期成交量加权锚点。</td><td>引力密度严格与时间长度成正比 (月 > 周 > 日)。</td></tr>
+      </table>
+
+ 
+      <figure class="manual-figure">
+        <img src="images/ch07-fig02.png" alt="MGI 战术地图 — POC/VAH/VAL 引力墙投射到价格图表上" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.02</span> MGI 战术地图 // POC 引力中心 + VAH/VAL 边界 — 机构定位被揭示</figcaption>
+      </figure>
+
+      <div class="section-heading">7.3 MGI 的双重物理极性</div>
+      <div class="tier-grid" style="grid-template-columns:1fr 1fr">
+        <div class="tier-card">
+          <div class="tier-label" style="color:var(--text-muted)">// 摩擦模式 🧱 (Friction)</div>
+          <div class="tier-name" style="color:var(--text)">算法吸收</div>
+          <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem">墙充当吸收屏障。MGI 会随着价格接近而使 AI Score 减速 —— 准确预测动量将被吸收并被击退。</p>
+          <p style="font-size:0.75rem;color:var(--cyan);margin-top:0.75rem">📌 外汇 · 股票 · 指数</p>
+        </div>
+        <div class="tier-card" style="background:rgba(0,245,212,0.03)">
+          <div class="tier-label" style="color:var(--cyan)">// 磁性模式 🧲 (Magnetic)</div>
+          <div class="tier-name" style="color:var(--cyan)">掠夺性流动性横扫</div>
+          <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem">墙的作用就像黑洞。MGI 将概率向量积极加速到极端 —— 预测第一梯队的引擎将猛烈拉动价格以清除散户的止损。</p>
+          <p style="font-size:0.75rem;color:var(--cyan);margin-top:0.75rem">📌 加密货币衍生品 · BTC · 竞争币 ⭐</p>
+        </div>
+      </div>
+
+      <div class="section-heading">7.4 自动化 SMC 架构</div>
+      <ul class="bullet-list">
+        <li><strong>Order Blocks (OB):</strong> 受到异常动力学体积注入的严格验证。第一梯队算法在这些局部坐标堆积了大量的限价单 (limit orders)。价格回到这些区域的概率很高。</li>
+        <li><strong>Fair Value Gaps (FVG):</strong> 半透明的结构性空白，映射出由于机构激进的市价单 (market orders) 所造成的严重价格低效。算法预测价格最终会回到这些低效区域进行缓解 (mitigate)。</li>
+      </ul>
+      <div class="callout">
+        <div class="callout-title">🎯 汇聚协议 — SNIPER 警报</div>
+        <p>当 Synthetic Global Score 突破绝对极端 (<strong>&gt;90% 的系统性衰竭</strong>)，且此时正好动力学价格物理缓解了一个经过验证的 Order Block 时，引擎会动态融合这两个数据流并部署 <strong>SNIPER 遥测警报</strong> —— 代表着系统内可以达到的绝对最大定量共振。</p>
+      
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch07-fig03.png" alt="SMC 架构 — 带有战术警告的 Order Blocks 和 Fair Value Gaps" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.03</span> SMC 汇聚地图 // Order Blocks (经验证) + Fair Value Gaps + 汇聚规则</figcaption>
+      </figure>
+
+      <div class="section-heading">7.5 衍生品遥测 — Open Interest 与 Funding Rate</div>
+      <p>加密货币算法战场中有一个隐藏的维度，绝大多数散户完全忽略了它 —— 而机构巨鲸则痴迷地监控着它。它就是 <em>衍生品遥测层</em>：永续期货合约 (Perpetual Futures)、未平仓合约 (Open Interest, OI) 和资金费率 (Funding Rate, FR)。这种定量数据不仅揭示了当前动力学价格所处的位置，还能准确告诉您 <strong>哪里聚集了大量高杠杆资金</strong>，以及这些资金在统计上对算法流动性横扫 (liquidity sweeps) 有多脆弱。</p>
+
+      <figure class="manual-figure">
+        <img src="images/ch07-fig04.png" alt="永续期货矩阵 — OI 和 Funding Rate 机构情报层" loading="lazy">
+        <figcaption><span class="fig-id">FIG.07.04</span> 永续期货矩阵 // OI 踪迹 + FR 杠杆成本 — 仅限 Tier-1 交易所 (Binance · Bybit · OKX)</figcaption>
+      </figure>
+
+      <div class="subsection-heading">Open Interest (OI) — 动力学资本的足迹</div>
+      <p>Open Interest 衡量市场上原生开放的、活跃且未结算的衍生品合约的总交易量。它是杠杆资金的绝对数学足迹。</p>
+      <ul class="bullet-list">
+        <li><strong>OI 上升 + 价格上升：</strong> 激进资本进入多头 (Long) 仓位。看涨动量得到了真正动力学体积的支撑。<em>结构健康的上升趋势。</em></li>
+        <li><strong>OI 下降 + 价格上升：</strong> 空头 (Short) 仓位被强制平仓 (short squeeze 轧空)。该走势缺乏新鲜资金 —— 极有可能即将枯竭。</li>
+        <li><strong>OI 上升 + 价格下降：</strong> 激进资本进入空头仓位。看跌动量被确认。</li>
+        <li><strong>OI 下降 + 价格下降：</strong> 多头仓位被清算。走势缺乏新的卖家 —— 看跌动量存疑。</li>
+      </ul>
+
+      <div class="subsection-heading">Funding Rate (FR) — 杠杆的不对称成本</div>
+      <p>Funding Rate (资金费率) 是多头和空头永续合约头寸之间定期交换的款项，以保持合约价格锚定在现货指数上。它是持有杠杆的不对称成本 —— 并揭示了杠杆资本的主导方向偏见。</p>
+      <ul class="bullet-list">
+        <li><strong>FR 极端正值：</strong> 多头正向空头支付高昂费用。过度看涨偏见 —— 加了杠杆的散户被困在了错误的一方。极高概率发生向下的级联清算。</li>
+        <li><strong>FR 极端负值：</strong> 空头正向多头支付高昂费用。过度看跌偏见 —— 这是引爆轧空 (short-squeeze) 拉升的完美点火器。</li>
+      </ul>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 关键交战协议</div>
+        <p><strong>✅ 启用此项的条件：</strong> 在第一梯队 (Tier-1) 交易所 (Binance, Bybit, OKX) 执行加密货币永续期货。活跃图表代码必须是永续合约（例如，<code>BTCUSDT.P</code>, <code>ETHUSDT.P</code>）。<br><br>
+        <strong>❌ 勿启用的条件：</strong> 操作现货市场 (Spot)、外汇、传统股票、指数或商品。活动代码必须拥有原生的 Open Interest 遥测数据。<br><br>
+        <em>如果错误地在不支持的资产上启用，引擎的 </em><code>ignore_invalid_symbol=true</code><em> 协议会自动抑制错误，使核心指标不受干扰地继续运作。</em></p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">❌ 切勿将衍生品数据作为孤立的触发器</div>
+        <p>OI 和 FR 是 <strong>风险暴露乘数</strong> —— 它们不是孤立的买入/卖出触发器。始终要先通过 Synthetic Global Score 和 Tactical Setup 架构确认方向性偏见。衍生品遥测能放大共振；但不能取代它。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 08 章</div>
+      <h2 class="chapter-title">战术交战与常见问题解答 (FAQ)</h2>
+      <p class="chapter-desc">对已验证的 Elite 操作员提出的最关键操作问题的直接解答。</p>
+    </div>
+    <div class="prose">
+      <div class="step-list">
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>该架构是否与免费的 TradingView 计划兼容？</strong><br>✅ 肯定。核心架构将其整个定量序列压缩到了一个单独的执行脚本中。您完全只需要一个基本的、免费的账户以及活跃的 Elite 权限。</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>Rainbow Matrix 是自动执行交易的机器人吗？</strong><br>✅ 否定。Matrix 是一个高级的战术遥测与决策支持架构。作为战术操作员，您保留对资本部署的绝对执行权限。</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>该架构是否仅限于加密货币市场？</strong><br>✅ 否定。算法 order flow 和对数正态方差的物理规律在数学上是普遍适用的。该引擎适用于加密货币、外汇、股票、指数和商品。</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>执行标签 (Sniper, Strong 等) 会在历史数据上 repaint (重绘) 吗？</strong><br>✅ 否定。绝对的 Zero-Repaint 协议。触发器只在 K 线收盘时才会被永久渲染。您在历史回测中审核到的，就是在实时执行期间传输的精确、不可篡改的数学现实。</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>用于战术部署的最佳时间分形是什么？</strong><br>✅ 223 分钟分形 (参考第 4 章)。然而，引擎能在任何时间分辨率下以最高保真度运行。</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>当 Global Score 突破 &gt;90% 时，战术指令是什么？</strong><br>✅ 等待结构性反转触发器 (Sniper / Strong 标签) 的严格确认。立即执行，将您的 Stop-Loss 锚定在 Tactical Setup 提供的坐标后面。切勿在没有结构性遥测确认的情况下盲目逆势操作 (fade)。</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>该终端可以同时部署在多个图表上吗？</strong><br>✅ 肯定。Elite 权限允许在所有资产和时间分形之间不受阻碍地同步访问。</span></div>
+        <div class="step-item"><span class="step-num">❓</span><span class="step-text"><strong>我如何联系战术支持团队？</strong><br>✅ <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">contact@rainbowmatrix.ai</a> — 严格保留给经过验证的 Elite 操作员使用。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 09 章</div>
+      <h2 class="chapter-title">资金保护架构：生存的绝对法则</h2>
+      <p class="chapter-desc">生存的数学。将操作员与赌徒区分开来的 1–2% 终端指令。</p>
+    </div>
+    <div class="prose">
+      <p>一名每次执行承担 <strong>10% 风险的操作员</strong>，一旦遇到标准的统计方差（连续 5 次 Drawdown 亏损 —— 即便配备了顶尖遥测技术，这也是数学上的必然事件），将瞬间损失其整个终端 <strong>41% 的资金</strong>。相反，如果一名操作员在完全相同的 5 次连续亏损序列中，严格将风险上限控制在 <strong>每次执行 1%</strong>，他仅仅会遭受微不足道的 <strong>5% 资产打击。</strong></p>
+
+      <div class="section-heading">1% 至 2% 终端指令</div>
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-label">// 第 1 级</div>
+          <div class="tier-name" style="color:var(--cyan)">新手 (Initiates)</div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem">严格将每次执行的最大敞口控制在总资产的 <strong style="color:var(--cyan)">1%</strong>。没有例外。</p>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// 第 2 级</div>
+          <div class="tier-name" style="color:var(--purple)">进阶 (Advanced)</div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem">授权最高 <strong style="color:var(--purple)">2%</strong> 的资产敞口，但严格限于已确认的 STRONG 或 SNIPER 顶点触发器。</p>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">// 绝对限制</div>
+ 
+          <div class="tier-name" style="color:var(--red)">硬上限 (Hard Cap)</div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem">无论您的结构性确信度或共振有多强，在单一执行向量上 <strong style="color:var(--red)">切勿超过 2%</strong> 的资产风险。</p>
+        </div>
+      </div>
+
+      <div class="section-heading">定量头寸规模公式 (Position Sizing)</div>
+      <div class="formula">
+        <div class="formula-eq">头寸大小 (Position Size) = 授权风险金额 ($) ÷ 止损距离 (Stop-Loss Distance) ($)</div>
+        <div class="formula-label">// 示例：总资产 $10,000 × 1% 风险 = $100 ÷ $200 SL 距离 = 0.5 单位 (Units)</div>
+      </div>
+
+      <figure class="manual-figure">
+        <img src="images/ch09-fig01.png" alt="头寸规模计算示例 — 跨 drawdown 场景的资产保护" loading="lazy">
+        <figcaption><span class="fig-id">FIG.09.01</span> 资金保护数学 // 5 次 Drawdown 序列中 1% 与 10% 风险对比 — 损失 5% vs 损失 41%</figcaption>
+      </figure>
+
+      <div class="callout danger">
+        <div class="callout-title">⚠️ 绝对指令</div>
+    
+        <p>在资金保全上的不懈坚持，是能够 <strong>提取流动性</strong> 的第一梯队 (Tier-1) 操作员，与 <strong>充当流动性</strong> 的散户操作员之间不可逾越的鸿沟。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 10 章</div>
+      <h2 class="chapter-title">系统诊断与战术故障排除</h2>
+      <p class="chapter-desc">无需升级至工程支持，即可解决最常见的系统性异常。</p>
+    </div>
+    <div class="prose">
+      <div class="section-heading">1. 遥测 Payload 断开连接（警报失效）</div>
+      <ul class="check-list">
+        <li class="warn">审核到期时间：确认遥测 hook (挂钩) 未过期。Tier-0（免费）计划强制实施严格的 30 天过期期限。</li>
+        <li class="warn">审核条件：确保触发条件严格锚定于 <strong>Any alert() function call</strong>。</li>
+        <li class="warn">审核手机端：iOS/Android 设置 → 通知 → TradingView → 确保 push 遥测已获授权。</li>
+        <li class="yes">系统重置：完全删除损坏的警报 hook，并按照第 3 章协议重新初始化。</li>
+      </ul>
+
+      <div class="section-heading">2. NLP 终端渲染失败（HUD 丢失）</div>
+      <ul class="check-list">
+        <li class="warn">参数审核：验证设置中是否主动勾选了 <strong>Show Rainbow AI Terminal</strong> 指令。</li>
+        <li class="warn">定位审核：验证终端锚点 (anchor point) 是否正确分配到 Main Chart (主图表) 或 Oscillator Pane (振荡器窗格)。</li>
+        <li class="warn">Z-Index 冲突：将终端的锚定角落改变至屏幕的干净区域。</li>
+      </ul>
+
+      <div class="section-heading">3. 算法延迟或终端超载</div>
+      <ul class="check-list">
+        <li class="yes">浏览器：部署更新的基于 Chromium 的架构 (Chrome, Brave, Edge)。Firefox 尚未针对繁重的 PineScript 渲染进行优化。</li>
+        <li class="yes">资源：暂时禁用 Show Institutional Radar (显示机构雷达) 和 Show SMC Boxes (显示 SMC 框) —— 这些是最耗费图形处理器的。</li>
+        <li class="yes">数据：右键单击图表 → Chart Settings (图表设置) → Data (数据) → 限制渲染的历史 K 线数量。</li>
+      </ul>
+
+      <div class="section-heading">4. 触发器已执行但没有 Entry/SL/TP 线</div>
+      <ul class="check-list">
+        <li class="warn">Tactical Setup 需要同时满足 4 个数学条件。最常见的限制：在发出信号时 Global Score 低于 <strong>70%</strong> —— 这是对低概率布局的有意抑制。</li>
+        <li class="warn">可能存在 Volatility Squeeze (波动率挤压)。引擎拒绝在压缩的流动性区域内渲染战术线。</li>
+        <li class="yes">确认指标设置中主动授权了 Show Tactical Setup (显示战术设置)。</li>
+      </ul>
+
+      <div class="section-heading">5. 终端访问权限被撤销 / 授权失败</div>
+      <ul class="check-list">
+        <li class="warn">直接在 <strong>rainbowmatrix.ai</strong> 验证活跃的订阅状态。</li>
+        <li class="warn">确保您的准确 TradingView ID 已在门户网站正确记录。访问令牌 (Access tokens) 绑定的是 TradingView 的 Usernames (用户名)，而不是电子邮件地址。</li>
+        <li class="yes">将您的确切 TradingView 用户名和错误日志传送至 <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">contact@rainbowmatrix.ai</a>，以进行手动工程覆盖。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch11">
+    <div class="chapter-header">
+      <div class="chapter-num">// 第 11 章</div>
+      <h2 class="chapter-title">系统性风险披露与绝对法律指令</h2>
+      <p class="chapter-desc">强制性的统计风险指令以及专有架构的知识产权限制。</p>
+ 
+    </div>
+    <div class="prose">
+      <div class="callout danger">
+        <div class="callout-title">⚠️ 强制性统计风险指令</div>
+        <p>Rainbow Matrix AI 是一个高度先进的定量遥测和对数正态异常探测架构。在主 HUD (Master HUD) 内部渲染的任何“历史准确率” (Historical Accuracy) 测量，都是通过 ATR 振幅路由对过去的动力学方差进行数学审计。这些量化数据严格 <strong>不构成</strong> 财务建议、投资建议，也不对未来动力学结果提供任何数学上的保证。<br><br>
+        算法战场极其致命，且始终伴随着资金彻底清算的严峻风险。战术执行是操作员绝对且唯一的责任。</p>
+      </div>
+
+      <div class="section-heading">绝对失效指令 (Stop-Loss Protocol)</div>
+      <p>物理部署由 Matrix 的战术设置 (Tactical Setup) 计算出的算法 Stop-Loss (止损) 坐标是 <strong>一项僵化、不容谈判的架构要求。</strong> 忽视这些数学上的失效水平违反了引擎的核心定量哲学，会立即将您的操作从 Tier-1 战术执行降级为原始的散户赌博行为。</p>
+
+      <div class="section-heading">专有架构与知识产权 (IP) 限制</div>
+      <p>本战术手册及其底层的数学框架属于高度机密，仅供经过验证的 Rainbow Matrix AI Elite 操作员专有部署。此处包含的所有专有架构、定量方法论和结构情报均受国际知识产权法严格保护。严禁未经授权的复制、逆向工程或未经授权的外部发布，违者将导致立即的算法锁定，并被采取积极的法律行动。</p>
+
+      <div class="callout" style="margin-top:3rem; text-align:center">
+        <div class="callout-title" style="text-align:center">🌈 RAINBOW MATRIX AI · 🤖 MTF Probability Engine [💎 ELITE ACCESS]</div>
+        <p style="text-align:center">
+          <a href="https://rainbowmatrix.ai/cn.html" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
+          <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">✉️ contact@rainbowmatrix.ai</a>
+        </p>
+        <p style="text-align:center; margin-top:0.5rem; font-size:0.8rem">© Rainbow Matrix AI · 保留所有权利 · Elite 会员机密文件</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="manual-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="footer-logo">🌈 RAINBOW MATRIX</div>
+        <div class="footer-tagline">// 决策支持引擎与机构雷达 —— 精英操作员手册。经过验证的 Elite 会员的机密文件。</div>
+        <div class="footer-contact-block">
+          <div class="footer-contact-label">// 机构咨询</div>
+          <a href="mailto:contact@rainbowmatrix.ai">contact@rainbowmatrix.ai</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">产品</div>
+        <div class="footer-col-links">
+          <a href="../cn.html">主站</a>
+         
+          <a href="../compare/compare-cn.html">免费版 vs Elite 版</a>
+          <a href="../cn.html#pricing">定价</a>
+          <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-link">开始免费试用 →</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">手册</div>
+        <div class="footer-col-links">
+          <a href="#ch2">安装</a>
+          <a href="#ch4">223m 协议</a>
+         
+          <a href="#ch9">资金保护</a>
+          <a href="#ch8">FAQ</a>
+          <a href="#ch11">法律与风险</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">免费工具</div>
+        <div class="footer-col-links">
+          <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" rel="noopener">🌈 Cloud Institutional Bands</a>
+          <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" rel="noopener">🧱 MGI Walls</a>
+          <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" rel="noopener">📈 MTF Kinetic Oscillator</a>
+        </div>
+      
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-lang">
+        <span class="footer-lang-label">// 语言</span>
+        <div class="footer-lang-links">
+          <a href="manual.html">EN</a>
+          <span class="footer-lang-sep">·</span>
+    
+          <a href="manual-pt.html">PT</a>
+          <span class="footer-lang-sep">·</span>
+          <a href="manual-es.html">ES</a>
+         
+          <span class="footer-lang-sep">·</span>
+          <a href="manual-ru.html">RU</a>
+          <span class="footer-lang-sep">·</span>
+          <a href="manual-cn.html" class="active">中文</a>
+        </div>
+      </div>
+      <div class="footer-copy">© 2026 Rainbow Matrix · 精英操作员手册 v4 · 机密 — 仅限 Elite 会员</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // Sidebar toggle for mobile
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+
+  // Active sidebar link on scroll
+  const chapters = document.querySelectorAll('[id]');
+  const sideLinks = document.querySelectorAll('.sidebar-link');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        sideLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  chapters.forEach(ch => obs.observe(ch));
+
+  // Close sidebar on link click (mobile)
+  sideLinks.forEach(l => l.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('open');
+  }));
+</script>
+    <div id="chat-btn" onclick="toggleChat()" title="Rainbow Matrix 支持">
+  <span id="chat-btn-icon">🤖</span>
+</div>
+
+<div id="chat-window">
+  <div id="chat-header">
+    <div>
+      <div id="chat-title">🌈 Rainbow Matrix AI</div>
+      <div id="chat-subtitle">// 战术支持操作员</div>
+    </div>
+    <button onclick="toggleChat()" id="chat-close">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="msg bot">
+      <span>操作员在线。今天我能为您提供哪些关于 Rainbow Matrix AI 的协助？</span>
+    </div>
+  </div>
+  <div id="chat-input-wrap">
+    <input id="chat-input" type="text" placeholder="询问关于 Rainbow Matrix 的任何问题..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()" id="chat-send">→</button>
+  </div>
+</div>
+
+<style>
+  #chat-btn {
+    position: fixed;
+bottom: 2rem; right: 2rem; z-index: 999;
+    width: 56px; height: 56px; border-radius: 2px;
+    background: var(--cyan); cursor: pointer;
+    display: flex; align-items: center;
+justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 30px rgba(0,245,212,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  #chat-btn:hover { transform: translateY(-2px);
+box-shadow: 0 0 50px rgba(0,245,212,0.6); }
+
+  #chat-window {
+    position: fixed; bottom: 6rem; right: 2rem; z-index: 998;
+width: 420px; height: 620px;
+    background: #0d1117;
+    border: 1px solid rgba(0,245,212,0.3);
+    display: none; flex-direction: column;
+    box-shadow: 0 0 60px rgba(0,0,0,0.6);
+}
+  #chat-window.open { display: flex; }
+
+  #chat-header {
+    display: flex; justify-content: space-between; align-items: center;
+padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    background: rgba(0,245,212,0.05);
+  }
+  #chat-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem;
+color: #00f5d4; }
+  #chat-subtitle { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #6b7a8d; letter-spacing: 0.1em; margin-top: 2px;
+}
+  #chat-close { background: none; border: none; color: #6b7a8d; cursor: pointer; font-size: 1rem; transition: color 0.2s;
+}
+  #chat-close:hover { color: #00f5d4; }
+
+  #chat-messages {
+    flex: 1; overflow-y: auto; padding: 1.2rem;
+display: flex; flex-direction: column; gap: 0.85rem;
+  }
+  #chat-messages::-webkit-scrollbar { width: 3px; }
+  #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07);
+}
+
+  .msg { display: flex; max-width: 88%; }
+  .msg.bot { align-self: flex-start; }
+  .msg.user { align-self: flex-end;
+}
+  .msg span {
+    font-family: 'DM Sans', sans-serif; font-size: 0.84rem; line-height: 1.6;
+    padding: 0.7rem 1rem;
+border-radius: 2px;
+    white-space: pre-wrap;
+  }
+  .msg.bot span { background: rgba(255,255,255,0.04); color: #e8edf2; border-left: 2px solid #00f5d4;
+}
+  .msg.user span { background: rgba(0,245,212,0.1); color: #e8edf2; border-right: 2px solid #9b5de5; }
+  .msg.typing span { color: #6b7a8d;
+font-style: italic; }
+
+  #chat-input-wrap {
+    display: flex; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+}
+  #chat-input {
+    flex: 1; background: rgba(255,255,255,0.03); border: none; outline: none;
+    color: #e8edf2;
+font-family: 'DM Sans', sans-serif; font-size: 0.84rem;
+    padding: 0.9rem 1.1rem;
+  }
+  #chat-input::placeholder { color: #3d4a57;
+}
+  #chat-send {
+    background: #00f5d4; border: none; color: #080c10;
+    font-weight: 700; font-size: 1rem;
+    padding: 0 1.2rem;
+cursor: pointer; transition: background 0.2s;
+  }
+  #chat-send:hover { background: #00d4b8;
+}
+
+  @media(max-width: 480px) {
+    #chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem;
+}
+    #chat-btn { right: 1rem; bottom: 1rem; }
+  }
+</style>
+
+<script>
+  const chatHistory = [];
+function toggleChat() {
+    const win = document.getElementById('chat-window');
+    win.classList.toggle('open');
+    if (win.classList.contains('open')) {
+      document.getElementById('chat-input').focus();
+}
+  }
+
+  function addMessage(text, role) {
+    const msgs = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+div.className = `msg ${role}`;
+    const span = document.createElement('span');
+    span.textContent = text;
+    div.appendChild(span);
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+}
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+input.value = '';
+    addMessage(text, 'user');
+    chatHistory.push({ role: 'user', content: text });
+// Typing indicator
+    const typing = addMessage('分析中...', 'bot typing');
+try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory })
+      });
+const data = await res.json();
+      typing.remove();
+
+      const reply = data.response || '战术错误。请重试。';
+      addMessage(reply, 'bot');
+chatHistory.push({ role: 'assistant', content: reply });
+
+    } catch (err) {
+      typing.remove();
+addMessage('连接丢失。请重试或联系 contact@rainbowmatrix.ai', 'bot');
+    }
+  }
+</script>
+</body>
+</html>
