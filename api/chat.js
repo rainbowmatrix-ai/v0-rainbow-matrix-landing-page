@@ -17,7 +17,7 @@ Be concise, direct, and precise. Use tactical language. When explaining steps, n
 PRODUCT IDENTITY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Full Name: 🌈 Rainbow Matrix AI: 🎯 Multi-Timeframe Probability Engine [💎 ELITE ACCESS]
-Website: https://rainbowmatrix.ai
+Website: https://www.rainbowmatrix.ai
 Support: contact@rainbowmatrix.ai
 Checkout: https://whop.com/checkout/plan_TlnFrPEznloQV
 Price: $39.99/month · 7-Day Free Trial · Cancel anytime · No contracts
@@ -35,12 +35,12 @@ Mathematical foundation:
 - Quantum HFT Volatility (Garman-Klass + RiskMetrics EWMA): cloud breathes in real-time with market volatility
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FREE SCRIPTS (3 available on TradingView)
+FREE SCRIPTS (7 available on TradingView)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 All free scripts: zero repaint, 5 native languages (EN/PT/ES/RU/中文), TradingView free plan compatible.
 
 1. 🌈 Cloud Institutional Bands [FREE]
-Link: https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/
+Link: https://www.tradingview.com/script/gINwFBEf-Cloud-Institutional-Bands-Rainbow-Matrix/
 Features:
 - Log-Normal Rainbow Cloud with 8 thermal deviation zones
 - Dynamic VWAP that glows as price approaches
@@ -52,7 +52,7 @@ Features:
 - Works on any asset and any timeframe
 
 2. 🧱 MGI Walls — Institutional Liquidity Radar [FREE]
-Link: https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/
+Link: https://www.tradingview.com/script/nv46P0LW-MGI-Walls-Rainbow-Matrix/
 Features:
 - MTF Volume Profile walls: POC (Point of Control), VAH (Value Area High), VAL (Value Area Low)
 - Macro VWAP anchors: Daily, Weekly, Monthly
@@ -62,8 +62,8 @@ Features:
 - VAH = upper boundary of 70% accepted institutional volume
 - VAL = lower boundary of the 70% Value Area
 
-3. 📈 Kinetic Oscillator [FREE]
-Link: Coming soon on TradingView
+3. 📈 MTF Kinetic Oscillator [FREE]
+Link: https://www.tradingview.com/script/XH3duGHt-MTF-Kinetic-Oscillator-Rainbow-Matrix/
 Features:
 - 5-TF Kinetic Score (0–100%) — pure order-flow probability
 - CVD (Cumulative Volume Delta) — measures order flow aggression
@@ -74,10 +74,39 @@ Features:
 - Exhaustion Alerts when score >85% or <15%
 - Z-Score engine for real-time statistical deviation
 
+
+4. 📊 MTF RSI Synchrony [FREE]
+Link: https://www.tradingview.com/script/dLBodnwn-MTF-RSI-Synchrony-Rainbow-Matrix/
+Features:
+- 5-timeframe RSI aligned into one synchronized rainbow view
+- Spot when momentum agrees or splits across timeframes
+- Multi-timeframe overbought/oversold confluence
+
+5. 📦 MTF Volume Delta Bar Synchrony [FREE]
+Link: https://www.tradingview.com/script/OFEC9v7A-MTF-Volume-Delta-Bar-Synchrony-Rainbow-Matrix/
+Features:
+- Multi-timeframe volume delta (buy vs sell pressure) per bar
+- Synchronized volume reading across 5 timeframes
+- Reveals where aggressive volume is actually concentrated
+
+6. 🌊 MTF CVD Synchrony [FREE]
+Link: https://www.tradingview.com/script/2h6C8opx-MTF-CVD-Synchrony-Rainbow-Matrix/
+Features:
+- Cumulative Volume Delta across 5 timeframes in one view
+- Tracks sustained order-flow aggression / absorption
+- Confirms or warns against price direction via flow
+
+7. 🥢 Heikin Ashi Cloud Overlay [FREE]
+Link: https://www.tradingview.com/script/RQbsiuia-Heikin-Ashi-Cloud-Overlay-Rainbow-Matrix/
+Features:
+- Multi-timeframe Heikin Ashi cloud overlaid on price
+- Smooths noise for cleaner macro trend reading
+- Pairs with traditional candles for precise execution
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ELITE ACCESS — FULL FEATURE LIST
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Includes everything in the 3 free scripts PLUS:
+Includes everything in the 7 free scripts PLUS:
 
 PROBABILITY ENGINE:
 - Global Score (0–100%): 50 variables from 5 timeframes compressed into one master metric
@@ -96,6 +125,30 @@ TACTICAL SETUP:
 - Entry, Stop-Loss, Take-Profit lines — auto-calculated (requires 4 simultaneous conditions + Score >70%)
 - AI Tactical Summary: human-readable market verdict
 - Kinetic Squeeze Anomaly Alert
+
+KINETIC ENGINE (Dual-Bar Energy Model + Regime):
+The price energy is split into TWO bars in the HUD (rows 9-12):
+- KINETIC FORCE (motion): how fast price is moving NOW. Built from P3 (candle range / ATR) + P4 (Heikin Ashi body intensity), 50/50. High force = strong active movement.
+- POTENTIAL (position): how stretched/loaded price is. Built from P1 (Global Score stretch) + P2 (price stretch within the rainbow), 50/50. High potential = stored energy, far from equilibrium.
+A ◈ high-water mark inside the KINETIC bar remembers the peak force of the current directional leg.
+
+REGIME CLASSIFIER (2x2 matrix, threshold = 50 on each bar):
+- COILED (force < 50 AND potential < 50): both low. Pre-breakout / chop. Market is resting — wait.
+- EARLY MOVE (force ≥ 50 AND potential < 50): motion is building but price isn't stretched yet. Often the start of a fresh move.
+- EXHAUSTION (potential ≥ 50 AND force < 50): price is stretched/loaded but momentum is fading. Stalling — watch for reversal.
+- CLIMAX (force ≥ 50 AND potential ≥ 50): both high. Maximum energy — strong move in progress, but also where blow-off tops/bottoms form.
+The regime label rides in the POTENTIAL value cell of the HUD.
+
+DIVERGENCE ENGINE (visual-only, between Master Score and price):
+Detects all 4 classical divergence types by comparing pivots of the Global Score against price pivots. Pivot-based: default lookback is 5 bars on each side (set 3 for 1m-5m, 10+ for 4h-daily). A divergence confirms 'lookback' bars AFTER the second pivot forms (it does not repaint — it waits for pivot confirmation).
+- Regular Bullish: price Lower Low + score Higher Low → reversal up (solid line). ON by default.
+- Regular Bearish: price Higher High + score Lower High → reversal down (solid line). ON by default.
+- Hidden Bullish: price Higher Low + score Lower Low → continuation up in an uptrend (dashed line). OFF by default — enable in clear trends.
+- Hidden Bearish: price Lower High + score Higher High → continuation down in a downtrend (dashed line). OFF by default.
+Divergence alerts are OFF by default (two alerts: Bullish / Bearish). Divergence is visual-only and does NOT change the score.
+
+DUAL SCORE ENGINE (MGI Structural vs HFT Kinetic):
+The Global Score can be driven by two selectable brains: MGI Structural (reads institutional volume walls — steadier) or HFT Kinetic (front-runs raw momentum — faster). A [Dual] mode plots the secondary engine as a ghost line for cross-validation — when both agree, confidence is higher.
 
 SMART MONEY CONCEPTS (SMC):
 - Order Blocks (OB): volume-validated institutional entries — auto-drawn
@@ -360,16 +413,23 @@ Rainbow Matrix AI is a quantitative telemetry and decision-support tool. Histori
 KEY LINKS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Subscribe (Elite): https://whop.com/checkout/plan_TlnFrPEznloQV
-Main Site: https://rainbowmatrix.ai
-Free vs Elite comparison: https://rainbowmatrix.ai/compare/compare.html
-Operator's Manual EN: https://rainbowmatrix.ai/manual/manual.html
-Operator's Manual PT: https://rainbowmatrix.ai/manual/manual-pt.html
-Operator's Manual ES: https://rainbowmatrix.ai/manual/manual-es.html
-Operator's Manual RU: https://rainbowmatrix.ai/manual/manual-ru.html
+Main Site: https://www.rainbowmatrix.ai
+Free vs Elite comparison: https://www.rainbowmatrix.ai/compare/compare.html
+Operator's Manual EN: https://www.rainbowmatrix.ai/manual/manual.html
+Operator's Manual PT: https://www.rainbowmatrix.ai/manual/manual-pt.html
+Operator's Manual ES: https://www.rainbowmatrix.ai/manual/manual-es.html
+Operator's Manual RU: https://www.rainbowmatrix.ai/manual/manual-ru.html
+Operator's Manual CN: https://www.rainbowmatrix.ai/manual/manual-cn.html
 Support Email: contact@rainbowmatrix.ai
-Free Script 01: https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/
-Free Script 02: https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/
-Free Script 03: Coming soon on TradingView`;
+FREE SCRIPTS (7 total — all live on TradingView, no login required):
+1. Cloud Institutional Bands: https://www.tradingview.com/script/gINwFBEf-Cloud-Institutional-Bands-Rainbow-Matrix/
+2. MGI Walls: https://www.tradingview.com/script/nv46P0LW-MGI-Walls-Rainbow-Matrix/
+3. MTF Kinetic Oscillator: https://www.tradingview.com/script/XH3duGHt-MTF-Kinetic-Oscillator-Rainbow-Matrix/
+4. MTF RSI Synchrony: https://www.tradingview.com/script/dLBodnwn-MTF-RSI-Synchrony-Rainbow-Matrix/
+5. MTF Volume Delta Bar Synchrony: https://www.tradingview.com/script/OFEC9v7A-MTF-Volume-Delta-Bar-Synchrony-Rainbow-Matrix/
+6. MTF CVD Synchrony: https://www.tradingview.com/script/2h6C8opx-MTF-CVD-Synchrony-Rainbow-Matrix/
+7. Heikin Ashi Cloud Overlay: https://www.tradingview.com/script/RQbsiuia-Heikin-Ashi-Cloud-Overlay-Rainbow-Matrix/
+All 7 free scripts page: https://www.rainbowmatrix.ai/free/`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
