@@ -3,6 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try {
+    // Free section: language map (filenames differ from main site)
+    var LANGS = { 'pt': 'free-pt.html', 'es': 'free-es.html', 'ru': 'free-ru.html', 'zh': 'free-cn.html' };
+    var PREF_KEY = 'rm_lang_free';            // separate preference from main site
+    var SESS_KEY = 'rm_lang_free_redirected'; // separate session guard
+
+    var path = window.location.pathname || '/';
+    var file = (path.split('/').pop() || 'index.html').toLowerCase();
+    if (!file || file === '/') file = 'index.html';
+
+    // Manual override via ?lang=xx — user/campaign explicitly chose, save and stay
+    var qs = window.location.search || '';
+    if (qs.indexOf('lang=') > -1) {
+      var langParam = qs.split('lang=')[1].split('&')[0].toLowerCase();
+      localStorage.setItem(PREF_KEY, langParam);
+      sessionStorage.setItem(SESS_KEY, '1');
+      return;
+    }
+
+    // If user landed on a specific lang page (free-pt/es/ru/cn), update preference and stay
+    for (var lang in LANGS) {
+      if (file === LANGS[lang]) {
+        localStorage.setItem(PREF_KEY, lang);
+        return;
+      }
+    }
+
+    // Below: only on the EN entry point (index.html or /free/)
+    if (file !== 'index.html') return;
+
+    // Prevent redirect loop within session
+    if (sessionStorage.getItem(SESS_KEY)) return;
+    sessionStorage.setItem(SESS_KEY, '1');
+
+    var pref = localStorage.getItem(PREF_KEY);
+
+    if (pref) {
+      // Returning visitor with saved pref — redirect if non-EN
+      if (pref !== 'en' && LANGS[pref]) {
+        window.location.replace(LANGS[pref]);
+      }
+      return;
+    }
+
+    // First-time visitor — detect browser language
+    var bl = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    var detected = 'en';
+    if (bl.indexOf('pt') === 0) detected = 'pt';
+    else if (bl.indexOf('es') === 0) detected = 'es';
+    else if (bl.indexOf('ru') === 0) detected = 'ru';
+    else if (bl.indexOf('zh') === 0) detected = 'zh';
+
+    localStorage.setItem(PREF_KEY, detected);
+
+    if (detected !== 'en' && LANGS[detected]) {
+      window.location.replace(LANGS[detected]);
+    }
+  } catch(e) {
+    // localStorage unavailable (private mode) — stay on EN silently
+  }
+})();
+</script>
+
 <title>Free Tools — Rainbow Matrix | 7 Free Institutional Indicators</title>
 <meta name="description" content="Seven free, fully-functional Pine Script indicators from the Rainbow Matrix AI ecosystem. Multi-timeframe institutional analysis tools — no login required. Cloud Bands, MGI Walls, Kinetic Oscillator, Heikin Ashi Cloud, and the MTF Synchrony trio (RSI, Volume, CVD).">
 <link rel="canonical" href="https://www.rainbowmatrix.ai/free/">
