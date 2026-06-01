@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бесплатные инструменты — Rainbow Matrix | 7 бесплатных институциональных индикаторов</title>
+<meta name="description" content="Семь бесплатных полнофункциональных индикаторов Pine Script из экосистемы Rainbow Matrix AI. Мультитаймфреймовые инструменты институционального анализа — без входа в систему. Cloud Bands, MGI Walls, Kinetic Oscillator, Heikin Ashi Cloud и трио MTF Synchrony (RSI, Volume, CVD).">
+<link rel="canonical" href="https://www.rainbowmatrix.ai/free/free-ru.html">
+<link rel="alternate" hreflang="en" href="https://www.rainbowmatrix.ai/free/index.html">
+<link rel="alternate" hreflang="pt" href="https://www.rainbowmatrix.ai/free/free-pt.html">
+<link rel="alternate" hreflang="es" href="https://www.rainbowmatrix.ai/free/free-es.html">
+<link rel="alternate" hreflang="ru" href="https://www.rainbowmatrix.ai/free/free-ru.html">
+<link rel="alternate" hreflang="zh" href="https://www.rainbowmatrix.ai/free/free-cn.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.rainbowmatrix.ai/free/free-ru.html">
+<meta property="og:title" content="7 бесплатных институциональных индикаторов — Rainbow Matrix">
+<meta property="og:description" content="Семь бесплатных полнофункциональных индикаторов Pine Script. Мультитаймфреймовый институциональный анализ — без входа.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../favicon.ico">
+
+<style>
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.07);
+    --border-glow: rgba(0,245,212,0.3);
+    --cyan: #00f5d4;
+    --cyan-dim: rgba(0,245,212,0.15);
+    --purple: #9b5de5;
+    --purple-dim: rgba(155,93,229,0.15);
+    --orange: #ff6b35;
+    --text: #e8edf2;
+    --text-muted: #6b7a8d;
+    --text-dim: #3d4a57;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; line-height: 1.6; }
+
+  a { color: inherit; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); text-transform: uppercase; text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--text-muted); text-decoration: none;
+    letter-spacing: 0.05em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links a.active { color: var(--cyan); }
+  .nav-member {
+    color: var(--text-muted) !important;
+    border-left: 1px solid var(--border);
+    padding-left: 2rem;
+  }
+  .nav-member:hover { color: var(--cyan) !important; }
+  .nav-cta {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--bg) !important;
+    background: var(--cyan);
+    padding: 0.55rem 1.4rem;
+    border-radius: 2px;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+    text-decoration: none;
+  }
+  .nav-cta:hover { box-shadow: 0 0 30px rgba(0,245,212,0.5); transform: translateY(-1px); color: var(--bg) !important; }
+  .mobile-toggle { display: none; color: var(--cyan); font-size: 1.8rem; cursor: pointer; user-select: none; }
+
+  /* ── SECTION HEADERS ── */
+  .section-tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-tag::before { content: ''; width: 30px; height: 1px; background: var(--cyan); }
+  .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
+  .section-desc { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.75; }
+
+  /* ── HERO ── */
+  .free-hero {
+    position: relative;
+    padding: 11rem 4rem 5rem;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .free-hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .free-hero-glow {
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 500px;
+    background: radial-gradient(circle, rgba(0,245,212,0.12), transparent 65%);
+    pointer-events: none;
+  }
+  .free-hero-inner { position: relative; max-width: 820px; margin: 0 auto; z-index: 1; }
+  .free-hero .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan);
+    margin-bottom: 1.8rem;
+  }
+  .free-hero .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 8px var(--cyan); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .free-hero h1 {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(2.4rem, 5.5vw, 4rem); line-height: 1.05;
+    margin-bottom: 1.5rem; letter-spacing: -0.01em;
+  }
+  .free-hero h1 .accent { color: var(--cyan); }
+  .free-hero p {
+    font-size: 1.05rem; color: var(--text-muted);
+    max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.8;
+  }
+  .free-hero-stats {
+    display: flex; justify-content: center; gap: 3.5rem; flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  .free-hero-stat { text-align: center; }
+  .free-hero-stat .num { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--cyan); line-height: 1; }
+  .free-hero-stat .lbl { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.5rem; }
+
+  /* ── SCRIPT SECTIONS ── */
+  .free-section { padding: 5rem 4rem; max-width: 1200px; margin: 0 auto; }
+  .free-section.alt { background: var(--bg2); max-width: none; }
+  .free-section.alt .free-section-inner { max-width: 1200px; margin: 0 auto; }
+
+  .group-head { margin-bottom: 3rem; }
+
+  /* ── CARD GRID ── */
+  .card-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    background: var(--border);
+  }
+  .card-grid.trio { grid-template-columns: 1fr 1fr 1fr; }
+
+  .fcard {
+    background: var(--bg2);
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+    display: flex; flex-direction: column;
+  }
+  .fcard:hover { background: var(--bg3); }
+  .fcard-body { padding: 2.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+  .fcard-thumb-wrap {
+    position: relative; overflow: hidden;
+    display: block; text-decoration: none;
+  }
+  .fcard-thumb {
+    display: block; width: 100%; aspect-ratio: 16 / 10;
+    object-fit: cover; object-position: center;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: transform 0.4s ease, opacity 0.3s;
+  }
+  .fcard:hover .fcard-thumb { transform: scale(1.03); opacity: 0.95; }
+  .fcard-thumb-wrap::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(13,17,23,0.6));
+    pointer-events: none;
+  }
+  .fcard-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 3; }
+  .fcard-bar.cyan { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .fcard-bar.purple { background: linear-gradient(90deg, var(--purple), transparent); }
+  .fcard-bar.orange { background: linear-gradient(90deg, var(--orange), transparent); }
+  .fcard-tag { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.15em; margin-bottom: 0.5rem; text-transform: uppercase; }
+  .fcard-tag.cyan { color: var(--cyan); }
+  .fcard-tag.purple { color: var(--purple); }
+  .fcard-tag.orange { color: var(--orange); }
+  .fcard h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; line-height: 1.2; }
+  .fcard-sub { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted); margin-bottom: 1.2rem; letter-spacing: 0.05em; }
+  .fcard-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .fcard-items { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.8rem; flex-grow: 1; }
+  .fcard-items li { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 0.6rem; }
+  .fcard-items li .chk { font-family: var(--font-mono); font-size: 0.7rem; flex-shrink: 0; margin-top: 2px; }
+  .fcard-items li .chk.cyan { color: var(--cyan); }
+  .fcard-items li .chk.purple { color: var(--purple); }
+  .fcard-items li .chk.orange { color: var(--orange); }
+  .fcard-cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.7rem 1.3rem; text-decoration: none;
+    transition: box-shadow 0.2s; align-self: flex-start;
+  }
+  .fcard-cta.cyan { color: var(--bg); background: var(--cyan); }
+  .fcard-cta.cyan:hover { box-shadow: 0 0 30px rgba(0,245,212,0.5); }
+  .fcard-cta.purple { color: #fff; background: var(--purple); }
+  .fcard-cta.purple:hover { box-shadow: 0 0 30px rgba(155,93,229,0.5); }
+  .fcard-cta.orange { color: #fff; background: var(--orange); }
+  .fcard-cta.orange:hover { box-shadow: 0 0 30px rgba(255,107,53,0.5); }
+
+  /* ── TRIO BANNER ── */
+  .trio-banner {
+    border: 1px solid rgba(0,245,212,0.2);
+    background: linear-gradient(135deg, rgba(0,245,212,0.04), rgba(155,93,229,0.04));
+    padding: 2rem 2.5rem; margin-bottom: 2px;
+    display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+  }
+  .trio-banner-text { flex: 1; min-width: 280px; }
+  .trio-banner .lbl { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 0.5rem; text-transform: uppercase; }
+  .trio-banner .ttl { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .trio-banner .desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .trio-triad { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .trio-triad .axis { text-align: center; }
+  .trio-triad .axis .word { font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: var(--cyan); }
+  .trio-triad .axis .q { font-family: var(--font-mono); font-size: 0.56rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* ── CTA ── */
+  .free-cta-wrap { padding: 5rem 4rem; }
+  .free-cta {
+    max-width: 1100px; margin: 0 auto;
+    border: 1px solid rgba(0,245,212,0.2);
+    background: rgba(0,245,212,0.03);
+    padding: 3rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1.5rem;
+  }
+  .free-cta-text .lbl { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 0.4rem; text-transform: uppercase; }
+  .free-cta-text .ttl { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; }
+  .free-cta-text .ttl .accent { color: var(--cyan); }
+  .free-cta-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .free-cta-btn {
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.9rem 2rem; text-decoration: none; white-space: nowrap;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .free-cta-btn.solid { color: var(--bg); background: var(--cyan); }
+  .free-cta-btn.solid:hover { box-shadow: 0 0 30px rgba(0,245,212,0.5); transform: translateY(-1px); }
+  .free-cta-btn.ghost { color: var(--cyan); border: 1px solid rgba(0,245,212,0.3); }
+  .free-cta-btn.ghost:hover { background: rgba(0,245,212,0.08); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--bg); padding: 4rem 4rem 2rem; border-top: 1px solid var(--border); }
+  .footer-content {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 3rem; padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer-logo { font-family: var(--font-display); font-size: 1rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 0.8rem; }
+  .footer-tagline { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem; max-width: 320px; }
+  .footer-contact-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.4rem; }
+  .footer-contact-block a { font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan); text-decoration: none; }
+  .footer-col-title { font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+  .footer-col-links { display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col-links a { font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .footer-col-links a:hover { color: var(--cyan); }
+  .footer-col-links a.highlight { color: var(--cyan); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto; padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-lang { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .footer-lang-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .footer-lang-links { display: flex; align-items: center; gap: 0.6rem; }
+  .footer-lang-links a { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .footer-lang-links a:hover, .footer-lang-links a.active { color: var(--cyan); }
+  .footer-lang-sep { color: var(--text-dim); }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim); }
+
+  /* ── LIGHTBOX (matches index.html gallery) ── */
+  .lightbox-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; cursor: zoom-out; }
+  .lightbox-overlay.active { opacity: 1; pointer-events: all; }
+  .lightbox-img-wrap { position: relative; max-width: 90vw; max-height: 90vh; transform: scale(0.92); transition: transform 0.3s ease; cursor: default; }
+  .lightbox-overlay.active .lightbox-img-wrap { transform: scale(1); }
+  .lightbox-img-wrap::before { content: ''; position: absolute; inset: -1px; border: 1px solid rgba(0,245,212,0.4); pointer-events: none; z-index: 1; }
+  .lightbox-corner { position: absolute; width: 16px; height: 16px; border-color: var(--cyan); border-style: solid; z-index: 2; }
+  .lightbox-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .lightbox-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .lightbox-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .lightbox-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+  .lightbox-img-wrap img { display: block; max-width: 90vw; max-height: 85vh; object-fit: contain; }
+  .lightbox-close { position: absolute; top: -2.5rem; right: 0; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.1em; cursor: pointer; transition: color 0.2s; user-select: none; }
+  .lightbox-close:hover { color: var(--cyan); }
+  .lightbox-hint { position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; white-space: nowrap; }
+  .fcard-thumb { cursor: zoom-in; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; flex-wrap: wrap; }
+    .mobile-toggle { display: block; }
+    .nav-links { display: none; width: 100%; flex-direction: column; margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border); gap: 1.5rem; align-items: center; }
+    .nav-links.active { display: flex; }
+    .nav-member { border-left: none; padding-left: 0; }
+    .free-hero { padding: 9rem 1.5rem 4rem; }
+    .free-section { padding: 4rem 1.5rem; }
+    .free-cta-wrap { padding: 4rem 1.5rem; }
+    .card-grid, .card-grid.trio { grid-template-columns: 1fr; }
+    .free-hero-stats { gap: 2rem; }
+    .footer-content { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .free-cta { padding: 2.5rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../ru.html" class="nav-logo">Rainbow Matrix</a>
+  <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
+  <div class="nav-links" id="nav-links">
+    <a href="../ru.html#confrontation">Философия</a>
+    <a href="../ru.html#engine">Движок</a>
+    <a href="../ru.html#features">Возможности</a>
+    <a href="../ru.html#gallery">Галерея</a>
+    <a href="../ru.html#faq">FAQ</a>
+    <a href="../manual/manual-ru.html">Руководство оператора</a>
+    <a href="index.html" class="active">Бесплатные инструменты</a>
+    <a href="https://whop.com/orders/" target="_blank" rel="noopener" class="nav-member">Вход для участников</a>
+    <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="nav-cta">Начать бесплатный период →</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="free-hero">
+  <div class="free-hero-grid"></div>
+  <div class="free-hero-glow"></div>
+  <div class="free-hero-inner">
+    <div class="hero-badge">// Бесплатный арсенал · Без входа</div>
+    <h1>Семь бесплатных инструментов.<br><span class="accent">Попробуйте движок.</span></h1>
+    <p>Семь полнофункциональных индикаторов Pine Script из экосистемы Rainbow Matrix AI. Открытый код, мультитаймфрейм, институциональный уровень — устанавливаются в один клик на любом тарифе TradingView. Используйте, почувствуйте преимущество, а затем решите, нужен ли вам полный арсенал.</p>
+    <div class="free-hero-stats">
+      <div class="free-hero-stat"><div class="num">7</div><div class="lbl">Бесплатных скриптов</div></div>
+      <div class="free-hero-stat"><div class="num">5</div><div class="lbl">Языков</div></div>
+      <div class="free-hero-stat"><div class="num">0%</div><div class="lbl">Политика Repaint</div></div>
+      <div class="free-hero-stat"><div class="num">MPL</div><div class="lbl">Открытый код</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STANDALONE TOOLS ── -->
+<section class="free-section">
+  <div class="group-head">
+    <div class="section-tag">// Независимые инструменты</div>
+    <h2 class="section-title">Четыре независимых <span style="color:var(--cyan)">инструмента.</span></h2>
+    <p class="section-desc">Каждый решает отдельную часть институциональной головоломки — оболочки волатильности, стены ликвидности, вероятность потока ордеров и ясность тренда. Используйте по отдельности или вместе.</p>
+  </div>
+
+  <div class="card-grid">
+
+    <!-- Cloud Institutional Bands -->
+    <div class="fcard">
+      <div class="fcard-bar cyan"></div>
+      <div class="fcard-thumb-wrap">
+        <img class="fcard-thumb" data-full="img/cloud-bands-full.webp" src="img/cloud-bands-card.webp" alt="Cloud Institutional Bands на графике BTC" loading="lazy" width="1200" height="750">
+      </div>
+      <div class="fcard-body">
+      <div class="fcard-tag cyan">// Волатильность · Overlay</div>
+      <h3>🌈 Cloud Institutional Bands</h3>
+      <div class="fcard-sub">Rainbow Matrix · FREE · Open Source</div>
+      <p class="fcard-desc">Полосы VWAP логнормальной регрессии, отображающие институциональные зоны накопления и истощения — статистически скорректированные для асимметричного распределения цены.</p>
+      <ul class="fcard-items">
+        <li><span class="chk cyan">✓</span> 8 термальных зон отклонения (4 выше / 4 ниже базы)</li>
+        <li><span class="chk cyan">✓</span> Сигма-множители Фибоначчи (1.50/1.85/2.75/3.85)</li>
+        <li><span class="chk cyan">✓</span> Динамический VWAP со свечением близости</li>
+        <li><span class="chk cyan">✓</span> Оповещения зоны Black Swan + HUD информации</li>
+      </ul>
+      <a href="https://www.tradingview.com/script/gINwFBEf-Cloud-Institutional-Bands-Rainbow-Matrix/" target="_blank" rel="noopener" class="fcard-cta cyan">Add to TradingView →</a>
+      </div>
+    </div>
+
+    <!-- MGI Walls -->
+    <div class="fcard">
+      <div class="fcard-bar purple"></div>
+      <div class="fcard-thumb-wrap">
+        <img class="fcard-thumb" data-full="img/mgi-walls-full.webp" src="img/mgi-walls-card.webp" alt="MGI Walls на графике BTC" loading="lazy" width="1200" height="750">
+      </div>
+      <div class="fcard-body">
+      <div class="fcard-tag purple">// Ликвидность · Overlay</div>
+      <h3>🧱 MGI Walls — Liquidity Radar</h3>
+      <div class="fcard-sub">Rainbow Matrix · FREE · Open Source</div>
+      <p class="fcard-desc">Мультитаймфреймовый радар институциональной ликвидности. Извлекает Volume Profile, закреплённые VWAP и уровни SAR из 5 макрогоризонтов и объединяет перекрывающиеся зоны в усиленные стены.</p>
+      <ul class="fcard-items">
+        <li><span class="chk purple">✓</span> MTF Volume Profile (POC / VAH / VAL)</li>
+        <li><span class="chk purple">✓</span> Закреплённые VWAP (дневной / недельный / месячный)</li>
+        <li><span class="chk purple">✓</span> Движок слияния стен с цветом полярности</li>
+        <li><span class="chk purple">✓</span> HUD ближайшей стены + оповещения о столкновении</li>
+      </ul>
+      <a href="https://www.tradingview.com/script/nv46P0LW-MGI-Walls-Rainbow-Matrix/" target="_blank" rel="noopener" class="fcard-cta purple">Add to TradingView →</a>
+      </div>
+    </div>
+
+    <!-- MTF Kinetic Oscillator -->
+    <div class="fcard">
+      <div class="fcard-bar orange"></div>
+      <div class="fcard-thumb-wrap">
+        <img class="fcard-thumb" data-full="img/kinetic-full.webp" src="img/kinetic-card.webp" alt="MTF Kinetic Oscillator на графике BTC" loading="lazy" width="1200" height="750">
+      </div>
+      <div class="fcard-body">
+      <div class="fcard-tag orange">// Поток ордеров · Осциллятор</div>
+      <h3>📈 MTF Kinetic Oscillator</h3>
+      <div class="fcard-sub">Rainbow Matrix · FREE · Open Source</div>
+      <p class="fcard-desc">Мультитаймфреймовый осциллятор вероятности потока ордеров. Объединяет 5 таймфреймов через веса Фибоначчи, модулируется сенсорами CVD / Climax / Squeeze относительно самоадаптирующегося канала Фибоначчи.</p>
+      <ul class="fcard-items">
+        <li><span class="chk orange">✓</span> Слияние 5-TF (веса Фиб 0.15/0.20/0.25/0.25/0.15)</li>
+        <li><span class="chk orange">✓</span> Логнормальный Z-Score + RSI по таймфрейму</li>
+        <li><span class="chk orange">✓</span> Сенсоры CVD / Climax объёма / Squeeze</li>
+        <li><span class="chk orange">✓</span> Адаптивный канал Фибоначчи + Vacuum Trail</li>
+      </ul>
+      <a href="https://www.tradingview.com/script/XH3duGHt-MTF-Kinetic-Oscillator-Rainbow-Matrix/" target="_blank" rel="noopener" class="fcard-cta orange">Add to TradingView →</a>
+      </div>
+    </div>
+
+    <!-- Heikin Ashi Cloud Overlay -->
+    <div class="fcard">
+      <div class="fcard-bar cyan"></div>
+      <div class="fcard-thumb-wrap">
+        <img class="fcard-thumb" data-full="img/heikin-full.webp" src="img/heikin-card.webp" alt="Heikin Ashi Cloud Overlay на графике BTC" loading="lazy" width="1200" height="750">
+      </div>
+      <div class="fcard-body">
+      <div class="fcard-tag cyan">// Тренд · Overlay</div>
+      <h3>🔵 Heikin Ashi Cloud Overlay</h3>
+      <div class="fcard-sub">Rainbow Matrix · FREE · Open Source</div>
+      <p class="fcard-desc">Облако Heikin Ashi поверх реальных свечей — сглаженный контекст тренда плюс точный тайминг входной свечи в одном представлении, с прозрачностью по интенсивности тела и маркерами аномалий.</p>
+      <ul class="fcard-items">
+        <li><span class="chk cyan">✓</span> Облако HA поверх реальных свечей (двойной вид)</li>
+        <li><span class="chk cyan">✓</span> Прозрачность по интенсивности тела (плотность моментума)</li>
+        <li><span class="chk cyan">✓</span> Маркеры аномалий тела (&gt;3× скользящего среднего)</li>
+        <li><span class="chk cyan">✓</span> HUD состояния HA + 3 оповещения</li>
+      </ul>
+      <a href="https://www.tradingview.com/script/RQbsiuia-Heikin-Ashi-Cloud-Overlay-Rainbow-Matrix/" target="_blank" rel="noopener" class="fcard-cta cyan">Add to TradingView →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── MTF SYNCHRONY TRIO ── -->
+<section class="free-section alt">
+  <div class="free-section-inner">
+    <div class="group-head">
+      <div class="section-tag">// Трио MTF Synchrony</div>
+      <h2 class="section-title">Три угла на <span style="color:var(--cyan)">один рынок.</span></h2>
+      <p class="section-desc">Согласованное семейство из трёх мультитаймфреймовых осцилляторов, которые разделяют один визуальный язык, но отвечают на три разных вопроса. Используйте их рядом для полного чтения: где находится цена, насколько велико движение и кто побеждает.</p>
+    </div>
+
+    <!-- Trio identity banner -->
+    <div class="trio-banner">
+      <div class="trio-banner-text">
+        <div class="lbl">// Созданы как семейство</div>
+        <div class="ttl">Моментум · Величина · Направление</div>
+        <div class="desc">Та же шкала 0–100, те же соотношения Фибоначчи, та же радужная плотность, тот же макет таблицы легенды — прочитав один, вы мгновенно читаете все три. Тройная конфлюенция — самый сильный сигнал бесплатного арсенала.</div>
+      </div>
+      <div class="trio-triad">
+        <div class="axis"><div class="word">RSI</div><div class="q">где в диапазоне?</div></div>
+        <div class="axis"><div class="word">VOLUME</div><div class="q">насколько велик?</div></div>
+        <div class="axis"><div class="word">CVD</div><div class="q">кто побеждает?</div></div>
+      </div>
+    </div>
+
+    <div class="card-grid trio">
+
+      <!-- MTF RSI Synchrony -->
+      <div class="fcard">
+        <div class="fcard-bar cyan"></div>
+        <div class="fcard-thumb-wrap">
+          <img class="fcard-thumb" data-full="img/rsi-synchrony-full.webp" src="img/rsi-synchrony-card.webp" alt="MTF RSI Synchrony oscillator на графике BTC" loading="lazy" width="1200" height="750">
+        </div>
+        <div class="fcard-body">
+        <div class="fcard-tag cyan">// Моментум · Осциллятор</div>
+        <h3>🌈 MTF RSI Synchrony</h3>
+        <div class="fcard-sub">Rainbow Matrix · FREE · Open Source</div>
+        <p class="fcard-desc">Пять показаний RSI на таймфреймах с интервалами Фибоначчи, объединённых в одну взвешенную линию Master — синхронность моментума как визуальная радужная плотность. Отвечает: <em>где в диапазоне?</em></p>
+        <ul class="fcard-items">
+          <li><span class="chk cyan">✓</span> Слияние RSI 5-TF (веса Фибоначчи)</li>
+          <li><span class="chk cyan">✓</span> Длины по TF 7/10/14/14/21 (база Уайлдера)</li>
+          <li><span class="chk cyan">✓</span> Таблица легенды 6×9 со столбцом состояния</li>
+          <li><span class="chk cyan">✓</span> Классическая дивергенция + динамический Black Swan</li>
+        </ul>
+        <a href="https://www.tradingview.com/script/dLBodnwn-MTF-RSI-Synchrony-Rainbow-Matrix/" target="_blank" rel="noopener" class="fcard-cta cyan">Add to TradingView →</a>
+        </div>
+      </div>
+
+      <!-- MTF Volume Delta Bar Synchrony -->
+      <div class="fcard">
+        <div class="fcard-bar purple"></div>
+        <div class="fcard-thumb-wrap">
+          <img class="fcard-thumb" data-full="img/volume-synchrony-full.webp" src="img/volume-synchrony-card.webp" alt="MTF Volume Delta Bar Synchrony на графике BTC" loading="lazy" width="1200" height="750">
+        </div>
+        <div class="fcard-body">
+        <div class="fcard-tag purple">// Величина · Осциллятор</div>
+        <h3>🌈 MTF Volume Delta Bar Synchrony</h3>
+        <div class="fcard-sub">Rainbow Matrix · FREE · Open Source</div>
+        <p class="fcard-desc">Пять показаний процентиля объёма, объединённых в одну линию Master — насколько велик текущий объём относительно собственной истории, на пяти таймфреймах. Отвечает: <em>насколько велик?</em></p>
+        <ul class="fcard-items">
+          <li><span class="chk purple">✓</span> Слияние процентиля объёма 5-TF</li>
+          <li><span class="chk purple">✓</span> Столбцы Pulse + Состояние (Легенда 7×9)</li>
+          <li><span class="chk purple">✓</span> Delta Twin Bars (4 режима, обновление в реальном времени)</li>
+          <li><span class="chk purple">✓</span> Длины по TF 30/50/80/100/150</li>
+        </ul>
+        <a href="https://www.tradingview.com/script/OFEC9v7A-MTF-Volume-Delta-Bar-Synchrony-Rainbow-Matrix/" target="_blank" rel="noopener" class="fcard-cta purple">Add to TradingView →</a>
+        </div>
+      </div>
+
+      <!-- MTF CVD Synchrony -->
+      <div class="fcard">
+        <div class="fcard-bar orange"></div>
+        <div class="fcard-thumb-wrap">
+          <img class="fcard-thumb" data-full="img/cvd-synchrony-full.webp" src="img/cvd-synchrony-card.webp" alt="MTF CVD Synchrony oscillator на графике BTC" loading="lazy" width="1200" height="750">
+        </div>
+        <div class="fcard-body">
+        <div class="fcard-tag orange">// Направление · Осциллятор</div>
+        <h3>🌈 MTF CVD Synchrony</h3>
+        <div class="fcard-sub">Rainbow Matrix · FREE · Open Source</div>
+        <p class="fcard-desc">Пять показаний CVD по шкале с центром в нуле, объединённых в одну линию Master — 50 это истинный нейтралитет, выше преобладают покупатели, ниже преобладают продавцы. Отвечает: <em>кто побеждает?</em></p>
+        <ul class="fcard-items">
+          <li><span class="chk orange">✓</span> Шкала с центром в нуле (50 = истинный нейтралитет)</li>
+          <li><span class="chk orange">✓</span> Направленный поток с весом CLV + гистограмма</li>
+          <li><span class="chk orange">✓</span> Столбцы Raw Flow + Состояние (Легенда 7×9)</li>
+          <li><span class="chk orange">✓</span> Дивергенция по TF + границы кульминации</li>
+        </ul>
+        <a href="https://www.tradingview.com/script/2h6C8opx-MTF-CVD-Synchrony-Rainbow-Matrix/" target="_blank" rel="noopener" class="fcard-cta orange">Add to TradingView →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="free-cta-wrap">
+  <div class="free-cta">
+    <div class="free-cta-text">
+      <div class="lbl">// Готовы к полному арсеналу?</div>
+      <div class="ttl">Посмотрите, что вы упускаете с <span class="accent">Elite Access.</span></div>
+    </div>
+    <div class="free-cta-btns">
+      <a href="../compare/compare-ru.html" class="free-cta-btn ghost">Бесплатно vs Elite →</a>
+      <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="free-cta-btn solid">Начать бесплатный период →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <div class="footer-logo">RAINBOW MATRIX</div>
+      <div class="footer-tagline">// Мультитаймфреймовые инструменты институционального анализа для трейдеров.</div>
+      <div class="footer-contact-block">
+        <div class="footer-contact-label">// Институциональные запросы</div>
+        <a href="mailto:contact@rainbowmatrix.ai">contact@rainbowmatrix.ai</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Продукт</div>
+      <div class="footer-col-links">
+        <a href="../ru.html#features">Возможности</a>
+        <a href="../ru.html#engine">Движок</a>
+        <a href="../ru.html#gallery">Галерея</a>
+        <a href="../compare/compare-ru.html">Бесплатно vs Elite</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Ресурсы</div>
+      <div class="footer-col-links">
+        <a href="../manual/manual-ru.html">Руководство оператора</a>
+        <a href="free-ru.html">Бесплатные инструменты</a>
+        <a href="../ru.html#faq">FAQ</a>
+        <a href="mailto:contact@rainbowmatrix.ai">Поддержка</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Аккаунт</div>
+      <div class="footer-col-links">
+        <a href="https://whop.com/orders/" target="_blank" rel="noopener" class="highlight">Вход для участников</a>
+        <a href="https://whop.com/orders/" target="_blank" rel="noopener">Управление подпиской</a>
+        <a href="https://whop.com/orders/" target="_blank" rel="noopener">История платежей</a>
+        <a href="https://whop.com/checkout/plan_TlnFrPEznloQV">Начать бесплатный период</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-lang">
+      <span class="footer-lang-label">// Язык</span>
+      <div class="footer-lang-links">
+        <a href="index.html">EN</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="free-pt.html">PT</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="free-es.html">ES</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="free-ru.html" class="active">RU</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="free-cn.html">中文</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Rainbow Matrix. Все права защищены. Не является финансовым советом.</div>
+  </div>
+</footer>
+
+<!-- ── LIGHTBOX OVERLAY ── -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-img-wrap">
+    <div class="lightbox-corner tl"></div>
+    <div class="lightbox-corner tr"></div>
+    <div class="lightbox-corner bl"></div>
+    <div class="lightbox-corner br"></div>
+    <span class="lightbox-close" onclick="closeLightbox()">[ ESC ] CLOSE ✕</span>
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-hint">// CLICK ANYWHERE TO CLOSE</div>
+  </div>
+</div>
+
+<script>
+  function toggleMenu() {
+    var menu = document.getElementById('nav-links');
+    if (menu) menu.classList.toggle('active');
+  }
+
+  function openLightbox(src, alt) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src; img.alt = alt;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e) {
+    if (e && e.target.closest('.lightbox-img-wrap') && !e.target.closest('.lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Card thumbnails open the FULL-resolution snapshot in the lightbox
+  document.querySelectorAll('.fcard-thumb').forEach(img => {
+    img.addEventListener('click', e => {
+      e.preventDefault();
+      const full = img.getAttribute('data-full') || img.src;
+      openLightbox(full, img.alt);
+    });
+  });
+</script>
+
+</body>
+</html>
