@@ -148,17 +148,77 @@
     .compare-table td, .compare-table th { padding: 0.65rem 0.6rem; }
     footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
   }
+
+/* --- ported footer + scripts dropdown --- */
+.nav-dropdown { position: relative; display: inline-block; }
+.nav-dropdown > a { cursor: pointer; }
+.nav-dropdown-menu {
+  position: absolute; top: 100%; right: 0; margin-top: 0.6rem;
+  background: #0d141b; border: 1px solid var(--border); border-radius: 6px;
+  min-width: 240px; padding: 0.5rem 0; opacity: 0; visibility: hidden;
+  transform: translateY(-6px); transition: all 0.18s ease; z-index: 200;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav-dropdown-menu a {
+  display: block; padding: 0.6rem 1.1rem; font-family: var(--font-body);
+  font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.nav-dropdown-menu a:hover { color: var(--cyan); background: rgba(0,245,212,0.05); border-left-color: var(--cyan); }
+footer { background: var(--bg); padding: 4rem 4rem 2rem; border-top: 1px solid var(--border); }
+.footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.footer-logo { font-family: var(--font-display); font-size: 1rem; font-weight: 800; letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 0.8rem; }
+.footer-tagline { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.05em; line-height: 1.7; max-width: 280px; }
+.footer-contact-block { margin-top: 1.5rem; }
+.footer-contact-label { font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.footer-contact-block a { font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan); text-decoration: none; font-weight: 700; transition: color 0.2s; }
+.footer-contact-block a:hover { color: #fff; }
+.footer-col-title { font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+.footer-col-title::before { content: ''; width: 16px; height: 1px; background: var(--cyan); }
+.footer-col-links { display: flex; flex-direction: column; gap: 0.7rem; }
+.footer-col-links a { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+.footer-col-links a:hover { color: var(--cyan); }
+.footer-col-links a.highlight { color: var(--cyan); display: inline-flex; align-items: center; gap: 0.4rem; }
+.footer-col-links a.highlight::before { content: '🔐'; font-size: 0.78rem; }
+.footer-col-links a.highlight:hover { color: #fff; }
+.footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+.footer-lang { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.footer-lang-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.15em; text-transform: uppercase; }
+.footer-lang-links { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; }
+.footer-lang-links a { color: var(--text-muted); text-decoration: none; transition: all 0.2s; padding: 0.25rem 0.5rem; border: 1px solid transparent; border-radius: 2px; }
+.footer-lang-links a:hover { color: var(--cyan); border-color: rgba(0,245,212,0.2); }
+.footer-lang-links a.active { color: var(--cyan); font-weight: 700; border-color: rgba(0,245,212,0.3); background: rgba(0,245,212,0.05); }
+.footer-lang-sep { color: var(--text-dim); }
+.footer-copy { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.08em; }
+@media (max-width: 768px) {
+  footer { padding: 3rem 1.5rem 1.5rem; }
+  .footer-content { grid-template-columns: 1fr; gap: 2.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .nav-dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; min-width: 0; margin-top: 0.3rem; border: none; padding-left: 0.5rem; }
+}
+
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="https://rainbowmatrix.ai" class="nav-logo">🌈 Rainbow Matrix AI</a>
+  <a href="../index.html" class="nav-logo">🌈 Rainbow Matrix AI</a>
   <div class="nav-links">
-    <a href="https://rainbowmatrix.ai">← Main Site</a>
-    <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank">Script 01</a>
-    <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank">Script 02</a>
-    <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank">Script 03</a>
+    <a href="../index.html">← Main Site</a>
+    <div class="nav-dropdown">
+      <a tabindex="0">Free Scripts ▾</a>
+      <div class="nav-dropdown-menu">
+      <a href="https://www.tradingview.com/script/gINwFBEf-Cloud-Institutional-Bands-Rainbow-Matrix/" target="_blank" rel="noopener">Cloud Institutional Bands</a>
+      <a href="https://www.tradingview.com/script/nv46P0LW-MGI-Walls-Rainbow-Matrix/" target="_blank" rel="noopener">MGI Walls</a>
+      <a href="https://www.tradingview.com/script/XH3duGHt-MTF-Kinetic-Oscillator-Rainbow-Matrix/" target="_blank" rel="noopener">MTF Kinetic Oscillator</a>
+      <a href="https://www.tradingview.com/script/dLBodnwn-MTF-RSI-Synchrony-Rainbow-Matrix/" target="_blank" rel="noopener">MTF RSI Synchrony</a>
+      <a href="https://www.tradingview.com/script/OFEC9v7A-MTF-Volume-Delta-Bar-Synchrony-Rainbow-Matrix/" target="_blank" rel="noopener">MTF Volume Synchrony</a>
+      <a href="https://www.tradingview.com/script/2h6C8opx-MTF-CVD-Synchrony-Rainbow-Matrix/" target="_blank" rel="noopener">MTF CVD Synchrony</a>
+      <a href="https://www.tradingview.com/script/RQbsiuia-Heikin-Ashi-Cloud-Overlay-Rainbow-Matrix/" target="_blank" rel="noopener">Heikin Ashi Cloud</a>
+      </div>
+    </div>
     <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="nav-cta">Get Elite →</a>
   </div>
 </nav>
@@ -175,21 +235,21 @@
       <div class="free-card-title">🌈 Cloud Institutional Bands</div>
       <div class="free-card-sub">Rainbow Matrix AI · FREE · TradingView</div>
       <p class="free-card-desc">Log-Normal Rainbow Cloud with Dynamic VWAP. 8 thermal deviation zones showing exactly where institutions defend and attack.</p>
-      <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" class="free-card-btn">Add Free →</a>
+      <a href="https://www.tradingview.com/script/gINwFBEf-Cloud-Institutional-Bands-Rainbow-Matrix/" target="_blank" class="free-card-btn">Add Free →</a>
     </div>
     <div class="free-card">
       <div class="free-card-num">// Free Script 02</div>
       <div class="free-card-title">🧱 MGI Walls — Liquidity Radar</div>
       <div class="free-card-sub">Rainbow Matrix AI · FREE · TradingView</div>
       <p class="free-card-desc">MTF institutional wall mapping. POC/VAH/VAL + macro VWAP anchors projected directly onto your active chart in real-time.</p>
-      <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" class="free-card-btn">Add Free →</a>
+      <a href="https://www.tradingview.com/script/nv46P0LW-MGI-Walls-Rainbow-Matrix/" target="_blank" class="free-card-btn">Add Free →</a>
     </div>
     <div class="free-card">
       <div class="free-card-num">// Free Script 03</div>
       <div class="free-card-title">📈 MTF Kinetic Oscillator</div>
       <div class="free-card-sub">Rainbow Matrix AI · FREE · TradingView</div>
       <p class="free-card-desc">Multi-timeframe oscillator fusing 5 Fibonacci fractals into a single 0–100 probability score. Powered by directional Z-Score, CVD order flow, Black Swan zones and adaptive Squeeze detection.</p>
-      <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" class="free-card-btn">Add Free →</a>
+      <a href="https://www.tradingview.com/script/XH3duGHt-MTF-Kinetic-Oscillator-Rainbow-Matrix/" target="_blank" class="free-card-btn">Add Free →</a>
     </div>
   </div>
 </div>
@@ -443,13 +503,13 @@
         <tr>
           <td></td>
           <td class="td-val" style="padding:1.5rem">
-            <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,245,212,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,245,212,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
+            <a href="https://www.tradingview.com/script/gINwFBEf-Cloud-Institutional-Bands-Rainbow-Matrix/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,245,212,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,245,212,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
           </td>
           <td class="td-val" style="padding:1.5rem">
-            <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);border:1px solid rgba(155,93,229,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(155,93,229,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
+            <a href="https://www.tradingview.com/script/nv46P0LW-MGI-Walls-Rainbow-Matrix/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);border:1px solid rgba(155,93,229,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(155,93,229,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
           </td>
           <td class="td-val" style="padding:1.5rem">
-            <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(255,107,53,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,53,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
+            <a href="https://www.tradingview.com/script/XH3duGHt-MTF-Kinetic-Oscillator-Rainbow-Matrix/" target="_blank" style="display:inline-block;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(255,107,53,0.3);padding:0.55rem 0.9rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,53,0.08)'" onmouseout="this.style.background='transparent'">Add Free →</a>
           </td>
           <td class="td-elite" style="padding:1.5rem">
             <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" style="display:inline-block;font-family:var(--font-mono);font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--bg);background:var(--cyan);padding:0.75rem 1.5rem;text-decoration:none;box-shadow:0 0 20px rgba(0,245,212,0.3);transition:all 0.2s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,245,212,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,245,212,0.3)'">Get Elite — $39.99/mo →</a>
@@ -476,9 +536,60 @@
 </section>
 
 <footer>
-  <div class="footer-logo">🌈 RAINBOW MATRIX AI</div>
-  <div class="footer-copy">© Rainbow Matrix AI · All rights reserved · Not financial advice.</div>
-  <a href="https://rainbowmatrix.ai" style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); text-decoration:none; letter-spacing:0.08em;">← Back to Main Site</a>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <div class="footer-logo">RAINBOW MATRIX</div>
+      <div class="footer-tagline">// Decision-Support Engine & Institutional Radar — the Elite Operator's Manual.</div>
+      <div class="footer-contact-block">
+        <div class="footer-contact-label">// Institutional Inquiries</div>
+        <a href="mailto:contact@rainbowmatrix.ai">contact@rainbowmatrix.ai</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Product</div>
+      <div class="footer-col-links">
+        <a href="../index.html#features">Features</a>
+        <a href="../index.html#engine">Engine</a>
+        <a href="../index.html#gallery">Gallery</a>
+        <a href="compare.html">Free vs Elite</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Resources</div>
+      <div class="footer-col-links">
+        <a href="../manual/manual.html">Operator's Manual</a>
+        <a href="../free/index.html">Free Tools</a>
+        <a href="../index.html#faq">FAQ</a>
+        <a href="mailto:contact@rainbowmatrix.ai">Contact Support</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Account</div>
+      <div class="footer-col-links">
+        <a href="https://whop.com/orders/" target="_blank" rel="noopener" class="highlight">Member Login</a>
+        <a href="https://whop.com/orders/" target="_blank" rel="noopener">Manage Subscription</a>
+        <a href="https://whop.com/orders/" target="_blank" rel="noopener">Billing History</a>
+        <a href="https://whop.com/checkout/plan_TlnFrPEznloQV">Start Free Trial</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-lang">
+      <span class="footer-lang-label">// Language</span>
+      <div class="footer-lang-links">
+        <a href="compare.html" class="active">EN</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="compare-pt.html">PT</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="compare-es.html">ES</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="compare-ru.html">RU</a>
+        <span class="footer-lang-sep">·</span>
+        <a href="compare-cn.html">中文</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Rainbow Matrix. All rights reserved. Not financial advice.</div>
+  </div>
 </footer>
   <!-- ── CHATBOT ── -->
 <div id="chat-btn" onclick="toggleChat()" title="Rainbow Matrix Support">
