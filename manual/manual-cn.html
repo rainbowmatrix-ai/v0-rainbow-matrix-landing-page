@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rainbow Matrix AI — 精英操作员手册</title>
+<meta name="description" content="Rainbow Matrix AI 在 TradingView 上的完整操作者手册：配置、双 Score 引擎 (MGI Structural 与 HFT Kinetic)、Kinetic Force / Potential 状态矩阵、Divergence Engine、Smart Walls 以及 5 周期斐波那契同步。">
 
 <script>
 (function(){
@@ -71,11 +72,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/manual/manual.html">
-<link rel="alternate" hreflang="pt" href="https://rainbowmatrix.ai/manual/manual-pt.html">
-<link rel="alternate" hreflang="es" href="https://rainbowmatrix.ai/manual/manual-es.html">
-<link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/manual/manual-ru.html">
-<link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/manual/manual-cn.html">
+<link rel="alternate" hreflang="en" href="https://www.rainbowmatrix.ai/manual/manual.html">
+<link rel="alternate" hreflang="pt" href="https://www.rainbowmatrix.ai/manual/manual-pt.html">
+<link rel="alternate" hreflang="es" href="https://www.rainbowmatrix.ai/manual/manual-es.html">
+<link rel="alternate" hreflang="ru" href="https://www.rainbowmatrix.ai/manual/manual-ru.html">
+<link rel="alternate" hreflang="zh" href="https://www.rainbowmatrix.ai/manual/manual-cn.html">
 <link rel="icon" type="image/x-icon" href="../favicon.ico">
 <link rel="apple-touch-icon" href="../favicon.ico">  
 <style>
@@ -517,7 +518,7 @@
   }
   .footer-content {
     max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr;
     gap: 3rem;
     padding-bottom: 3rem;
     border-bottom: 1px solid var(--border);
@@ -612,10 +613,10 @@
 <body>
 
 <nav class="topnav">
-  <a href="https://rainbowmatrix.ai" class="topnav-logo">🌈 Rainbow Matrix AI</a>
+  <a href="https://www.rainbowmatrix.ai" class="topnav-logo">🌈 Rainbow Matrix AI</a>
   <div class="topnav-right">
     <span class="topnav-tag">🌈 Rainbow Matrix AI: 🎯 Multi-Timeframe Probability Engine [💎 ELITE ACCESS] Manual</span>
-    <a href="https://rainbowmatrix.ai/cn.html" class="topnav-link">← 返回主页</a>
+    <a href="https://www.rainbowmatrix.ai/cn.html" class="topnav-link">← 返回主页</a>
     <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="topnav-link" style="color:var(--cyan)">获取 Elite →</a>
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   </div>
@@ -640,7 +641,7 @@
 
   <div class="sidebar-section-label" style="margin-top:2rem">// 支持</div>
   <a href="mailto:contact@rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">✉</span>contact@rainbowmatrix.ai</a>
-  <a href="https://rainbowmatrix.ai/cn.html" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
+  <a href="https://www.rainbowmatrix.ai/cn.html" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
 </aside>
 
 <main class="main">
@@ -930,6 +931,18 @@
       <div class="section-heading">3.2 AI Score Engine — Global Score 背后的核心大脑</div>
       <p>AI 评分引擎 (AI Score Engine) 是计算 <em>Global Probability Score</em> 的核心算法 —— 一个在 0% 和 100% 之间的精确指标，能够同时量化所有 5 个时间级别上的方向压力。</p>
 
+      <p>引擎配备两个可选的大脑。它们通过不同的视角解读同一个市场，由操作者选择哪一个驱动 Score：</p>
+      <table class="data-table">
+        <tr><th>Engine</th><th>解读</th><th>特性</th></tr>
+        <tr><td><strong>MGI Structural</strong></td><td>机构成交量壁垒与引力水平</td><td>更稳定。锚定于资金真正所在之处。变动更少，但信念更强。</td></tr>
+        <tr><td><strong>HFT Kinetic</strong></td><td>纯粹动量与 order flow 加速度</td><td>更快。抢先于行情。在结构确认之前就做出反应。</td></tr>
+      </table>
+      <p><strong>[Dual]</strong> 模式将次要引擎绘制为主引擎背后的<em>幽灵线</em>，将两个读数转化为交叉验证工具：当 MGI Structural 与 HFT Kinetic 一致时，信念最强；当二者背离时，市场处于过渡期，操作者应退场等待，直到它们重新对齐。</p>
+      <div class="callout purple">
+        <div class="callout-title">⚡ 如何使用双重读数</div>
+        <p>将一致视为汇合，而非冗余。快引擎 (HFT) 告诉你<em>某事正在开始</em>；慢引擎 (MGI) 告诉你<em>结构已确认</em>。概率最高的入场点位于快线已经移动、结构线正在追赶汇合之处。</p>
+      </div>
+
       <div class="section-heading">3.10 显示 Vacuum Trail — 机构流动性真空</div>
       <p>有一种动力学现象，以绝对的结构一致性决定着算法市场的行为 —— 这是散户群体从未接受过相关审计训练的原则。在物理学中，当一个高速质量迅速位移时，由此产生的真空会产生一个引力虚空，将其周围的环境猛烈地拉回以使其稳定。在算法金融市场中，完全相同的原理也适用于动力学价格行为。</p>
       <p><em>Vacuum Trail</em> (真空轨迹) 将这种动力学现象完全可视化 —— 这是一个会聚的几何向量系统，直接部署在震荡指标控制台上（而不是在主价格图表上）。它在 Global Score 突破动态通道上限或下限的确切毫秒数接合。</p>
@@ -1127,7 +1140,9 @@
         <tr><td><strong>Magnetic Radius (%) (磁性半径)</strong></td><td>0.25%</td><td>0.15% – 0.50%</td><td>激活 MGI 时距离墙的距离。越宽 = 预测越早。</td></tr>
         <tr><td><strong>Gravitational Force (引力强度)</strong></td><td>6</td><td>3 – 10</td><td>每堵墙注入 Score 的分数。最高上限：总共 ±30 分。</td></tr>
         <tr><td><strong>MGI Polarity (MGI 极性)</strong></td><td>Magnetic 🧲 (磁性)</td><td>Magnetic / Friction</td><td>Magnetic = stop-hunt 协议 (加密货币)。Friction = 吸收 (外汇/股票)。</td></tr>
+        <tr><td><strong>Smart Wall (智能墙)</strong></td><td>开启</td><td>开启 / 关闭</td><td>墙的力量随接近速度自适应。快速接近会强化墙体 (利于反弹)；缓慢漂移则软化墙体 (利于突破)。</td></tr>
       </table>
+      <p><em>Smart Wall</em> 升级使每个机构水平从静态变为动态。墙不是一条固定的线——它的力量随价格接近的猛烈程度而缩放。快速、高速的接近被读作衰竭峰值，墙体被强化，利于反弹；缓慢、磨蹭的接近软化墙体，利于干净的突破。<strong>极性</strong>设定整个力场的偏向：<em>Magnetic (磁性)</em>（吸引——水平将价格拉向 stop-hunt，理想用于加密货币）或 <em>Friction (摩擦)</em>（阻尼——水平吸收并阻滞动量，理想用于外汇与股票）。</p>
 
       <div class="section-heading">3.15 MTF 同步引擎</div>
       <table class="data-table">
@@ -1147,6 +1162,47 @@
         <img src="images/ch03-fig10.png" alt="MTF 同步横幅 — 5 个分形权重摘要" loading="lazy">
         <figcaption><span class="fig-id">FIG.03.10</span> MTF Sync 遥测 // TF1:15% · TF2:20% · TF3:25% · TF4:25% · TF5:15%</figcaption>
       </figure>
+
+      <div class="section-heading">3.16 Kinetic Engine — Force、Potential 与状态矩阵</div>
+      <p>HUD 将价格的能量拆分为两个不同的读数，然后将市场归类为四种状态之一。这一拆分是「知道价格正在<em>移动</em>」与「知道价格已<em>蓄能</em>」之间的区别——这两者常被混淆，却几乎从不相同。</p>
+      <table class="data-table">
+        <tr><th>柱</th><th>测量</th><th>构成</th></tr>
+        <tr><td><strong>Kinetic Force</strong></td><td>运动——价格此刻移动的速度</td><td>K线幅度 / ATR (P3) + Heikin Ashi 实体强度 (P4)，各占 50/50</td></tr>
+        <tr><td><strong>Potential</strong></td><td>位置——价格被拉伸与蓄能的程度</td><td>Global Score 拉伸度 (P1) + 价格在 rainbow 中的拉伸度 (P2)，各占 50/50</td></tr>
+      </table>
+      <p>Kinetic Force 柱内的 <strong>◈ 高水位标记</strong>记住当前方向段的力量峰值——当力量下降而 ◈ 仍居高位时，动量正从该走势中流失。</p>
+
+      <p>两根柱馈入一个 <strong>2×2 状态矩阵</strong>。每根柱以 <strong>50</strong> 为阈值读作高或低，产生四种状态：</p>
+      <table class="data-table">
+        <tr><th>状态</th><th>Force</th><th>Potential</th><th>含义</th></tr>
+        <tr><td><strong>🧊 COILED (蓄势)</strong></td><td>&lt; 50</td><td>&lt; 50</td><td>两者皆低。突破前的压缩或盘整。市场在休息——不要强行交易。</td></tr>
+        <tr><td><strong>🚀 EARLY MOVE (初动)</strong></td><td>≥ 50</td><td>&lt; 50</td><td>运动正在积聚，价格尚未拉伸。通常是新走势中最干净的部分——入场窗口。</td></tr>
+        <tr><td><strong>⏳ EXHAUSTION (衰竭)</strong></td><td>&lt; 50</td><td>≥ 50</td><td>价格已拉伸蓄能，但动量正在减弱。停滞——收紧止损，警惕反转。</td></tr>
+        <tr><td><strong>💥 CLIMAX (高潮)</strong></td><td>≥ 50</td><td>≥ 50</td><td>两者皆达峰值。强力走势正在进行——但这也是 blow-off 顶部与投降式底部形成之处。</td></tr>
+      </table>
+      <div class="callout purple">
+        <div class="callout-title">⚡ 操作状态</div>
+        <p>状态是上下文过滤器，本身并非信号。致命组合：在 <strong>EARLY MOVE</strong> 顺力量方向入场；在 <strong>EXHAUSTION</strong> 获利了结或观望；并将 <strong>CLIMAX 搭配看跌背离</strong>（见 3.17）视为高概率反转警告——最大能量遭遇动量分歧，正是顶部与底部的构筑方式。</p>
+      </div>
+
+      <div class="section-heading">3.17 Divergence Engine</div>
+      <p>Divergence Engine 将 Global Score 的枢轴与价格的枢轴进行比较，以检测四种经典背离类型。它<strong>仅为视觉</strong>——绝不改变 Score——并且<strong>由枢轴确认</strong>，即在绘制前等待枢轴完全形成。不重绘。</p>
+      <table class="data-table">
+        <tr><th>类型</th><th>价格</th><th>Score</th><th>解读</th><th>默认</th></tr>
+        <tr><td><strong>Regular Bullish</strong></td><td>下降低点</td><td>上升低点</td><td>向上反转——卖方衰竭（实线）</td><td>开启</td></tr>
+        <tr><td><strong>Regular Bearish</strong></td><td>上升高点</td><td>下降高点</td><td>向下反转——买方衰竭（实线）</td><td>开启</td></tr>
+        <tr><td><strong>Hidden Bullish</strong></td><td>上升低点</td><td>下降低点</td><td>向上延续，处于上升趋势（虚线）</td><td>关闭</td></tr>
+        <tr><td><strong>Hidden Bearish</strong></td><td>下降高点</td><td>上升高点</td><td>向下延续，处于下降趋势（虚线）</td><td>关闭</td></tr>
+      </table>
+      <table class="data-table">
+        <tr><th>参数</th><th>默认</th><th>范围</th><th>效果</th></tr>
+        <tr><td><strong>Pivot Lookback</strong></td><td>5</td><td>2 – 20</td><td>确认一个枢轴所需的每侧 K 线数。1m–5m 用 3，15m–1h 用 5，4h–日线用 10+。</td></tr>
+        <tr><td><strong>背离警报</strong></td><td>关闭</td><td>开启 / 关闭</td><td>背离确认时触发一个 Bullish 和一个 Bearish 警报。</td></tr>
+      </table>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 确认是有代价的</div>
+        <p>由于背离在第二个枢轴形成<strong>之后的 lookback 根 K 线</strong>才确认，该信号可靠但本质上滞后。lookback 越大意味着枢轴越可靠、滞后越多。Hidden 背离默认关闭——仅在明确的趋势市场中启用，因为延续型设置在那里才有效。</p>
+      </div>
     </div>
   </section>
 
@@ -1512,7 +1568,7 @@
       <div class="callout" style="margin-top:3rem; text-align:center">
         <div class="callout-title" style="text-align:center">🌈 RAINBOW MATRIX AI · 🤖 MTF Probability Engine [💎 ELITE ACCESS]</div>
         <p style="text-align:center">
-          <a href="https://rainbowmatrix.ai/cn.html" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
+          <a href="https://www.rainbowmatrix.ai/cn.html" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
           <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">✉️ contact@rainbowmatrix.ai</a>
         </p>
         <p style="text-align:center; margin-top:0.5rem; font-size:0.8rem">© Rainbow Matrix AI · 保留所有权利 · Elite 会员机密文件</p>
@@ -1535,8 +1591,6 @@
         <div class="footer-col-title">产品</div>
         <div class="footer-col-links">
           <a href="../cn.html">主站</a>
-         
-          <a href="../compare/compare-cn.html">免费版 vs Elite 版</a>
           <a href="../cn.html#pricing">定价</a>
           <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-link">开始免费试用 →</a>
         </div>
@@ -1554,15 +1608,6 @@
         </div>
       </div>
 
-      <div>
-        <div class="footer-col-title">免费工具</div>
-        <div class="footer-col-links">
-          <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" rel="noopener">🌈 Cloud Institutional Bands</a>
-          <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" rel="noopener">🧱 MGI Walls</a>
-          <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" rel="noopener">📈 MTF Kinetic Oscillator</a>
-        </div>
-      
-      </div>
     </div>
 
     <div class="footer-bottom">
