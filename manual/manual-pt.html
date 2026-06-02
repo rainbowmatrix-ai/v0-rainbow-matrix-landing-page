@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rainbow Matrix AI — Manual do Operador de Elite</title>
+<meta name="description" content="O manual completo do operador do Rainbow Matrix AI no TradingView: configuração, o motor de Score dual (MGI Structural vs HFT Kinetic), a matriz de regime Kinetic Force / Potential, o Divergence Engine, Smart Walls e a sincronização Fibonacci de 5 timeframes.">
 
 <script>
 (function(){
@@ -71,11 +72,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/manual/manual.html">
-<link rel="alternate" hreflang="pt" href="https://rainbowmatrix.ai/manual/manual-pt.html">
-<link rel="alternate" hreflang="es" href="https://rainbowmatrix.ai/manual/manual-es.html">
-<link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/manual/manual-ru.html">
-<link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/manual/manual-cn.html">
+<link rel="alternate" hreflang="en" href="https://www.rainbowmatrix.ai/manual/manual.html">
+<link rel="alternate" hreflang="pt" href="https://www.rainbowmatrix.ai/manual/manual-pt.html">
+<link rel="alternate" hreflang="es" href="https://www.rainbowmatrix.ai/manual/manual-es.html">
+<link rel="alternate" hreflang="ru" href="https://www.rainbowmatrix.ai/manual/manual-ru.html">
+<link rel="alternate" hreflang="zh" href="https://www.rainbowmatrix.ai/manual/manual-cn.html">
 <link rel="icon" type="image/x-icon" href="../favicon.ico">
 <link rel="apple-touch-icon" href="../favicon.ico">  
 <style>
@@ -516,7 +517,7 @@
   }
   .footer-content {
     max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr;
     gap: 3rem;
     padding-bottom: 3rem;
     border-bottom: 1px solid var(--border);
@@ -611,10 +612,10 @@
 <body>
 
 <nav class="topnav">
-  <a href="https://rainbowmatrix.ai" class="topnav-logo">🌈 Rainbow Matrix AI</a>
+  <a href="https://www.rainbowmatrix.ai" class="topnav-logo">🌈 Rainbow Matrix AI</a>
   <div class="topnav-right">
     <span class="topnav-tag">🌈 Rainbow Matrix AI: 🎯 Multi-Timeframe Probability Engine [💎 ELITE ACCESS] Manual</span>
-    <a href="https://rainbowmatrix.ai/pt.html" class="topnav-link">← Site Principal</a>
+    <a href="https://www.rainbowmatrix.ai/pt.html" class="topnav-link">← Site Principal</a>
     <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="topnav-link" style="color:var(--cyan)">Aderir ao Elite →</a>
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   </div>
@@ -639,7 +640,7 @@
 
   <div class="sidebar-section-label" style="margin-top:2rem">// Suporte</div>
   <a href="mailto:contact@rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">✉</span>contact@rainbowmatrix.ai</a>
-  <a href="https://rainbowmatrix.ai/pt.html" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
+  <a href="https://www.rainbowmatrix.ai/pt.html" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
 </aside>
 
 <main class="main">
@@ -929,6 +930,18 @@
       <div class="section-heading">3.2 AI Score Engine — O Cérebro por trás do Global Score</div>
       <p>O AI Score Engine é o algoritmo central que calcula o <em>Global Probability Score</em> — a métrica precisa entre 0% e 100% que quantifica a pressão direcional em todos os 5 timeframes simultaneamente.</p>
 
+      <p>O motor vem com dois cérebros selecionáveis. Eles leem o mesmo mercado por lentes diferentes, e o operador escolhe qual comanda o Score:</p>
+      <table class="data-table">
+        <tr><th>Engine</th><th>Lê</th><th>Caráter</th></tr>
+        <tr><td><strong>MGI Structural</strong></td><td>Muralhas de volume institucional e níveis gravitacionais</td><td>Mais estável. Ancorado onde o tamanho realmente está. Menos mudanças, de maior convicção.</td></tr>
+        <tr><td><strong>HFT Kinetic</strong></td><td>Momentum bruto e aceleração do order flow</td><td>Mais rápido. Antecipa o movimento. Reage antes da estrutura confirmar.</td></tr>
+      </table>
+      <p>O modo <strong>[Dual]</strong> plota o engine secundário como uma <em>linha-fantasma</em> atrás do primário, transformando as duas leituras em ferramenta de cross-validação: quando MGI Structural e HFT Kinetic concordam, a convicção é máxima; quando divergem, o mercado está em transição e o operador recua até que voltem a se alinhar.</p>
+      <div class="callout purple">
+        <div class="callout-title">⚡ Como Usar a Leitura Dual</div>
+        <p>Trate a concordância como confluência, não redundância. O engine rápido (HFT) diz que <em>algo está começando</em>; o lento (MGI) diz que <em>a estrutura confirmou</em>. As entradas de maior probabilidade vivem onde a linha rápida já se moveu e a linha estrutural está alcançando-a.</p>
+      </div>
+
       <div class="section-heading">3.10 Exibir Vacuum Trail — O Vazio de Liquidez Institucional</div>
       <p>Existe um fenômeno cinético que dita o comportamento do mercado algorítmico com consistência estrutural absoluta — um princípio que as massas do varejo nunca foram treinadas para auditar. Na física, quando uma massa de alta velocidade se desloca rapidamente, o vácuo resultante cria um vazio gravitacional que puxa violentamente o ambiente circundante de volta para estabilizá-lo. Nos mercados financeiros algorítmicos, o exato mesmo princípio aplica-se à ação de preço cinética.</p>
       <p>O <em>Vacuum Trail</em> (Rastro de Vácuo) torna este fenômeno cinético inteiramente visível — um sistema de vetores geométricos convergentes implementados diretamente na consola do oscilador (não no gráfico principal de preços). Ele engaja no exato milissegundo em que o Global Score rompe os limites superiores ou inferiores do canal dinâmico.</p>
@@ -1126,7 +1139,9 @@
         <tr><td><strong>Raio Magnético (%)</strong></td><td>0.25%</td><td>0.15% – 0.50%</td><td>Distância da muralha onde o MGI é ativado. Maior = mais antecipação.</td></tr>
         <tr><td><strong>Força Gravitacional</strong></td><td>6</td><td>3 – 10</td><td>Pontos injetados no Score por muralha. Limite máximo: ±30 pontos no total.</td></tr>
         <tr><td><strong>Polaridade MGI</strong></td><td>Magnético 🧲</td><td>Magnético / Atrito</td><td>Magnético = protocolo stop-hunt (Cripto). Atrito = absorção (Forex/Ações).</td></tr>
+        <tr><td><strong>Smart Wall</strong></td><td>Ligado</td><td>Ligado / Desligado</td><td>A força da muralha se adapta à velocidade de aproximação. Aproximação rápida endurece a muralha (favorece rejeição); deriva lenta a suaviza (favorece rompimento).</td></tr>
       </table>
+      <p>O upgrade <em>Smart Wall</em> torna cada nível institucional dinâmico em vez de estático. Uma muralha não é uma linha fixa — sua força escala com a violência com que o preço se aproxima. Uma aproximação rápida e de alta velocidade é lida como pico de exaustão e a muralha é reforçada, favorecendo a rejeição; uma aproximação lenta e arrastada suaviza a muralha, favorecendo um rompimento limpo. A <strong>polaridade</strong> define o viés de todo o campo: <em>Magnético</em> (atrai — os níveis puxam o preço para o stop-hunt, ideal em Cripto) ou <em>Atrito</em> (amortece — os níveis absorvem e travam o momentum, ideal em Forex e ações).</p>
 
       <div class="section-heading">3.15 Motor de Sincronização MTF</div>
       <table class="data-table">
@@ -1146,6 +1161,47 @@
         <img src="images/ch03-fig10.png" alt="Banner de Sincronização MTF — resumo dos pesos dos 5 fractais" loading="lazy">
         <figcaption><span class="fig-id">FIG.03.10</span> Telemetria MTF Sync // TF1:15% · TF2:20% · TF3:25% · TF4:25% · TF5:15%</figcaption>
       </figure>
+
+      <div class="section-heading">3.16 Kinetic Engine — Force, Potential e a Matriz de Regime</div>
+      <p>O HUD divide a energia do preço em duas leituras distintas e então classifica o mercado em um de quatro regimes. Essa separação é a diferença entre saber que o preço está <em>se movendo</em> e saber que o preço está <em>carregado</em> — duas coisas frequentemente confundidas e quase nunca iguais.</p>
+      <table class="data-table">
+        <tr><th>Barra</th><th>Mede</th><th>Construída de</th></tr>
+        <tr><td><strong>Kinetic Force</strong></td><td>Movimento — quão rápido o preço se move agora</td><td>Range do candle / ATR (P3) + intensidade do corpo Heikin Ashi (P4), 50/50</td></tr>
+        <tr><td><strong>Potential</strong></td><td>Posição — quão esticado e carregado o preço está</td><td>Stretch do Global Score (P1) + stretch do preço no rainbow (P2), 50/50</td></tr>
+      </table>
+      <p>Um <strong>marcador ◈ de máxima</strong> dentro da barra Kinetic Force lembra o pico de força da perna direcional atual — quando a força cai mas o ◈ permanece alto, o momentum está vazando do movimento.</p>
+
+      <p>As duas barras alimentam uma <strong>Matriz de Regime 2×2</strong>. Cada barra é lida como alta ou baixa contra um limiar de <strong>50</strong>, produzindo quatro estados:</p>
+      <table class="data-table">
+        <tr><th>Regime</th><th>Force</th><th>Potential</th><th>O que significa</th></tr>
+        <tr><td><strong>🧊 COILED</strong></td><td>&lt; 50</td><td>&lt; 50</td><td>Ambos baixos. Compressão pré-rompimento ou chop. O mercado está descansando — não force um trade.</td></tr>
+        <tr><td><strong>🚀 EARLY MOVE</strong></td><td>≥ 50</td><td>&lt; 50</td><td>Movimento surgindo, preço ainda não esticado. Frequentemente a parte mais limpa de um movimento novo — a janela de entrada.</td></tr>
+        <tr><td><strong>⏳ EXHAUSTION</strong></td><td>&lt; 50</td><td>≥ 50</td><td>Preço esticado e carregado, mas o momentum está enfraquecendo. Travando — aperte os stops, observe reversão.</td></tr>
+        <tr><td><strong>💥 CLIMAX</strong></td><td>≥ 50</td><td>≥ 50</td><td>Ambos no máximo. Um movimento poderoso em curso — mas também onde topos de blow-off e fundos de capitulação se formam.</td></tr>
+      </table>
+      <div class="callout purple">
+        <div class="callout-title">⚡ Operando o Regime</div>
+        <p>O regime é um filtro de contexto, não um sinal por si só. As combinações letais: entre em <strong>EARLY MOVE</strong> na direção da força; realize lucro ou fique de fora em <strong>EXHAUSTION</strong>; e trate <strong>CLIMAX combinado com uma divergência bearish</strong> (ver 3.17) como aviso de reversão de alta probabilidade — energia máxima encontrando uma quebra de momentum é como topos e fundos são construídos.</p>
+      </div>
+
+      <div class="section-heading">3.17 Divergence Engine</div>
+      <p>O Divergence Engine compara pivôs do Global Score contra pivôs do preço para detectar os quatro tipos clássicos de divergência. É <strong>visual apenas</strong> — nunca altera o Score — e é <strong>confirmado por pivô</strong>, ou seja, espera um pivô se formar completamente antes de desenhar. Não repinta.</p>
+      <table class="data-table">
+        <tr><th>Tipo</th><th>Preço</th><th>Score</th><th>Leitura</th><th>Padrão</th></tr>
+        <tr><td><strong>Regular Bullish</strong></td><td>Fundo Descendente</td><td>Fundo Ascendente</td><td>Reversão para cima — exaustão vendedora (linha sólida)</td><td>Ligado</td></tr>
+        <tr><td><strong>Regular Bearish</strong></td><td>Topo Ascendente</td><td>Topo Descendente</td><td>Reversão para baixo — exaustão compradora (linha sólida)</td><td>Ligado</td></tr>
+        <tr><td><strong>Hidden Bullish</strong></td><td>Fundo Ascendente</td><td>Fundo Descendente</td><td>Continuação para cima, em uptrend (linha tracejada)</td><td>Desligado</td></tr>
+        <tr><td><strong>Hidden Bearish</strong></td><td>Topo Descendente</td><td>Topo Ascendente</td><td>Continuação para baixo, em downtrend (linha tracejada)</td><td>Desligado</td></tr>
+      </table>
+      <table class="data-table">
+        <tr><th>Parâmetro</th><th>Padrão</th><th>Faixa</th><th>Efeito</th></tr>
+        <tr><td><strong>Pivot Lookback</strong></td><td>5</td><td>2 – 20</td><td>Barras de cada lado para confirmar um pivô. Use 3 para 1m–5m, 5 para 15m–1h, 10+ para 4h–diário.</td></tr>
+        <tr><td><strong>Alertas de Divergência</strong></td><td>Desligado</td><td>Ligado / Desligado</td><td>Dispara um alerta Bullish e um Bearish quando uma divergência confirma.</td></tr>
+      </table>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ A Confirmação Tem um Custo</div>
+        <p>Como uma divergência confirma <strong>lookback barras após</strong> o segundo pivô se formar, o sinal é confiável mas atrasado por design. Lookback maior significa pivôs mais confiáveis e mais lag. Divergências Hidden vêm Desligadas por padrão — habilite-as apenas em mercados claramente em tendência, onde setups de continuação são válidos.</p>
+      </div>
     </div>
   </section>
 
@@ -1511,7 +1567,7 @@
       <div class="callout" style="margin-top:3rem; text-align:center">
         <div class="callout-title" style="text-align:center">🌈 RAINBOW MATRIX AI · 🤖 MTF Probability Engine [💎 ELITE ACCESS]</div>
         <p style="text-align:center">
-          <a href="https://rainbowmatrix.ai/pt.html" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
+          <a href="https://www.rainbowmatrix.ai/pt.html" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
 <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">✉️ contact@rainbowmatrix.ai</a>
         </p>
         <p style="text-align:center; margin-top:0.5rem; font-size:0.8rem">© Rainbow Matrix AI · Todos os direitos reservados · Documento Confidencial para Membros Elite</p>
@@ -1534,8 +1590,6 @@
         <div class="footer-col-title">Produto</div>
         <div class="footer-col-links">
           <a href="../pt.html">Site Principal</a>
-         
-          <a href="../compare/compare-pt.html">Grátis vs Elite</a>
           <a href="../pt.html#pricing">Planos</a>
           <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-link">Iniciar Teste Gratuito →</a>
         </div>
@@ -1553,15 +1607,6 @@
         </div>
       </div>
 
-      <div>
-        <div class="footer-col-title">Ferramentas Grátis</div>
-        <div class="footer-col-links">
-          <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" rel="noopener">🌈 Cloud Institutional Bands</a>
-          <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" rel="noopener">🧱 MGI Walls</a>
-          <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" rel="noopener">📈 MTF Kinetic Oscillator</a>
-        </div>
-      
-      </div>
     </div>
 
     <div class="footer-bottom">
