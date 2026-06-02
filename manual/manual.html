@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rainbow Matrix AI — Elite Operator's Manual</title>
+<meta name="description" content="The complete operator's manual for Rainbow Matrix AI on TradingView: configuration, the dual AI Score engine (MGI Structural vs HFT Kinetic), the Kinetic Force / Potential regime matrix, the Divergence Engine, Smart Walls, and the 5-timeframe Fibonacci synchronization.">
 
 <!-- ── AUTO-DETECT LANGUAGE (runs first to prevent FOUC) ── -->
 <script>
@@ -72,11 +73,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="alternate" hreflang="en" href="https://rainbowmatrix.ai/manual/manual.html">
-<link rel="alternate" hreflang="pt" href="https://rainbowmatrix.ai/manual/manual-pt.html">
-<link rel="alternate" hreflang="es" href="https://rainbowmatrix.ai/manual/manual-es.html">
-<link rel="alternate" hreflang="ru" href="https://rainbowmatrix.ai/manual/manual-ru.html">
-<link rel="alternate" hreflang="zh" href="https://rainbowmatrix.ai/manual/manual-cn.html">
+<link rel="alternate" hreflang="en" href="https://www.rainbowmatrix.ai/manual/manual.html">
+<link rel="alternate" hreflang="pt" href="https://www.rainbowmatrix.ai/manual/manual-pt.html">
+<link rel="alternate" hreflang="es" href="https://www.rainbowmatrix.ai/manual/manual-es.html">
+<link rel="alternate" hreflang="ru" href="https://www.rainbowmatrix.ai/manual/manual-ru.html">
+<link rel="alternate" hreflang="zh" href="https://www.rainbowmatrix.ai/manual/manual-cn.html">
 <link rel="icon" type="image/x-icon" href="../favicon.ico">
 <link rel="apple-touch-icon" href="../favicon.ico">  
 <style>
@@ -531,7 +532,7 @@
   }
   .footer-content {
     max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr;
     gap: 3rem;
     padding-bottom: 3rem;
     border-bottom: 1px solid var(--border);
@@ -620,10 +621,10 @@
 
 <!-- TOP NAV -->
 <nav class="topnav">
-  <a href="https://rainbowmatrix.ai" class="topnav-logo">🌈 Rainbow Matrix AI</a>
+  <a href="https://www.rainbowmatrix.ai" class="topnav-logo">🌈 Rainbow Matrix AI</a>
   <div class="topnav-right">
     <span class="topnav-tag">🌈 Rainbow Matrix AI: 🎯 Multi-Timeframe Probability Engine [💎 ELITE ACCESS] Manual</span>
-    <a href="https://rainbowmatrix.ai" class="topnav-link">← Main Site</a>
+    <a href="https://www.rainbowmatrix.ai" class="topnav-link">← Main Site</a>
     <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="topnav-link" style="color:var(--cyan)">Join Elite →</a>
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   </div>
@@ -649,7 +650,7 @@
 
   <div class="sidebar-section-label" style="margin-top:2rem">// Support</div>
   <a href="mailto:contact@rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">✉</span>contact@rainbowmatrix.ai</a>
-  <a href="https://rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
+  <a href="https://www.rainbowmatrix.ai" class="sidebar-link"><span class="ch-num">🌐</span>rainbowmatrix.ai</a>
 </aside>
 
 <!-- MAIN -->
@@ -706,7 +707,7 @@
       <div class="toc-entries">
         <a href="#ch1" class="toc-entry"><span class="toc-entry-num">Ch.01</span>Philosophy: The Awakening of the Institutional Operator</a>
         <a href="#ch2" class="toc-entry"><span class="toc-entry-num">Ch.02</span>Implementation on TradingView</a>
-        <a href="#ch3" class="toc-entry"><span class="toc-entry-num">Ch.03</span>Configuration Menu — All 15 Parameters</a>
+        <a href="#ch3" class="toc-entry"><span class="toc-entry-num">Ch.03</span>Configuration Menu — All 17 Parameters</a>
         <a href="#ch4" class="toc-entry"><span class="toc-entry-num">Ch.04</span>Quantitative Asymmetry: The 223-Minute Front-Running Protocol</a>
         <a href="#ch5" class="toc-entry"><span class="toc-entry-num">Ch.05</span>Multi-Fractal Architecture: The Quantitative Asymmetry</a>
         <a href="#ch6" class="toc-entry"><span class="toc-entry-num">Ch.06</span>The Gravitational Ecosystem: Rainbow Cloud & Institutional VWAPs</a>
@@ -912,7 +913,7 @@
     <div class="chapter-header">
       <div class="chapter-num">// Chapter 03</div>
       <h2 class="chapter-title">Configuration Menu</h2>
-      <p class="chapter-desc">All 15 parameters of the Rainbow Matrix AI — from the Volatility Engine to the MTF Synchronization Engine.</p>
+      <p class="chapter-desc">All 17 parameters of the Rainbow Matrix AI — from the Volatility Engine and dual AI Score brains to the Kinetic Regime Matrix, Divergence Engine, and MTF Synchronization.</p>
     </div>
     <div class="prose">
 
@@ -930,6 +931,18 @@
 
       <div class="section-heading">3.2 AI Score Engine — The Brain Behind the Global Score</div>
       <p>The AI Score Engine is the core algorithm calculating the <em>Global Probability Score</em> — the precise metric between 0% and 100% that quantifies directional pressure across all 5 timeframes simultaneously.</p>
+
+      <p>The engine ships with two selectable brains. They read the same market through different lenses, and the operator chooses which drives the Score:</p>
+      <table class="data-table">
+        <tr><th>Engine</th><th>Reads</th><th>Character</th></tr>
+        <tr><td><strong>MGI Structural</strong></td><td>Institutional volume walls and gravitational levels</td><td>Steadier. Anchored to where size actually sits. Fewer, higher-conviction shifts.</td></tr>
+        <tr><td><strong>HFT Kinetic</strong></td><td>Raw momentum and order-flow acceleration</td><td>Faster. Front-runs the move. Reacts before structure confirms.</td></tr>
+      </table>
+      <p>A <strong>[Dual]</strong> mode plots the secondary engine as a <em>ghost line</em> behind the primary, turning the two readings into a cross-validation tool: when MGI Structural and HFT Kinetic agree, conviction is highest; when they diverge, the market is in transition and the operator stands down until they re-align.</p>
+      <div class="callout purple">
+        <div class="callout-title">⚡ How to Use the Dual Read</div>
+        <p>Treat agreement as confluence, not redundancy. The fast engine (HFT) tells you <em>something is starting</em>; the slow engine (MGI) tells you <em>structure has confirmed it</em>. The highest-probability entries live where the fast line has already moved and the structural line is catching up to meet it.</p>
+      </div>
 
       <div class="section-heading">3.10 Show Vacuum Trail — The Institutional Liquidity Void</div>
       <p>There is a kinetic phenomenon that dictates algorithmic market behavior with absolute structural consistency — a principle the retail masses have never been trained to audit. In physics, when a high-velocity mass rapidly displaces, the resulting vacuum creates a gravitational void that violently pulls the surrounding environment back to stabilize it. In algorithmic financial markets, the exact same principle applies to kinetic price action.</p>
@@ -1120,7 +1133,9 @@
         <tr><td><strong>Magnetic Radius (%)</strong></td><td>0.25%</td><td>0.15% – 0.50%</td><td>Distance from wall where MGI activates. Wider = more anticipation.</td></tr>
         <tr><td><strong>Gravitational Force</strong></td><td>6</td><td>3 – 10</td><td>Points injected into Score per wall. Max cap: ±30 points total.</td></tr>
         <tr><td><strong>MGI Polarity</strong></td><td>Magnetic 🧲</td><td>Magnetic / Friction</td><td>Magnetic = stop-hunt protocol (Crypto). Friction = absorption (Forex/Equities).</td></tr>
+        <tr><td><strong>Smart Wall</strong></td><td>On</td><td>On / Off</td><td>Wall force adapts to approach speed. Fast approach hardens the wall (rejection-friendly); slow drift softens it (break-friendly).</td></tr>
       </table>
+      <p>The <em>Smart Wall</em> upgrade makes each institutional level dynamic rather than static. A wall is not a fixed line — its strength scales with how violently price approaches it. A rapid, high-velocity approach is read as an exhaustion spike and the wall is reinforced, favouring rejection; a slow, grinding approach softens the wall, favouring a clean break. <strong>Polarity</strong> sets the bias of the whole field: <em>Magnetic</em> (attract — levels pull price in for the stop-hunt, ideal on Crypto) or <em>Friction</em> (dampen — levels absorb and stall momentum, ideal on Forex and equities).</p>
 
       <div class="section-heading">3.15 MTF Synchronization Engine</div>
       <table class="data-table">
@@ -1140,6 +1155,47 @@
         <img src="images/ch03-fig10.png" alt="MTF Synchronization banner — 5 fractals weights summary" loading="lazy">
         <figcaption><span class="fig-id">FIG.03.10</span> MTF Sync Telemetry // TF1:15% · TF2:20% · TF3:25% · TF4:25% · TF5:15%</figcaption>
       </figure>
+
+      <div class="section-heading">3.16 Kinetic Engine — Force, Potential &amp; the Regime Matrix</div>
+      <p>The HUD splits the energy of price into two distinct readings, then classifies the market into one of four regimes. This separation is the difference between knowing price is <em>moving</em> and knowing price is <em>loaded</em> — two things that are often confused and almost never the same.</p>
+      <table class="data-table">
+        <tr><th>Bar</th><th>Measures</th><th>Built From</th></tr>
+        <tr><td><strong>Kinetic Force</strong></td><td>Motion — how fast price is moving right now</td><td>Candle range / ATR (P3) + Heikin Ashi body intensity (P4), weighted 50/50</td></tr>
+        <tr><td><strong>Potential</strong></td><td>Position — how stretched and loaded price is</td><td>Global Score stretch (P1) + price stretch within the rainbow (P2), weighted 50/50</td></tr>
+      </table>
+      <p>A <strong>◈ high-water mark</strong> inside the Kinetic Force bar remembers the peak force of the current directional leg — when force fades but the ◈ stays high, momentum is bleeding out of the move.</p>
+
+      <p>The two bars feed a <strong>2×2 Regime Matrix</strong>. Each bar is read as high or low against a threshold of <strong>50</strong>, producing four states:</p>
+      <table class="data-table">
+        <tr><th>Regime</th><th>Force</th><th>Potential</th><th>What It Means</th></tr>
+        <tr><td><strong>🧊 COILED</strong></td><td>&lt; 50</td><td>&lt; 50</td><td>Both low. Pre-breakout compression or chop. The market is resting — do not force a trade.</td></tr>
+        <tr><td><strong>🚀 EARLY MOVE</strong></td><td>≥ 50</td><td>&lt; 50</td><td>Motion building, price not yet stretched. Often the cleanest part of a fresh move — the entry window.</td></tr>
+        <tr><td><strong>⏳ EXHAUSTION</strong></td><td>&lt; 50</td><td>≥ 50</td><td>Price is stretched and loaded but momentum is fading. Stalling — tighten stops, watch for reversal.</td></tr>
+        <tr><td><strong>💥 CLIMAX</strong></td><td>≥ 50</td><td>≥ 50</td><td>Both maxed. A powerful move is in progress — but this is also where blow-off tops and capitulation bottoms form.</td></tr>
+      </table>
+      <div class="callout purple">
+        <div class="callout-title">⚡ Operating the Regime</div>
+        <p>The regime is a context filter, not a signal by itself. The lethal combinations: enter on <strong>EARLY MOVE</strong> in the direction of force; take profit or stand aside on <strong>EXHAUSTION</strong>; and treat <strong>CLIMAX paired with a bearish divergence</strong> (see 3.17) as a high-probability reversal warning — maximum energy meeting a momentum split is how tops and bottoms are built.</p>
+      </div>
+
+      <div class="section-heading">3.17 Divergence Engine</div>
+      <p>The Divergence Engine compares pivots of the Global Score against pivots of price to detect the four classical divergence types. It is <strong>visual-only</strong> — it never alters the Score — and it is <strong>pivot-confirmed</strong>, meaning it waits for a pivot to fully form before drawing. It does not repaint.</p>
+      <table class="data-table">
+        <tr><th>Type</th><th>Price</th><th>Score</th><th>Reading</th><th>Default</th></tr>
+        <tr><td><strong>Regular Bullish</strong></td><td>Lower Low</td><td>Higher Low</td><td>Reversal up — seller exhaustion (solid line)</td><td>On</td></tr>
+        <tr><td><strong>Regular Bearish</strong></td><td>Higher High</td><td>Lower High</td><td>Reversal down — buyer exhaustion (solid line)</td><td>On</td></tr>
+        <tr><td><strong>Hidden Bullish</strong></td><td>Higher Low</td><td>Lower Low</td><td>Continuation up, in an uptrend (dashed line)</td><td>Off</td></tr>
+        <tr><td><strong>Hidden Bearish</strong></td><td>Lower High</td><td>Higher High</td><td>Continuation down, in a downtrend (dashed line)</td><td>Off</td></tr>
+      </table>
+      <table class="data-table">
+        <tr><th>Parameter</th><th>Default</th><th>Range</th><th>Effect</th></tr>
+        <tr><td><strong>Pivot Lookback</strong></td><td>5</td><td>2 – 20</td><td>Bars on each side required to confirm a pivot. Use 3 for 1m–5m, 5 for 15m–1h, 10+ for 4h–daily.</td></tr>
+        <tr><td><strong>Divergence Alerts</strong></td><td>Off</td><td>On / Off</td><td>Fires one Bullish and one Bearish alert when a divergence confirms.</td></tr>
+      </table>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ Confirmation Has a Cost</div>
+        <p>Because a divergence confirms <strong>lookback bars after</strong> the second pivot forms, the signal is reliable but lagging by design. Higher lookback means more reliable pivots and more lag. Hidden divergences are Off by default — enable them only in clearly trending markets, where continuation setups are valid.</p>
+      </div>
     </div>
   </section>
 
@@ -1504,7 +1560,7 @@
       <div class="callout" style="margin-top:3rem; text-align:center">
         <div class="callout-title" style="text-align:center">🌈 RAINBOW MATRIX AI · 🤖 MTF Probability Engine [💎 ELITE ACCESS]</div>
         <p style="text-align:center">
-          <a href="https://rainbowmatrix.ai" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
+          <a href="https://www.rainbowmatrix.ai" style="color:var(--cyan)">🌐 rainbowmatrix.ai</a> &nbsp;·&nbsp;
           <a href="mailto:contact@rainbowmatrix.ai" style="color:var(--cyan)">✉️ contact@rainbowmatrix.ai</a>
         </p>
         <p style="text-align:center; margin-top:0.5rem; font-size:0.8rem">© Rainbow Matrix AI · All rights reserved · Confidential Document for Elite Members</p>
@@ -1528,7 +1584,6 @@
         <div class="footer-col-title">Product</div>
         <div class="footer-col-links">
           <a href="../index.html">Main Site</a>
-          <a href="../compare/compare.html">Free vs Elite</a>
           <a href="../index.html#pricing">Pricing</a>
           <a href="https://whop.com/checkout/plan_TlnFrPEznloQV" class="cta-link">Start Free Trial →</a>
         </div>
@@ -1545,14 +1600,6 @@
         </div>
       </div>
 
-      <div>
-        <div class="footer-col-title">Free Tools</div>
-        <div class="footer-col-links">
-          <a href="https://www.tradingview.com/script/sLKmO6QJ-Rainbow-Matrix-AI-Cloud-Institutional-Bands-FREE/" target="_blank" rel="noopener">🌈 Cloud Institutional Bands</a>
-          <a href="https://www.tradingview.com/script/ODto5EdP-Rainbow-Matrix-AI-MGI-Walls-Institutional-Liquidity-Radar/" target="_blank" rel="noopener">🧱 MGI Walls</a>
-          <a href="https://www.tradingview.com/script/GB1XwLO9-Rainbow-Matrix-AI-MTF-Kinetic-Oscillator/" target="_blank" rel="noopener">📈 MTF Kinetic Oscillator</a>
-        </div>
-      </div>
     </div>
 
     <div class="footer-bottom">
